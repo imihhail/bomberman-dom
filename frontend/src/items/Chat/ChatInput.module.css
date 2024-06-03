@@ -1,0 +1,10 @@
+.inputContainer {
+  display: flex;
+  position: relative;
+}
+
+.inputContainer .chatInput {
+  text-align: left;
+  text-decoration: none;
+  outline: none;
+}

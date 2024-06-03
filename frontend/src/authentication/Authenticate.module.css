@@ -1,0 +1,114 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 40%;
+  border: 2px solid transparent;
+  background: black;
+  color: white;
+  border-radius: 4px;
+  width: 17%;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 0.1rem;
+  padding-top: 1rem;
+}
+
+.loginButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 1rem;
+  color: white;
+  cursor: pointer;
+  background-color: black;
+  margin: 0.1rem;
+  border-radius: 4px;
+  width: 15rem;
+  height: 3rem;
+  border: 3px solid transparent;
+  font-size: inherit;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.submit {
+  background: none;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: 0.3s;
+  margin-top: 0.5rem;
+}
+
+.submit:hover {
+  background: red;
+  color: white;
+  border-radius: 4px;
+}
+
+.switch {
+  margin-top: auto;
+  margin-right: auto;
+  border: none;
+  padding: 0.4rem;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type='date'],
+input[type='email'],
+input[type='password'],
+input[type='text'] {
+  width: 80%;
+  text-align: center;
+  margin: auto;
+}
+
+input[id="avatar"] {
+  display: none;
+}
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0.1rem;
+  margin-top: 0.2rem;
+  border-radius: 4px;
+  background: white;
+  color: black;
+  cursor: pointer;
+  width: 80%;
+}
+
+.error {
+  color: red;
+}
+
+.required::after {
+  content: ' *';
+  color: red;
+  position: relative;
+  top: 0.2rem;
+}
+
+.errorMsg {
+  color: red;
+}
+
+.selectedImage{
+  border-radius: 0 0 4px 4px;
+  height: 100%;
+  width: 100%;
+}

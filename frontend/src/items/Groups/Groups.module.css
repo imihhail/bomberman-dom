@@ -1,0 +1,99 @@
+.groupContainer {
+  display: flex;
+  margin: auto;
+  height: 90vh;
+  width: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.groupMembers {
+  display: flex;
+}
+.groupMembers p {
+  display: flex;
+  align-items: center;
+  border-right: 1px solid white;
+  padding:0 0.5rem;
+}
+
+.selectedGroupInfo {
+  margin-right: auto;
+}
+
+.currentGroup {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  height: 50%;
+  border: 1px solid white;
+}
+
+.postsAndChat {
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+}
+
+.groupList {
+  background-color: hsl(0, 0%, 70%);
+  height: 90vh;
+  text-align: center;
+  border: solid 2px black;
+  border-right: 1px;
+  padding: 1rem;
+}
+
+.groupName {
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 5px 20px;
+}
+
+.groupNameSelected {
+  background-color: hsl(0, 0%, 10%);
+  color: white;
+  padding: 10px 20px;
+}
+
+.groupInfo {
+  display: flex;
+  flex-direction: column;
+  background-color: hsl(0, 0%, 70%);
+  border: solid 2px black;
+  padding: 10px;
+  /* text-align: center; chat positsioon läheb katki sellega, mütle kas ära kustutada*/
+  width: 68vw;
+}
+
+.inviteButton {
+  align-self: flex-end;
+  padding: 4px 8px;
+}
+
+.userDopDownMenu {
+  position: absolute;
+  align-self: flex-end;
+  margin-top: 1px;
+  margin-right: 1px;
+}
+
+.groupInvatation {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 20px;
+  background-color: hsl(0, 0%, 10%);
+  color: white;
+  opacity: 0.9;
+}
+
+.eventInfo {
+  margin: 10px;
+  background-color: hsl(0, 0%, 80%);
+}
+
+.groupEvents {
+  display: flex;
+  overflow: auto;
+}

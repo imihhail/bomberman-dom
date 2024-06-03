@@ -1,0 +1,266 @@
+.profileContainer {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 60%;
+  height: 90%;
+  border: 2px solid black;
+  padding: 1rem;
+  background-color: rgb(155, 155, 155);
+}
+
+.profile {
+  flex: 1;
+  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.posts {
+  margin-left: auto;
+}
+
+.follow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: white 1px solid;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.avatar {
+  max-width: 10rem;
+  max-height: 10rem;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.avatarImg {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+}
+
+/* Privacy button starts here */
+.toggleSwitch {
+  position: relative;
+  width: 4rem;
+  height: 2rem;
+}
+
+.toggleSwitchCheckbox {
+  display: none;
+}
+
+.toggleSwitchLabel {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 2rem;
+}
+
+.toggleSwitchLabel:before {
+  position: absolute;
+  content: "";
+  height: 1.5rem;
+  width: 1.5rem;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggleSwitchCheckbox:checked + .toggleSwitchLabel {
+  background-color: #2196F3;
+}
+
+.toggleSwitchCheckbox:checked + .toggleSwitchLabel:before {
+  transform: translateX(2rem);
+}
+
+.toggleSwitchTextOn {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+
+  font-size: 0.75rem;
+  color: white;
+}
+
+.toggleSwitchTextOff {
+  position: absolute;
+  top: 15%;
+  left: 55%;
+
+  font-size: 0.75rem;
+  color: #000000;
+}
+
+.profilePostImg{
+  height: 100%;
+  width: 6rem;
+}
+/* Privacy button ends here */
+/* Posts Styling */
+.postsOverlay {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  padding: 1rem;
+  height: 80vh;
+  width: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-top:#ffffff solid 1px;
+  border-bottom:#ffffff solid 1px;
+  background: linear-gradient(rgba(155, 155, 155, 0.671), rgba(155, 155, 155, 0.671)), 
+              linear-gradient(rgba(155, 155, 155, 0.671), rgb(99, 99, 99)) no-repeat scroll,
+              linear-gradient(rgb(99, 99, 99), rgba(155, 155, 155, 0.705)) no-repeat scroll;
+  background-size: 100% 25px, 100% 25px, 100% 25px;
+  background-attachment: local, scroll, scroll;
+  background-position: top, bottom;
+  border-radius: 0.5rem;
+}
+
+.postContainer{
+  display:flex;
+}
+
+.post {
+  width: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.topPart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  height: auto;
+}
+
+.topPart p {
+  margin-left: 1rem;
+}
+
+.mainContent p {
+  padding: 0.5rem;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1.5rem;
+  align-items: stretch;
+}
+
+.leftSide {
+  width: 3rem;
+  position: relative;
+}
+
+.leftSide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px solid #464646;
+}
+
+.rightSide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 2.25rem;
+  word-wrap: break-word;
+}
+
+.postsImg {
+  max-width: 20rem;
+  max-height: 20rem;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 0.5rem;
+}
+
+.content {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: .875rem;
+  line-height: 1.25rem;
+  word-wrap: break-word;
+}
+
+.commentsButton {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  color: #fff;
+  background-color: black;
+  border: 0.125rem solid black;
+  border-radius: 0.25rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: border 0.3s ease;
+  cursor: pointer;
+}
+
+.commentsButton:hover {
+  border: 2px solid white;
+}
+/* Posts Styling Ends Here*/
+/* User Profile Elements*/
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 1rem;
+  border-right: 1px solid white;
+}
+
+.profileInfo span {
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.following {
+  margin-top: 1rem;
+}
+
+.followers {
+  margin-top: 1rem;
+}
+
+.noBullets {
+  list-style-type: none;
+}
+
+.noLinks {
+  text-decoration: none;
+  color: black;
+}
+/* User Profile Elements end here*/

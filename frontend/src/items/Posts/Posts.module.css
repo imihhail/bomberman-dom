@@ -1,0 +1,126 @@
+.postsOverlay{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 1rem;
+    height: 80vh;
+    width: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color:rgba(255, 255, 255, 0.671);
+    border:#464646 solid 1px;
+    border-radius: 15px;
+}
+
+.postContainer{
+    display:flex;
+}
+
+.avatarImg {
+    background: none;
+    color: white;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0.2rem;
+    border-radius: 50%;
+    padding: 0;
+    border: 1px solid black;
+    opacity: 1;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    object-fit: cover;
+}
+
+/*main post*/
+.post {
+    width: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.topPart {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    height: auto;
+}
+
+.topPart p {
+    margin-left: 1rem;
+}
+
+.mainContent p {
+    padding: 0.5rem;
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1.5rem;
+    align-items: stretch;
+}
+
+.leftSide {
+    width: 3rem;
+    position: relative;
+}
+
+.leftSide::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px solid #464646;
+}
+
+.rightSide {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 2.25rem;
+    word-wrap: break-word;
+}
+
+.postsImg {
+    max-width: 20rem;
+    max-height: 20rem;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid black;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin: 0.5rem;
+}
+
+.content {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    word-wrap: break-word;
+}
+
+.commentsButton {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    color: #fff;
+    background-color: black;
+    border: 0.125rem solid black;
+    border-radius: 0.25rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: border 0.3s ease;
+    cursor: pointer;
+}
+  
+.commentsButton:hover {
+    border: 2px solid white;
+}

@@ -1,0 +1,134 @@
+.groupContainer {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  height: 80vh;
+  width: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.groupInvList{
+  border-bottom: 1px solid white;
+}
+
+.eventInfo{
+
+}
+
+.notifyBox{
+  display: flex;
+  width: fit-content;
+  margin: auto;
+}
+
+.notifyBox .accept{
+  background: linear-gradient(to left top, hsl(125, 100%, 60%),  hsl(125, 100%, 40%));  
+  padding: 1rem;
+  height: fit-content;
+  margin: auto;
+}
+
+.notifyBox .decline{
+  background-color: hsl(0, 100%, 50%);
+  padding: 1rem;
+  height: fit-content;
+  margin: auto;
+}
+
+/* .listButton {
+  background-color: hsl(0, 0%, 0%);
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  color: white;
+  padding: 15px 25px;
+  cursor: pointer;
+  min-width: 220px;
+  text-align: center;
+} */
+
+/* .groupInvList .notifyBox:hover {
+  background-color: hsl(0, 0%, 15%);
+}
+
+
+
+.listButton:hover {
+  background-color: hsl(0, 0%, 10%);
+}
+
+.listButton[id="grInv"]:hover + .groupInvList[id="grInv"] {
+  display: block;
+}
+
+.listButton[id="event"]:hover + .groupInvList[id="event"] {
+  display: block;
+}
+
+.listButton[id="grReq"]:hover + .groupInvList[id="grReq"] {
+  display: block;
+}
+
+.listButton[id="follow"]:hover + .groupInvList[id="follow"] {
+  display: block;
+}
+
+.groupInvList:hover {
+  display: block;
+}
+
+button {
+  padding: 5px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px; 
+  box-shadow: 0.5px 2px 5px hsla(0, 0%, 0%, 0.816);
+}
+
+.accept {
+  margin-right: 15px;
+  background: linear-gradient(to left top, hsl(125, 100%, 60%),  hsl(125, 100%, 40%));                   
+}
+
+.decline {
+  background-color: hsl(0, 100%, 50%);
+}
+
+
+
+.groupInvList[id="grInv"], .groupInvList[id="event"], .groupInvList[id="grReq"], .groupInvList[id="follow"]{
+  position: absolute;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 15px;
+  background-color: hsl(0, 0%, 45%);
+  display: none;
+  text-align: center;
+}
+
+.groupInvList[id="event"] {
+  margin: 50px 220px;
+}
+
+.groupInvList[id="grReq"] {
+  margin: 50px 440px;
+}
+
+.groupInvList[id="follow"] {
+  margin: 50px 660px;
+}
+
+.groupInvList p {
+  padding-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.notifyBox {
+  padding: 20px 25px;
+  min-width: 220px;
+} */
+
+/* .highLightNumber{
+    color: red;
+    margin:0 0.5rem;
+} */

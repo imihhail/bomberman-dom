@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(40deg, black, white);
+}

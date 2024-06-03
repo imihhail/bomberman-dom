@@ -1,0 +1,29 @@
+.notification {
+  position: absolute;
+  background: #000000;
+  color: white;
+  padding: 1rem;
+  font-size: 1.5rem;
+  width: 20%;
+  right: 40%;
+  border-radius: 5px;
+  text-align: center;
+  top: 3rem;
+  /* transition: 3s; */
+  animation: new-notification 5s infinite;
+}
+
+@keyframes new-notification {
+  0% {
+    top: -2rem;
+    opacity: 0;
+  }
+  50% {
+    top: 2rem;
+    opacity: 1;
+  }
+  100% {
+    top: 6rem;
+    opacity: 0;
+  }
+}

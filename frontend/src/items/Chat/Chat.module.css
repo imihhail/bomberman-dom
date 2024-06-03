@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 90%;
+  height: 90vh;
+}
+
+.chat {
+  color: white;
+  margin: 0.5rem;
+  margin-top: auto;
+  overflow-y: scroll;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  border: 1px solid white;
+  width: 70%;
+  height: 100%;
+}
+
+.chatConnection{
+  margin: auto;
+  margin-bottom: 0;
+  color: white;
+}

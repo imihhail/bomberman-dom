@@ -1,0 +1,61 @@
+
+.openNewPost {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 4px;
+  background: black;
+  color: white;
+  padding-top: 1rem;
+}
+
+input[id="title"],
+input[id="content"]{
+    margin: 0.5rem;
+}
+
+input[id="file"]{
+    padding-top: 1rem;
+    width: 70%;
+    margin: auto;
+}
+
+.closedNewPost {
+  position: absolute;
+  background: black;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 15rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  bottom: 2rem;
+  right: 2rem;
+}
+
+.openNewPostOptions{
+    display: flex;
+}
+
+.openNewPostSubmit{
+    padding:1rem;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.openNewPostCancel{
+    padding:1rem;
+    margin-right: auto;
+    cursor: pointer;
+}
+
+.errorMsg {
+    color: red;
+    margin: 10px;
+    margin-top: 2px;
+  }

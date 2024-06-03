@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: estonian/social-network-backend:latest
+    ports:
+      - '8080:8080'
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: estonian/social-network-frontend:latest
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - social-network

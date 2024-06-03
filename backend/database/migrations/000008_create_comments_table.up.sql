@@ -1,0 +1,8 @@
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_fk_users INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    comment_content TEXT NOT NULL,
+    comment_image TEXT,
+    post_Id_fk_posts INTEGER REFERENCES posts(id) ON DELETE CASCADE,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
