@@ -11,7 +11,7 @@ const InitBomberman = () => {
   useEffect(() => {
     modal(true);
     GetStatus().then((data) => {
-      if (data.login !== 'success') {
+      if (data?.login !== 'success') {
         logout();
       } else {
         initBomberman(playerLocation, setPlayerLocation);

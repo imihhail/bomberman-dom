@@ -13,7 +13,7 @@ const InitTetris = () => {
       if (data.login !== 'success') {
         logout();
       } else {
-        initializeTetris(playerLocation, setPlayerLocation);
+        initializeTetris();
         modal(false);
       }
     });
