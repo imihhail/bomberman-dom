@@ -1,5 +1,5 @@
 console.log('Conneted!');
-import './bobermanMain.css';
+// import './bobermanMain.css';
 
 export const initBomberman = (playerLocation, setPlayerLocation) => {
   const root = document.querySelector('#bomberman-root');
@@ -42,7 +42,7 @@ export const initBomberman = (playerLocation, setPlayerLocation) => {
         }
         break;
       case 'Space':
-        bombCoordinate(playerPos, 2);
+        // bombCoordinate(playerPos, 2);
         setTimeout(() => {
           // removeBomb(playerPos, 1);
         });
@@ -50,6 +50,8 @@ export const initBomberman = (playerLocation, setPlayerLocation) => {
     }
   });
 };
+
+
 
 const generateGrid = () => {
   const gameGrid = document.createElement('div');
@@ -117,3 +119,5 @@ const bombCoordinate = (coord, bombLevel) => {
     'bomb-bottom-edge'
   );
 };
+
+initBomberman(31);
