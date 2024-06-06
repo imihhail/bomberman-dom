@@ -1,17 +1,17 @@
-$bit-size: 1rem;
+$bit-size: 2rem;
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
+// * {
+//   padding: 0;
+//   margin: 0;
+//   box-sizing: border-box;
+// }
 
-html,
-body {
-  height: 100%;
-}
+// html,
+// body {
+//   height: 100%;
+// }
 
-#root {
+#bomberman-root {
   display: flex;
   justify-content: center;
   align-items: center;
