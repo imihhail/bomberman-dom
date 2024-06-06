@@ -342,6 +342,7 @@ func HandleSocket(w http.ResponseWriter, r *http.Request) {
 		msg.From_HandleSocket = userId
 
 		err := conn.ReadJSON(&msg)
+		fmt.Println(msg)
 		if err != nil {
 			fmt.Println("Error in receiving message:", err)
 			client.mu.Lock()

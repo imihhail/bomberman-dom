@@ -5,6 +5,7 @@ import { GetStatus } from '../../../../connections/statusConnection';
 import { initializeTetris } from './main';
 
 const InitTetris = () => {
+  
   const [modal, logout] = useOutletContext();
   useEffect(() => {
     modal(true);
@@ -12,7 +13,7 @@ const InitTetris = () => {
       if (data.login !== 'success') {
         logout();
       } else {
-        initializeTetris();
+        initializeTetris(playerLocation, setPlayerLocation);
         modal(false);
       }
     });

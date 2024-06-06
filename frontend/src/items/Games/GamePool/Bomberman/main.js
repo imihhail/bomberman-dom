@@ -1,11 +1,11 @@
 console.log('Conneted!');
 import './bobermanMain.css';
 
-export const initBomberman = () => {
+export const initBomberman = (playerLocation, setPlayerLocation) => {
   const root = document.querySelector('#bomberman-root');
   root.appendChild(generateGrid());
   const getAllTiles = document.querySelectorAll('.square');
-  let playerPos = 31;
+  let playerPos = playerLocation;
   getAllTiles[playerPos].classList.add('player1');
   window.addEventListener('keydown', (event) => {
     switch (event.code) {
@@ -13,6 +13,7 @@ export const initBomberman = () => {
         if (playerPos > 60) {
           getAllTiles[playerPos].classList.remove('player1');
           playerPos = playerPos - 30;
+          setPlayerLocation(playerPos);
           getAllTiles[playerPos].classList.add('player1');
         }
         break;
@@ -20,6 +21,7 @@ export const initBomberman = () => {
         if (playerPos < 539) {
           getAllTiles[playerPos].classList.remove('player1');
           playerPos = playerPos + 30;
+          setPlayerLocation(playerPos);
           getAllTiles[playerPos].classList.add('player1');
         }
         break;
@@ -27,6 +29,7 @@ export const initBomberman = () => {
         if (playerPos % 30 > 1) {
           getAllTiles[playerPos].classList.remove('player1');
           playerPos = playerPos - 1;
+          setPlayerLocation(playerPos);
           getAllTiles[playerPos].classList.add('player1');
         }
         break;
@@ -34,6 +37,7 @@ export const initBomberman = () => {
         if (playerPos % 30 < 28) {
           getAllTiles[playerPos].classList.remove('player1');
           playerPos = playerPos + 1;
+          setPlayerLocation(playerPos);
           getAllTiles[playerPos].classList.add('player1');
         }
         break;
