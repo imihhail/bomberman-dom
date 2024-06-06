@@ -1,7 +1,15 @@
 import styles from './Games.module.css';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useOutletContext } from 'react-router-dom';
 
 const Games = () => {
+  const [
+    setShowModal,
+    handleLogout,
+    sendJsonMessage,
+    lastMessage,
+    readyState,
+    activeSession,
+  ] = useOutletContext();
   return (
     <div className={styles.container}>
       <div className={styles.gamesMenu}>
@@ -16,7 +24,16 @@ const Games = () => {
         </Link>
       </div>
       <div className={styles.gameConsole}>
-        <Outlet />
+        <Outlet
+          context={[
+            setShowModal,
+            handleLogout,
+            sendJsonMessage,
+            lastMessage,
+            readyState,
+            activeSession,
+          ]}
+        />
       </div>
     </div>
   );
