@@ -9,9 +9,10 @@ import Chat from './items/Chat/Chat';
 import Groups from './items/Groups/Groups';
 import Games from './items/Games/Games';
 import Notifications from './items/Notifications/Notifications.jsx';
+import InitTetris from './items/Games/GamePool/Tetris/InitTetris.jsx';
+import InitBomberman from './items/Games/GamePool/Bomberman/InitBomberman.jsx';
 
 import './index.css';
-import InitTetris from './items/Games/GamePool/Tetris/InitTetris.jsx';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
           {
             path: '/games/tetris',
             element: <InitTetris />,
+          },
+          {
+            path: '/games/bomberman',
+            element: <InitBomberman />,
           },
         ],
       },

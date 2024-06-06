@@ -8,8 +8,12 @@ const Games = () => {
         <Link to={'/games/tetris'} className={styles.gameLink}>
           Tetris
         </Link>
-        <Link className={styles.gameLink}>Arkanoid</Link>
-        <Link className={styles.gameLink}>Bomberman</Link>
+        <Link to={'/games/arkanoid'} className={styles.gameLink}>
+          Arkanoid
+        </Link>
+        <Link to={'/games/bomberman'} className={styles.gameLink}>
+          Bomberman
+        </Link>
       </div>
       <div className={styles.gameConsole}>
         <Outlet />

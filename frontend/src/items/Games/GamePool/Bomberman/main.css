@@ -1,0 +1,440 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-color: #107830;
+  height: 100%;
+}
+
+.bomb {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-middle 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-middle {
+  0% {
+    content: url("./assets/bomb/bomb1.png");
+  }
+  6.6% {
+    content: url("./assets/bomb/bomb2.png");
+  }
+  13.2% {
+    content: url("./assets/bomb/bomb3.png");
+  }
+  19.8% {
+    content: url("./assets/bomb/bomb2.png");
+  }
+  26.4% {
+    content: url("./assets/bomb/bomb1.png");
+  }
+  33% {
+    content: url("./assets/bomb/bomb2.png");
+  }
+  39.6% {
+    content: url("./assets/bomb/bomb3.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/innerExplosion.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/innerExplosion.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/innerExplosion.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/innerExplosion.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/innerExplosion.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/innerExplosion.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/innerExplosion.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/innerExplosion.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/innerExplosion.png");
+  }
+}
+.bomb-right-edge {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-right-edge 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-right-edge {
+  0% {
+    content: url("./assets/map/walkTile.png");
+  }
+  6.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  13.2% {
+    content: url("./assets/map/walkTile.png");
+  }
+  19.8% {
+    content: url("./assets/map/walkTile.png");
+  }
+  26.4% {
+    content: url("./assets/map/walkTile.png");
+  }
+  33% {
+    content: url("./assets/map/walkTile.png");
+  }
+  39.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/rightEnd.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/rightEnd.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/rightEnd.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/rightEnd.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/rightEnd.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/rightEnd.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/rightEnd.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/rightEnd.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/rightEnd.png");
+  }
+}
+.bomb-left-edge {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-left-edge 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-left-edge {
+  0% {
+    content: url("./assets/map/walkTile.png");
+  }
+  6.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  13.2% {
+    content: url("./assets/map/walkTile.png");
+  }
+  19.8% {
+    content: url("./assets/map/walkTile.png");
+  }
+  26.4% {
+    content: url("./assets/map/walkTile.png");
+  }
+  33% {
+    content: url("./assets/map/walkTile.png");
+  }
+  39.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/leftEnd.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/leftEnd.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/leftEnd.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/leftEnd.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/leftEnd.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/leftEnd.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/leftEnd.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/leftEnd.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/leftEnd.png");
+  }
+}
+.bomb-top-edge {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-top-edge 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-top-edge {
+  0% {
+    content: url("./assets/map/walkTile.png");
+  }
+  6.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  13.2% {
+    content: url("./assets/map/walkTile.png");
+  }
+  19.8% {
+    content: url("./assets/map/walkTile.png");
+  }
+  26.4% {
+    content: url("./assets/map/walkTile.png");
+  }
+  33% {
+    content: url("./assets/map/walkTile.png");
+  }
+  39.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/topEnd.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/topEnd.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/topEnd.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/topEnd.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/topEnd.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/topEnd.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/topEnd.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/topEnd.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/topEnd.png");
+  }
+}
+.bomb-bottom-edge {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-bottom-edge 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-bottom-edge {
+  0% {
+    content: url("./assets/map/walkTile.png");
+  }
+  6.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  13.2% {
+    content: url("./assets/map/walkTile.png");
+  }
+  19.8% {
+    content: url("./assets/map/walkTile.png");
+  }
+  26.4% {
+    content: url("./assets/map/walkTile.png");
+  }
+  33% {
+    content: url("./assets/map/walkTile.png");
+  }
+  39.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/bottomEnd.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/bottomEnd.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/bottomEnd.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/bottomEnd.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/bottomEnd.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/bottomEnd.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/bottomEnd.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/bottomEnd.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/bottomEnd.png");
+  }
+}
+.bomb-pipe {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-pipe 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-pipe {
+  0% {
+    content: url("./assets/map/walkTile.png");
+  }
+  6.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  13.2% {
+    content: url("./assets/map/walkTile.png");
+  }
+  19.8% {
+    content: url("./assets/map/walkTile.png");
+  }
+  26.4% {
+    content: url("./assets/map/walkTile.png");
+  }
+  33% {
+    content: url("./assets/map/walkTile.png");
+  }
+  39.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/pipe.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/pipe.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/pipe.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/pipe.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/pipe.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/pipe.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/pipe.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/pipe.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/pipe.png");
+  }
+}
+.bomb-line {
+  height: 1rem;
+  width: 1rem;
+  animation: explosion-line 2s linear infinite;
+  background-color: #107830;
+}
+
+@keyframes explosion-line {
+  0% {
+    content: url("./assets/map/walkTile.png");
+  }
+  6.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  13.2% {
+    content: url("./assets/map/walkTile.png");
+  }
+  19.8% {
+    content: url("./assets/map/walkTile.png");
+  }
+  26.4% {
+    content: url("./assets/map/walkTile.png");
+  }
+  33% {
+    content: url("./assets/map/walkTile.png");
+  }
+  39.6% {
+    content: url("./assets/map/walkTile.png");
+  }
+  46.2% {
+    content: url("./assets/explosion/stage1/line.png");
+  }
+  52.8% {
+    content: url("./assets/explosion/stage2/line.png");
+  }
+  59.4% {
+    content: url("./assets/explosion/stage3/line.png");
+  }
+  66% {
+    content: url("./assets/explosion/stage4/line.png");
+  }
+  72.6% {
+    content: url("./assets/explosion/stage5/line.png");
+  }
+  79.2% {
+    content: url("./assets/explosion/stage4/line.png");
+  }
+  85.8% {
+    content: url("./assets/explosion/stage3/line.png");
+  }
+  92.4% {
+    content: url("./assets/explosion/stage2/line.png");
+  }
+  99% {
+    content: url("./assets/explosion/stage1/line.png");
+  }
+}
+.walk-tile {
+  height: 1rem;
+  width: 1rem;
+  content: url("./assets/map/walkTile.png");
+}
+
+.map-row {
+  display: flex;
+}
+
+.indestructible-wall {
+  height: 1rem;
+  width: 1rem;
+  content: url("./assets/map/indestructibleWall.png");
+}
+
+.player1 {
+  height: 1rem;
+  width: 1rem;
+  content: url("./assets/map/indestructibleWall.png");
+}/*# sourceMappingURL=main.css.map */
