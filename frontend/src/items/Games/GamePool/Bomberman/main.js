@@ -1,5 +1,5 @@
 console.log('Conneted!');
-import './main.css';
+import './bobermanMain.css';
 
 export const initBomberman = () => {
   const root = document.querySelector('#bomberman-root');

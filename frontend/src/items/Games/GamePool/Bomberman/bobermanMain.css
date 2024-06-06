@@ -1,4 +1,4 @@
-* {
+/* * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -7,9 +7,9 @@
 html,
 body {
   height: 100%;
-}
+} */
 
-#root {
+#bomberman-root {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -437,4 +437,4 @@ body {
   height: 1rem;
   width: 1rem;
   content: url("./assets/map/indestructibleWall.png");
-}/*# sourceMappingURL=main.css.map */
+}/*# sourceMappingURL=bobermanMain.css.map */
