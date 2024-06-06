@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 90%;
+  height: 90vh;
+}
+
+.gamesMenu {
+  display: flex;
+}
+
+.gameLink {
+  font-size: 2rem;
+  color: white;
+  margin: 1rem 2rem;
+}
+
+.gameConsole {
+  margin-bottom: auto;
+}

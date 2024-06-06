@@ -43,6 +43,9 @@ const Menu = (props) => {
       <NavLink to={`/groups`} className={activeClassName}>
         Groups
       </NavLink>
+      <NavLink to={`/games`} className={activeClassName}>
+        Games
+      </NavLink>
       <NavLink to={`/chat`} className={activeClassName}>
         Chat
       </NavLink>

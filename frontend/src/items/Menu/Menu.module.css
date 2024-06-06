@@ -10,7 +10,7 @@
   padding-top: 6rem;
 }
 
-.linkButton:nth-child(5) {
+.linkButton:nth-child(6) {
   position: absolute;
   display: flex;
   background: none;
@@ -27,7 +27,7 @@
   transition: 1s;
 }
 
-.menu:hover .linkButton:nth-child(5) {
+.menu:hover .linkButton:nth-child(6) {
   transition: 1s;
   border-radius: 4px;
   width: 15rem;
@@ -36,7 +36,7 @@
   right: 0.1rem;
 }
 
-.menu:hover .linkButton:nth-child(5) img {
+.menu:hover .linkButton:nth-child(6) img {
   width: auto;
   height: 3rem;
   margin: auto;
@@ -49,7 +49,7 @@
   display: flex;
 }
 
-.linkButton:nth-child(5) .userName {
+.linkButton:nth-child(6) .userName {
   display: none;
   color: black;
 }
@@ -58,7 +58,7 @@
   display: flex;
 }
 
-.linkButton:nth-child(5) img {
+.linkButton:nth-child(6) img {
   position: relative;
   transition: 1s;
   height: 4.5rem;

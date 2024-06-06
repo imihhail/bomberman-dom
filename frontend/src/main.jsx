@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -8,9 +7,11 @@ import Profile from './items/Profile/Profile';
 import Posts from './items/Posts/Posts';
 import Chat from './items/Chat/Chat';
 import Groups from './items/Groups/Groups';
+import Games from './items/Games/Games';
 import Notifications from './items/Notifications/Notifications.jsx';
 
 import './index.css';
+import InitTetris from './items/Games/GamePool/Tetris/InitTetris.jsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,16 @@ const router = createBrowserRouter([
         element: <Groups />,
       },
       {
+        path: '/games',
+        element: <Games />,
+        children: [
+          {
+            path: '/games/tetris',
+            element: <InitTetris />,
+          },
+        ],
+      },
+      {
         path: '/chat',
         element: <Chat />,
       },
@@ -47,7 +58,5 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
 );
