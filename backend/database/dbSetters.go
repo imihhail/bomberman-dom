@@ -334,3 +334,17 @@ func Unfollow(userId, unfollowId string) {
 	helpers.CheckErr("SetNewFollowet insert: ", err)
 	defer db.Close()
 }
+
+func JoinQueue(userId string) bool {
+	db := sqlite.DbConnection()
+	defer db.Close()
+	var id string
+	command := "INSERT INTO gamequeue (user_fk_users) VALUES (?) returning id"
+	err := db.QueryRow(command, userId).Scan(&id)
+	helpers.CheckErr("SetNewGroupNotification - Insert: ", err)
+	if id != "0" {
+		return true
+	} else {
+		return false
+	}
+}

@@ -19,5 +19,9 @@
 }
 
 .gameConsole {
-  margin-bottom: auto;
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  height: 90vh;
+  margin-right: auto;
 }

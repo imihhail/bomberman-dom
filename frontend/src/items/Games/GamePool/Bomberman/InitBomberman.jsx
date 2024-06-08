@@ -5,37 +5,34 @@ import { GetStatus } from '../../../../connections/statusConnection';
 import { initBomberman } from './main';
 
 const InitBomberman = () => {
-  const [playerLocation, setPlayerLocation] = useState(31);
+  const [player1Location, setPlayer1Location] = useState(31);
+  const [player2Location, setPlayer2Location] = useState(58);
+  const [player3Location, setPlayer3Location] = useState(541);
+  const [player4Location, setPlayer4Location] = useState(568);
   const [modal, logout, sendJsonMessage, lastMessage] = useOutletContext();
-  const gameInitialized = useRef(false);
-
+  const players = {
+    player1: player1Location,
+    player2: player2Location,
+    player3: player3Location,
+    player4: player4Location,
+  };
   useEffect(() => {
     modal(true);
     GetStatus().then((data) => {
       if (data?.login !== 'success') {
         logout();
       } else {
-        initBomberman(playerLocation, setPlayerLocation);
-        gameInitialized.current = true;
+        initBomberman(players);
         modal(false);
       }
     });
-    return () => {
-      const gameContainer = document.getElementById('bomberman-root');
-      if (gameContainer) {
-        while (gameContainer.firstChild) {
-          gameContainer.removeChild(gameContainer.firstChild);
-        }
-      }
-      gameInitialized.current = false; // Reset the ref on unmount
-    };
   }, []);
   useEffect(() => {
     sendJsonMessage({
       type: 'bombermanCoords',
-      coords: playerLocation.toString(),
+      coords: player1Location.toString(),
     });
-  }, [playerLocation]);
+  }, [player1Location]);
   return <div id='bomberman-root'></div>;
 };
 

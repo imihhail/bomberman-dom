@@ -10,7 +10,7 @@ import Groups from './items/Groups/Groups';
 import Games from './items/Games/Games';
 import Notifications from './items/Notifications/Notifications.jsx';
 import InitTetris from './items/Games/GamePool/Tetris/InitTetris.jsx';
-import InitBomberman from './items/Games/GamePool/Bomberman/InitBomberman.jsx';
+import BombermanLobby from './items/Games/GamePool/Bomberman/BombermanLobby.jsx';
 
 import './index.css';
 
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
           },
           {
             path: '/games/bomberman',
-            element: <InitBomberman />,
+            element: <BombermanLobby />,
           },
         ],
       },

@@ -966,3 +966,34 @@ func GetFollowing(userId string) []structs.FollowRequests {
 	}
 	return followers
 }
+
+func GetQueue() []structs.GameQueue {
+	db := sqlite.DbConnection()
+	defer db.Close()
+
+	var lobbies []structs.GameQueue
+
+	command := "SELECT gamequeue.id, users.email FROM gamequeue INNER JOIN users ON gamequeue.user_fk_users = users.id"
+	rows, err := db.Query(command)
+	if err != nil {
+		helpers.CheckErr("GetLobbies selecting error: ", err)
+		return nil
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var lobby structs.GameQueue
+
+		err = rows.Scan(&lobby.LobbyId, &lobby.LobbyUser)
+		if err != nil {
+			helpers.CheckErr("GetLobbies Next error: ", err)
+			continue
+		}
+		lobbies = append(lobbies, lobby)
+	}
+
+	if err = rows.Err(); err != nil {
+		helpers.CheckErr("GetQueue", err)
+	}
+	return lobbies
+}

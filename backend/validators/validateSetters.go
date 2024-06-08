@@ -100,3 +100,7 @@ func ValidateSetNewFollower(followSender, followReciever, userResponse string) {
 func ValidateUnfollowUser(sessionId, unFollowId string) {
 	database.Unfollow(sessionId, unFollowId)
 }
+
+func ValidateJoinQueue(userId string) bool{
+	return database.JoinQueue(userId)
+}

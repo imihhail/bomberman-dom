@@ -1,57 +1,57 @@
 console.log('Conneted!');
-// import './bobermanMain.css';
+import './bobermanMain.css';
 
-export const initBomberman = (playerLocation, setPlayerLocation) => {
+export const initBomberman = (players) => {
   const root = document.querySelector('#bomberman-root');
   root.appendChild(generateGrid());
   const getAllTiles = document.querySelectorAll('.square');
-  let playerPos = playerLocation;
-  getAllTiles[playerPos].classList.add('player1');
-  window.addEventListener('keydown', (event) => {
-    switch (event.code) {
-      case 'ArrowUp':
-        if (playerPos > 60) {
-          getAllTiles[playerPos].classList.remove('player1');
-          playerPos = playerPos - 30;
-          setPlayerLocation(playerPos);
-          getAllTiles[playerPos].classList.add('player1');
-        }
-        break;
-      case 'ArrowDown':
-        if (playerPos < 539) {
-          getAllTiles[playerPos].classList.remove('player1');
-          playerPos = playerPos + 30;
-          setPlayerLocation(playerPos);
-          getAllTiles[playerPos].classList.add('player1');
-        }
-        break;
-      case 'ArrowLeft':
-        if (playerPos % 30 > 1) {
-          getAllTiles[playerPos].classList.remove('player1');
-          playerPos = playerPos - 1;
-          setPlayerLocation(playerPos);
-          getAllTiles[playerPos].classList.add('player1');
-        }
-        break;
-      case 'ArrowRight':
-        if (playerPos % 30 < 28) {
-          getAllTiles[playerPos].classList.remove('player1');
-          playerPos = playerPos + 1;
-          setPlayerLocation(playerPos);
-          getAllTiles[playerPos].classList.add('player1');
-        }
-        break;
-      case 'Space':
-        // bombCoordinate(playerPos, 2);
-        setTimeout(() => {
-          // removeBomb(playerPos, 1);
-        });
-        break;
-    }
-  });
+  getAllTiles[players.player1].classList.add('player1');
+  getAllTiles[players.player2].classList.add('player2');
+  getAllTiles[players.player3].classList.add('player3');
+  getAllTiles[players.player4].classList.add('player4');
+  //   window.addEventListener('keydown', (event) => {
+  //     switch (event.code) {
+  //       case 'ArrowUp':
+  //         if (playerPos > 60) {
+  //           getAllTiles[playerPos].classList.remove('player1');
+  //           playerPos = playerPos - 30;
+  //           // setPlayerLocation(playerPos);
+  //           getAllTiles[playerPos].classList.add('player1');
+  //         }
+  //         break;
+  //       case 'ArrowDown':
+  //         if (playerPos < 539) {
+  //           getAllTiles[playerPos].classList.remove('player1');
+  //           playerPos = playerPos + 30;
+  //           // setPlayerLocation(playerPos);
+  //           getAllTiles[playerPos].classList.add('player1');
+  //         }
+  //         break;
+  //       case 'ArrowLeft':
+  //         if (playerPos % 30 > 1) {
+  //           getAllTiles[playerPos].classList.remove('player1');
+  //           playerPos = playerPos - 1;
+  //           // setPlayerLocation(playerPos);
+  //           getAllTiles[playerPos].classList.add('player1');
+  //         }
+  //         break;
+  //       case 'ArrowRight':
+  //         if (playerPos % 30 < 28) {
+  //           getAllTiles[playerPos].classList.remove('player1');
+  //           playerPos = playerPos + 1;
+  //           // setPlayerLocation(playerPos);
+  //           getAllTiles[playerPos].classList.add('player1');
+  //         }
+  //         break;
+  //       case 'Space':
+  //         bombCoordinate(playerPos, 2);
+  //         setTimeout(() => {
+  //           // removeBomb(playerPos, 1);
+  //         });
+  //         break;
+  //     }
+  //   });
 };
-
-
 
 const generateGrid = () => {
   const gameGrid = document.createElement('div');
@@ -120,4 +120,4 @@ const bombCoordinate = (coord, bombLevel) => {
   );
 };
 
-initBomberman(31);
+// initBomberman(31);

@@ -181,3 +181,7 @@ func ValidateFollowers(userId string) []structs.FollowRequests {
 func ValidateFollowing(userId string) []structs.FollowRequests {
 	return database.GetFollowing(userId)
 }
+
+func ValidateQueue() []structs.GameQueue{
+	return database.GetQueue()
+}

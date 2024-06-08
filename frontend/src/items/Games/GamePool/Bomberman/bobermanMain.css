@@ -426,4 +426,22 @@
   height: 2rem;
   width: 2rem;
   content: url("./assets/map/indestructibleWall.png");
+}
+
+.player2 {
+  height: 2rem;
+  width: 2rem;
+  content: url("./assets/map/indestructibleWall.png");
+}
+
+.player3 {
+  height: 2rem;
+  width: 2rem;
+  content: url("./assets/map/indestructibleWall.png");
+}
+
+.player4 {
+  height: 2rem;
+  width: 2rem;
+  content: url("./assets/map/indestructibleWall.png");
 }/*# sourceMappingURL=bobermanMain.css.map */

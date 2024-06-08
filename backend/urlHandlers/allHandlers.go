@@ -31,6 +31,8 @@ func StartHandlers(r *http.ServeMux) {
 	r.HandleFunc("/grouppostcomments", HandleGroupPostComments)
 	r.HandleFunc("/newgroupcomment", HandleGetGroupPostComments)
 	r.HandleFunc("/groupmessages", HandleGetGroupMessages)
+	r.HandleFunc("/activequeue", HandleActiveQueue)
+	r.HandleFunc("/joingamequeue", HandleJoinGameQueue)
 	r.Handle("/avatar/", http.StripPrefix("/avatar/", http.FileServer(http.Dir("./database/images"))))
 }
 
