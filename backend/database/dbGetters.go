@@ -976,7 +976,7 @@ func GetQueue() []structs.GameQueue {
 	command := "SELECT gamequeue.id, users.email FROM gamequeue INNER JOIN users ON gamequeue.user_fk_users = users.id"
 	rows, err := db.Query(command)
 	if err != nil {
-		helpers.CheckErr("GetLobbies selecting error: ", err)
+		helpers.CheckErr("GetQueue selecting error: ", err)
 		return nil
 	}
 	defer rows.Close()
@@ -986,7 +986,7 @@ func GetQueue() []structs.GameQueue {
 
 		err = rows.Scan(&lobby.LobbyId, &lobby.LobbyUser)
 		if err != nil {
-			helpers.CheckErr("GetLobbies Next error: ", err)
+			helpers.CheckErr("GetQueue Next error: ", err)
 			continue
 		}
 		lobbies = append(lobbies, lobby)

@@ -74,7 +74,8 @@ const Container = () => {
       const messageData = JSON.parse(lastMessage.data);
       if (
         messageData.type != 'onlineStatus' &&
-        messageData.type != 'groupMessage'
+        messageData.type != 'groupMessage' &&
+        messageData.type != 'refreshQueue'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {
