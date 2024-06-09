@@ -261,15 +261,17 @@ func handleMessages() {
 			}
 		case "gameLogic":
 			for i := 0; i < len(msg.GameParty); i++ {
-				fmt.Println("SENDING MESSAGE TO USERID: ", msg.GameParty[i])
-				clientConnections[msg.GameParty[i]].mu.Lock()
-				err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
-				if err != nil {
-					fmt.Println("Error writing gameLogic to client:", err)
+				if clientConnections[msg.GameParty[i]] != nil {
+					fmt.Println("SENDING MESSAGE TO USERID: ", msg.GameParty[i])
+					clientConnections[msg.GameParty[i]].mu.Lock()
+					err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
+					if err != nil {
+						fmt.Println("Error writing gameLogic to client:", err)
+						clientConnections[msg.GameParty[i]].mu.Unlock()
+						return
+					}
 					clientConnections[msg.GameParty[i]].mu.Unlock()
-					return
 				}
-				clientConnections[msg.GameParty[i]].mu.Unlock()
 			}
 
 		case "onlineStatus":

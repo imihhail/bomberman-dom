@@ -1,4 +1,5 @@
 .bombermanLobby {
+  position: relative;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -109,4 +110,11 @@
 .joinQueue:hover {
   transition: 0.2s;
   border: 2px solid white;
+}
+
+.gameCounter{
+  color: white;
+  font-size: 3rem;
+  position: absolute;
+  top: 10%;
 }

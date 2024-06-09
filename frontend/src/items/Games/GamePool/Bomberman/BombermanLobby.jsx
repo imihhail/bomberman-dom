@@ -11,6 +11,7 @@ const BombermanLobby = () => {
   const [activeGame, setActiveGame] = useState(false);
   const [gameQueue, setGameQueue] = useState([]);
   const [userEmail, setUserEmail] = useState([]);
+  const [gameCounter, setGameCounter] = useState(20);
 
   const handleGameQUeue = () => {
     GetGameQueue().then((data) => {
@@ -29,12 +30,24 @@ const BombermanLobby = () => {
   useEffect(() => {
     if (lastMessage) {
       const messageData = JSON.parse(lastMessage.data);
-      console.log('NEW MESSAGE', messageData);
       if (messageData.type == 'refreshQueue') {
         handleGameQUeue();
+      } else if (messageData.type == 'gameLogic') {
+        if (messageData.gameStatus == 'Start') {
+          counter(20);
+        }
       }
     }
   }, [lastMessage]);
+
+  const counter = (num) => {
+    let timer = num;
+    setTimeout(() => {
+      setGameCounter(timer);
+      console.log(timer);
+      timer = timer - 1;
+    }, 1000);
+  };
 
   const handleJoinLobby = () => {
     if (!gameQueue?.map((names) => names.LobbyUser).includes(userEmail)) {
@@ -60,6 +73,7 @@ const BombermanLobby = () => {
     <InitBomberman setActiveGame={setActiveGame} />
   ) : (
     <div className={styles.bombermanLobby}>
+      <div className={styles.gameCounter}>{gameCounter}</div>
       {gameQueue?.map((eachUser, key) => (
         <p className={styles.lobbyListName} key={key}>
           <span className={styles.lobbyJoin}>Player {key + 1}</span>
