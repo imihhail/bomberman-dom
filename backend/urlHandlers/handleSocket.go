@@ -55,6 +55,8 @@ type SocketMessage struct {
 	GroupId           string   `json:"GroupId"`
 	GroupTitle        string   `json:"GroupTitle"`
 	Coords            string   `json:"coords"`
+	GameStatus        string   `json:"gamestatus"`
+	GameParty         []string `json:"gameParty"`
 }
 
 type Client struct {
@@ -109,7 +111,6 @@ func periodicUserPresenceCheck() {
 func handleMessages() {
 	for {
 		msg := <-broadcast
-
 		switch msg.Type {
 		case "message":
 			// set new message into db
@@ -251,26 +252,24 @@ func handleMessages() {
 					clientConnections[client].mu.Lock()
 					err := clientConnections[client].connection.WriteJSON(msg)
 					if err != nil {
-						fmt.Println("Error writing gruopinvatation to client:", err)
+						fmt.Println("Error writing refreshQueue to client:", err)
 						clientConnections[client].mu.Unlock()
 						return
 					}
 					clientConnections[client].mu.Unlock()
 				}
 			}
-
-		case "challenge":
-			for client := range clientConnections {
-				if msg.To == clientConnections[client].connOwnerId {
-					clientConnections[client].mu.Lock()
-					err := clientConnections[client].connection.WriteJSON(msg)
-					if err != nil {
-						fmt.Println("Error writing gruopinvatation to client:", err)
-						clientConnections[client].mu.Unlock()
-						return
-					}
-					clientConnections[client].mu.Unlock()
+		case "gameLogic":
+			for i := 0; i < len(msg.GameParty); i++ {
+				fmt.Println("SENDING MESSAGE TO USERID: ", msg.GameParty[i])
+				clientConnections[msg.GameParty[i]].mu.Lock()
+				err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
+				if err != nil {
+					fmt.Println("Error writing gameLogic to client:", err)
+					clientConnections[msg.GameParty[i]].mu.Unlock()
+					return
 				}
+				clientConnections[msg.GameParty[i]].mu.Unlock()
 			}
 
 		case "onlineStatus":
@@ -356,7 +355,6 @@ func HandleSocket(w http.ResponseWriter, r *http.Request) {
 		msg.From_HandleSocket = userId
 
 		err := conn.ReadJSON(&msg)
-		fmt.Println(msg)
 		if err != nil {
 			fmt.Println("Error in receiving message:", err)
 			client.mu.Lock()

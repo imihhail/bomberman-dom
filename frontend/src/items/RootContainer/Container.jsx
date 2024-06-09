@@ -75,7 +75,8 @@ const Container = () => {
       if (
         messageData.type != 'onlineStatus' &&
         messageData.type != 'groupMessage' &&
-        messageData.type != 'refreshQueue'
+        messageData.type != 'refreshQueue' &&
+        messageData.type != 'gameLogic'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {

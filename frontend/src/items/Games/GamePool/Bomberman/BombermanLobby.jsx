@@ -11,7 +11,6 @@ const BombermanLobby = () => {
   const [activeGame, setActiveGame] = useState(false);
   const [gameQueue, setGameQueue] = useState([]);
   const [userEmail, setUserEmail] = useState([]);
-  const [userInQueue, setUserInQueue] = useState(false);
 
   const handleGameQUeue = () => {
     GetGameQueue().then((data) => {
