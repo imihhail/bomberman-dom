@@ -57,6 +57,7 @@ type SocketMessage struct {
 	Coords            string   `json:"coords"`
 	GameStatus        string   `json:"gamestatus"`
 	GameParty         []string `json:"gameParty"`
+	CountDown         int      `json:"countDown"`
 }
 
 type Client struct {
@@ -259,18 +260,32 @@ func handleMessages() {
 					clientConnections[client].mu.Unlock()
 				}
 			}
-		case "gameLogic":
-			for i := 0; i < len(msg.GameParty); i++ {
-				if clientConnections[msg.GameParty[i]] != nil {
-					fmt.Println("SENDING MESSAGE TO USERID: ", msg.GameParty[i])
-					clientConnections[msg.GameParty[i]].mu.Lock()
-					err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
+
+		case "countDown":
+			for client := range clientConnections {
+				if msg.FromId != clientConnections[client].connOwnerId {
+					clientConnections[client].mu.Lock()
+					err := clientConnections[client].connection.WriteJSON(msg)
 					if err != nil {
-						fmt.Println("Error writing gameLogic to client:", err)
-						clientConnections[msg.GameParty[i]].mu.Unlock()
+						fmt.Println("Error writing countDown to client:", err)
+						clientConnections[client].mu.Unlock()
 						return
 					}
-					clientConnections[msg.GameParty[i]].mu.Unlock()
+					clientConnections[client].mu.Unlock()
+				}
+			}
+
+		case "gameLogic":
+			for client := range clientConnections {
+				if msg.FromId != clientConnections[client].connOwnerId {
+					clientConnections[client].mu.Lock()
+					err := clientConnections[client].connection.WriteJSON(msg)
+					if err != nil {
+						fmt.Println("Error writing countDown to client:", err)
+						clientConnections[client].mu.Unlock()
+						return
+					}
+					clientConnections[client].mu.Unlock()
 				}
 			}
 
