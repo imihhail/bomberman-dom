@@ -76,14 +76,15 @@ const Container = () => {
         messageData.type != 'onlineStatus' &&
         messageData.type != 'groupMessage' &&
         messageData.type != 'refreshQueue' &&
-        messageData.type != 'gameLogic'
+        messageData.type != 'gameLogic' &&
+        messageData.type != 'countDown'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {
-            handleNotification(`New ${messageData.type}`);
+            handleNotification(`New ${messageData.type}`)
           }
         } else {
-          handleNotification(`New ${messageData.type}`);
+          handleNotification(`New ${messageData.type}`)
         }
         if (messageData.type != 'message') {
           setGlow(true);

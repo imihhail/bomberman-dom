@@ -10,7 +10,7 @@
   text-align: center;
   top: 3rem;
   /* transition: 3s; */
-  animation: new-notification 5s infinite;
+  animation: new-notification 1s infinite;
 }
 
 @keyframes new-notification {

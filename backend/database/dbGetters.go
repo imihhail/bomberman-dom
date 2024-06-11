@@ -973,7 +973,7 @@ func GetQueue() []structs.GameQueue {
 
 	var lobbies []structs.GameQueue
 
-	command := "SELECT gamequeue.id, users.email FROM gamequeue INNER JOIN users ON gamequeue.user_fk_users = users.id"
+	command := "SELECT gamequeue.id, users.email, users.id FROM gamequeue INNER JOIN users ON gamequeue.user_fk_users = users.id"
 	rows, err := db.Query(command)
 	if err != nil {
 		helpers.CheckErr("GetQueue selecting error: ", err)
@@ -984,7 +984,7 @@ func GetQueue() []structs.GameQueue {
 	for rows.Next() {
 		var lobby structs.GameQueue
 
-		err = rows.Scan(&lobby.LobbyId, &lobby.LobbyUser)
+		err = rows.Scan(&lobby.LobbyId, &lobby.LobbyUser, &lobby.UserId)
 		if err != nil {
 			helpers.CheckErr("GetQueue Next error: ", err)
 			continue

@@ -16,7 +16,8 @@ func CorsMiddleware(next http.Handler) http.Handler {
 			"ws://www.devpipe.ee",
 			"ws://devpipe.ee",
 			"https://www.devpipe.ee",
-			"https://devpipe.ee":
+			"https://devpipe.ee",
+			"http://192.168.0.11:3000/":
 			(w).Header().Set("Access-Control-Allow-Origin", origin)
 		}
 		(w).Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")

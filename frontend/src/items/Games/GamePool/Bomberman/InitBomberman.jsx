@@ -4,7 +4,7 @@ import { GetStatus } from '../../../../connections/statusConnection';
 
 import { initBomberman } from './main';
 
-const InitBomberman = () => {
+const InitBomberman = (grid) => {
   const [player1Location, setPlayer1Location] = useState(31);
   const [player2Location, setPlayer2Location] = useState(58);
   const [player3Location, setPlayer3Location] = useState(541);
@@ -22,7 +22,7 @@ const InitBomberman = () => {
       if (data?.login !== 'success') {
         logout();
       } else {
-        initBomberman(players);
+        initBomberman(players, grid);
         modal(false);
       }
     });
