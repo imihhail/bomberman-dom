@@ -5,6 +5,7 @@ import (
 	"backend/validators"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"sync"
 	"time"
@@ -30,12 +31,11 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 		queue := validators.ValidateQueue()
 		callback["gameQueue"] = queue
 		var gameParty []string
-
 		for i := 0; i < len(queue); i++ {
-			gameParty = append(gameParty, queue[i].LobbyId)
+			gameParty = append(gameParty, queue[i].UserId)
 		}
 
-		if len(queue) >= 1 {
+		if len(queue) >= 0 {
 			var msg SocketMessage
 			msg.Type = "gameLogic"
 			msg.GameStatus = "Start"
@@ -47,7 +47,7 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 			lobbyFull = true
 		}
 
-		if len(queue) == 2 {
+		if len(queue) >= 2 {
 			countdownMutex.Lock()
 			if !isCountdownRunning {
 				isCountdownRunning = true
@@ -65,7 +65,8 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 							var msg SocketMessage
 							msg.Type = "gameLogic"
 							msg.GameStatus = "Prepare"
-							msg.GameParty = gameParty
+							msg.GameParty = updateGameParty()
+							msg.Grid = generateGrid()
 							broadcast <- msg
 						}
 
@@ -80,7 +81,8 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 							var msg SocketMessage
 							msg.Type = "gameLogic"
 							msg.GameStatus = "Prepare"
-							msg.GameParty = gameParty
+							msg.GameParty = updateGameParty()
+							msg.Grid = generateGrid()
 							broadcast <- msg
 							gameStarted = true
 						}
@@ -88,15 +90,51 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 					countdownMutex.Lock()
 					isCountdownRunning = false
 					countdownMutex.Unlock()
-					fmt.Println("FIGHT!!!")
+
+					msg.Type = "gameLogic"
+					msg.GameStatus = "Fight"
+					msg.GameParty = updateGameParty()
+					broadcast <- msg
+					gameStarted = true
+					fmt.Println("GAME STARTED!!!")
 				}()
 			} else {
 				countdownMutex.Unlock()
 			}
 		}
-
 		writeData, err := json.Marshal(callback)
 		helpers.CheckErr("HandleStatus", err)
 		w.Write(writeData)
 	}
+}
+
+func updateGameParty() []string {
+	queue := validators.ValidateQueue()
+    var gameParty []string
+    for i := 0; i < len(queue); i++ {
+        gameParty = append(gameParty, queue[i].UserId)
+    }
+    return gameParty
+}
+
+func rndNr() int{
+	source := rand.NewSource(time.Now().UnixNano())
+	rng := rand.New(source)
+	randomNumber := rng.Intn(100)
+	return randomNumber
+}
+
+func generateGrid() [31][21]int {
+	 var grid [31][21]int
+
+	 for y := 0; y < 21; y++ {
+        for x := 0; x < 31; x++ {
+			if x == 0 || y == 0 || x == 30 || y == 20 || (y % 2 == 0 && x % 2 == 0){
+				grid[x][y] = 1
+			}
+            fmt.Print(grid[x][y], " ")
+        }
+        fmt.Println()
+    }
+	return grid
 }

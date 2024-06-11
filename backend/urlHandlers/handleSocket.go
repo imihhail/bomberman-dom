@@ -37,27 +37,28 @@ var clientConnections = make(map[string]*Client)
 var broadcast = make(chan SocketMessage)
 
 type SocketMessage struct {
-	Type              string   `json:"type"`
-	Status            string   `json:"status"`
-	FromId            string   `json:"fromuserid"`
-	From_HandleSocket string   `json:"fromuserId"` //experimental
-	Message           string   `json:"message"`
-	Description       string   `json:"description"`
-	To                string   `json:"touser"`
-	Participation     string   `json:"participation"`
-	ConnectedClients  []string `json:"connectedclients"`
-	NotificationId    string   `json:"NotificationId"`
-	SenderEmail       string   `json:"SenderEmail"`
-	EventTitle        string   `json:"EventTitle"`
-	EventDescription  string   `json:"EventDescription"`
-	EventTime         string   `json:"EventTime"`
-	EventId           string   `json:"EventId"`
-	GroupId           string   `json:"GroupId"`
-	GroupTitle        string   `json:"GroupTitle"`
-	Coords            string   `json:"coords"`
-	GameStatus        string   `json:"gamestatus"`
-	GameParty         []string `json:"gameParty"`
-	CountDown         int      `json:"countDown"`
+	Type              string      `json:"type"`
+	Status            string      `json:"status"`
+	FromId            string      `json:"fromuserid"`
+	From_HandleSocket string      `json:"fromuserId"` //experimental
+	Message           string      `json:"message"`
+	Description       string      `json:"description"`
+	To                string      `json:"touser"`
+	Participation     string      `json:"participation"`
+	ConnectedClients  []string    `json:"connectedclients"`
+	NotificationId    string      `json:"NotificationId"`
+	SenderEmail       string      `json:"SenderEmail"`
+	EventTitle        string      `json:"EventTitle"`
+	EventDescription  string      `json:"EventDescription"`
+	EventTime         string      `json:"EventTime"`
+	EventId           string      `json:"EventId"`
+	GroupId           string      `json:"GroupId"`
+	GroupTitle        string      `json:"GroupTitle"`
+	Coords            string      `json:"coords"`
+	GameStatus        string      `json:"gamestatus"`
+	GameParty         []string    `json:"gameParty"`
+	CountDown         int         `json:"countDown"`
+	Grid              [31][21]int `json:"grid"`
 }
 
 type Client struct {
@@ -276,16 +277,17 @@ func handleMessages() {
 			}
 
 		case "gameLogic":
-			for client := range clientConnections {
-				if msg.FromId != clientConnections[client].connOwnerId {
-					clientConnections[client].mu.Lock()
-					err := clientConnections[client].connection.WriteJSON(msg)
+			for i := 0; i < len(msg.GameParty); i++ {
+				if clientConnections[msg.GameParty[i]] != nil {
+					fmt.Println("SENDING MESSAGE TO USERID: ", msg.GameParty[i])
+					clientConnections[msg.GameParty[i]].mu.Lock()
+					err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
 					if err != nil {
-						fmt.Println("Error writing countDown to client:", err)
-						clientConnections[client].mu.Unlock()
+						fmt.Println("Error writing gameLogic to client:", err)
+						clientConnections[msg.GameParty[i]].mu.Unlock()
 						return
 					}
-					clientConnections[client].mu.Unlock()
+					clientConnections[msg.GameParty[i]].mu.Unlock()
 				}
 			}
 

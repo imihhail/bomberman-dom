@@ -117,4 +117,13 @@
   font-size: 3rem;
   position: absolute;
   top: 10%;
+  margin-top: 50px;
+}
+
+.gameInfo{
+  color: rgb(0, 0, 0);
+  font-size: 3rem;
+  position: absolute;
+  top: 4%;
+  font-weight: bolder;
 }
