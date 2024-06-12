@@ -437,17 +437,17 @@
 .player2 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/map/indestructibleWall.png");
+  content: url("./assets/bomb/bomb2.png");
 }
 
 .player3 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/map/indestructibleWall.png");
+  content: url("./assets/bomb/bomb3.png");
 }
 
 .player4 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/map/indestructibleWall.png");
+  content: url("./assets/explosion/stage1/innerExplosion.png");
 }/*# sourceMappingURL=bobermanMain.css.map */
