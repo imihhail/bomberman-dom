@@ -13,7 +13,7 @@ const BombermanLobby = () => {
   const [userEmail, setUserEmail] = useState([]);
   const [lobbyInfo, setLobbyInfo] = useState('');
   const [timer, setTimer] = useState('');
-  const [grid, setGrid] = useState([[]]);
+  const [grid, setGrid] = useState([]);
   const [lobbySize, setLobbySize] = useState(0);
 
 
@@ -84,7 +84,7 @@ const BombermanLobby = () => {
   }, [lastMessage]);  
   
    return activeGame ? (
-    <InitBomberman setActiveGame={setActiveGame} grid={grid}/>
+    <InitBomberman  grid={grid}/>
   ) : (
     <div className={styles.bombermanLobby}>
       <div className={styles.gameCounter}>{timer}</div>

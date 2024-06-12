@@ -8,8 +8,8 @@
 }
 
 .bomb {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-middle 2s linear infinite;
   background-color: #107830;
 }
@@ -65,8 +65,8 @@
   }
 }
 .bomb-right-edge {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-right-edge 2s linear infinite;
   background-color: #107830;
 }
@@ -122,8 +122,8 @@
   }
 }
 .bomb-left-edge {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-left-edge 2s linear infinite;
   background-color: #107830;
 }
@@ -179,8 +179,8 @@
   }
 }
 .bomb-top-edge {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-top-edge 2s linear infinite;
   background-color: #107830;
 }
@@ -236,8 +236,8 @@
   }
 }
 .bomb-bottom-edge {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-bottom-edge 2s linear infinite;
   background-color: #107830;
 }
@@ -293,8 +293,8 @@
   }
 }
 .bomb-pipe {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-pipe 2s linear infinite;
   background-color: #107830;
 }
@@ -350,8 +350,8 @@
   }
 }
 .bomb-line {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   animation: explosion-line 2s linear infinite;
   background-color: #107830;
 }
@@ -407,8 +407,8 @@
   }
 }
 .walk-tile {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   content: url("./assets/map/walkTile.png");
 }
 
@@ -417,31 +417,37 @@
 }
 
 .indestructible-wall {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   content: url("./assets/map/indestructibleWall.png");
+}
+
+.destroyable-wall {
+  height: 3rem;
+  width: 3rem;
+  content: url("./assets/map/destroyableWall.png");
 }
 
 .player1 {
-  height: 2rem;
-  width: 2rem;
-  content: url("./assets/map/indestructibleWall.png");
+  height: 3rem;
+  width: 3rem;
+  content: url("./assets/bomb/bomb1.png");
 }
 
 .player2 {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   content: url("./assets/map/indestructibleWall.png");
 }
 
 .player3 {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   content: url("./assets/map/indestructibleWall.png");
 }
 
 .player4 {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   content: url("./assets/map/indestructibleWall.png");
 }/*# sourceMappingURL=bobermanMain.css.map */

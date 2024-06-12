@@ -4,12 +4,12 @@ import './bobermanMain.css';
 export const initBomberman = (players, grid) => {
   console.log("grid: ", grid);
   const root = document.querySelector('#bomberman-root');
-  root.appendChild(generateGrid());
+  root.appendChild(generateGrid(grid.grid));
   const getAllTiles = document.querySelectorAll('.square');
   getAllTiles[players.player1].classList.add('player1');
-  getAllTiles[players.player2].classList.add('player2');
-  getAllTiles[players.player3].classList.add('player3');
-  getAllTiles[players.player4].classList.add('player4');
+  // getAllTiles[players.player2].classList.add('player2');
+  // getAllTiles[players.player3].classList.add('player3');
+  // getAllTiles[players.player4].classList.add('player4');
   let playerPos = 32
     window.addEventListener('keydown', (event) => {
       switch (event.code) {
@@ -59,17 +59,19 @@ export const initBomberman = (players, grid) => {
     });
 };
 
-const generateGrid = () => {
+const generateGrid = (grid) => {
   const gameGrid = document.createElement('div');
-  for (let i = 0; i < 21; i++) {
+  for (let y = 0; y < 13; y++) {
     const row = document.createElement('div');
     row.classList.add('map-row');
-    for (let j = 0; j < 31; j++) {
+    for (let x = 0; x < 15; x++) {
       const column = document.createElement('div');
       column.classList.add('square');
-      if (i == 0 || i == 20 || j == 0 || j == 30 || (i % 2 == 0 && j % 2 == 0)) {
+      if (grid[x][y].WallType == 9 ) {
         column.classList.add('indestructible-wall');
         column.setAttribute('indestructible', 'indestructible')
+      } else if (grid[x][y].WallType == 1) {
+        column.classList.add('destroyable-wall');
       } else {
         column.classList.add('walk-tile');
       }
@@ -79,6 +81,7 @@ const generateGrid = () => {
   }
   return gameGrid;
 };
+
 
 const bombCoordinate = (coord, bombLevel) => {
   const getAllTiles = document.querySelectorAll('.square')

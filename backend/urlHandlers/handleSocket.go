@@ -37,28 +37,28 @@ var clientConnections = make(map[string]*Client)
 var broadcast = make(chan SocketMessage)
 
 type SocketMessage struct {
-	Type              string      `json:"type"`
-	Status            string      `json:"status"`
-	FromId            string      `json:"fromuserid"`
-	From_HandleSocket string      `json:"fromuserId"` //experimental
-	Message           string      `json:"message"`
-	Description       string      `json:"description"`
-	To                string      `json:"touser"`
-	Participation     string      `json:"participation"`
-	ConnectedClients  []string    `json:"connectedclients"`
-	NotificationId    string      `json:"NotificationId"`
-	SenderEmail       string      `json:"SenderEmail"`
-	EventTitle        string      `json:"EventTitle"`
-	EventDescription  string      `json:"EventDescription"`
-	EventTime         string      `json:"EventTime"`
-	EventId           string      `json:"EventId"`
-	GroupId           string      `json:"GroupId"`
-	GroupTitle        string      `json:"GroupTitle"`
-	Coords            string      `json:"coords"`
-	GameStatus        string      `json:"gamestatus"`
-	GameParty         []string    `json:"gameParty"`
-	CountDown         int         `json:"countDown"`
-	Grid              [31][21]int `json:"grid"`
+	Type              string       `json:"type"`
+	Status            string       `json:"status"`
+	FromId            string       `json:"fromuserid"`
+	From_HandleSocket string       `json:"fromuserId"` //experimental
+	Message           string       `json:"message"`
+	Description       string       `json:"description"`
+	To                string       `json:"touser"`
+	Participation     string       `json:"participation"`
+	ConnectedClients  []string     `json:"connectedclients"`
+	NotificationId    string       `json:"NotificationId"`
+	SenderEmail       string       `json:"SenderEmail"`
+	EventTitle        string       `json:"EventTitle"`
+	EventDescription  string       `json:"EventDescription"`
+	EventTime         string       `json:"EventTime"`
+	EventId           string       `json:"EventId"`
+	GroupId           string       `json:"GroupId"`
+	GroupTitle        string       `json:"GroupTitle"`
+	Coords            string       `json:"coords"`
+	GameStatus        string       `json:"gamestatus"`
+	GameParty         []string     `json:"gameParty"`
+	CountDown         int          `json:"countDown"`
+	Grid              [15][13]Cord `json:"grid"`
 }
 
 type Client struct {
