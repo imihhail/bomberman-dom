@@ -14,11 +14,13 @@ const BombermanLobby = () => {
   const [lobbyInfo, setLobbyInfo] = useState('');
   const [timer, setTimer] = useState('');
   const [grid, setGrid] = useState([]);
+  const [currentUser, setCurrentUser] = useState('');
   const [lobbySize, setLobbySize] = useState(0);
 
 
   const handleGameQUeue = () => {
     GetGameQueue().then((data) => {
+      setCurrentUser(data.userid)
       if (data?.login !== 'success') {
         logout();
       } else {
@@ -84,7 +86,7 @@ const BombermanLobby = () => {
   }, [lastMessage]);  
   
    return activeGame ? (
-    <InitBomberman  grid={grid}/>
+    <InitBomberman grid={grid} currentUser={currentUser} />
   ) : (
     <div className={styles.bombermanLobby}>
       <div className={styles.gameCounter}>{timer}</div>

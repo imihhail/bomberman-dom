@@ -1,54 +1,54 @@
 console.log('Conneted!');
 import './bobermanMain.css';
 
-export const initBomberman = (players, grid) => {
+export const initBomberman = (players, grid, currentUser) => {
   const root = document.querySelector('#bomberman-root');
-  root.appendChild(generateGrid(grid.grid));
+  root.appendChild(generateGrid(grid));
 
-
-  console.log(players);
   const getAllTiles = document.querySelectorAll('.square');
   getAllTiles[players.player1].classList.add('player1');
   getAllTiles[players.player2].classList.add('player2');
   getAllTiles[players.player3].classList.add('player3');
   getAllTiles[players.player4].classList.add('player4');
-  let playerPos = 16
+  
+  let playerPos = players[`player${currentUser}`];
+
     window.addEventListener('keydown', (event) => {
       switch (event.code) {
         case 'ArrowUp':
           let newPositionUp = getAllTiles[playerPos - 15]
           if (!newPositionUp.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove('player1');
+            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
             playerPos = playerPos - 15;
            // setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add('player1');
+            getAllTiles[playerPos].classList.add(`player${currentUser}`);
           }
         break;
       case 'ArrowDown':
           let newPositionDown = getAllTiles[playerPos + 15]
           if (!newPositionDown.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove('player1');
+            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
             playerPos = playerPos + 15;
             // setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add('player1');
+            getAllTiles[playerPos].classList.add(`player${currentUser}`);
           }
         break;
       case 'ArrowLeft':
           let newPositionLeft = getAllTiles[playerPos - 1]
           if (!newPositionLeft.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove('player1');
+            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
             playerPos = playerPos - 1;
           //  setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add('player1');
+            getAllTiles[playerPos].classList.add(`player${currentUser}`);
           }
         break;
       case 'ArrowRight':
           let newPositionRight = getAllTiles[playerPos + 1]
           if (!newPositionRight.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove('player1');
+            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
             playerPos = playerPos + 1;
             // setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add('player1');
+            getAllTiles[playerPos].classList.add(`player${currentUser}`);
           }
         break;
         case 'Space':
