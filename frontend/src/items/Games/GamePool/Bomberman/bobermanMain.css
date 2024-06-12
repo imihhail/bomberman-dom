@@ -431,7 +431,7 @@
 .player1 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/bomb/bomb1.png");
+  content: url("./assets/characters/frontStanding.png");
 }
 
 .player2 {
