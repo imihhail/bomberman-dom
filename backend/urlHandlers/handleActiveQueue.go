@@ -110,31 +110,66 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 
 func updateGameParty() []string {
 	queue := validators.ValidateQueue()
-    var gameParty []string
-    for i := 0; i < len(queue); i++ {
-        gameParty = append(gameParty, queue[i].UserId)
-    }
-    return gameParty
+	var gameParty []string
+	for i := 0; i < len(queue); i++ {
+		gameParty = append(gameParty, queue[i].UserId)
+	}
+	return gameParty
 }
 
-func rndNr() int{
-	source := rand.NewSource(time.Now().UnixNano())
-	rng := rand.New(source)
-	randomNumber := rng.Intn(100)
-	return randomNumber
+func rndNr(rng *rand.Rand) int {
+	return rng.Intn(2)
 }
 
-func generateGrid() [31][21]int {
-	 var grid [31][21]int
+func rndPwrUp(rng *rand.Rand) int {
+	return rng.Intn(10)
+}
 
-	 for y := 0; y < 21; y++ {
-        for x := 0; x < 31; x++ {
-			if x == 0 || y == 0 || x == 30 || y == 20 || (y % 2 == 0 && x % 2 == 0){
-				grid[x][y] = 1
+type Cord struct {
+	WallType int
+	PowerUp  int
+}
+
+func generateGrid() [15][13]Cord {
+	var grid [15][13]Cord
+
+	var wallType int
+	var powerUp int
+
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	for y := 0; y < 13; y++ {
+		for x := 0; x < 15; x++ {
+			if x == 0 || y == 0 || x == 14 || y == 12 || (y%2 == 0 && x%2 == 0) {
+				grid[x][y] = Cord{WallType: 9, PowerUp: 0}
+			} else {
+				wallType = rndNr(rng)
+
+				if wallType == 1 {
+					powerUp = rndPwrUp(rng)
+				} else {
+					powerUp = 0
+				}
+				grid[x][y] = Cord{WallType: wallType, PowerUp: powerUp}
 			}
-            fmt.Print(grid[x][y], " ")
-        }
-        fmt.Println()
-    }
+		}
+	}
+
+	grid[1][1] = Cord{WallType: 0, PowerUp: 0}
+	grid[2][1] = Cord{WallType: 0, PowerUp: 0}
+	grid[1][2] = Cord{WallType: 0, PowerUp: 0}
+
+	grid[13][1] = Cord{WallType: 0, PowerUp: 0}
+	grid[12][1] = Cord{WallType: 0, PowerUp: 0}
+	grid[13][2] = Cord{WallType: 0, PowerUp: 0}
+
+	grid[1][11] = Cord{WallType: 0, PowerUp: 0}
+	grid[2][11] = Cord{WallType: 0, PowerUp: 0}
+	grid[1][10] = Cord{WallType: 0, PowerUp: 0}
+
+	grid[13][11] = Cord{WallType: 0, PowerUp: 0}
+	grid[12][11] = Cord{WallType: 0, PowerUp: 0}
+	grid[13][10] = Cord{WallType: 0, PowerUp: 0}
+
 	return grid
 }
