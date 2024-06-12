@@ -2,31 +2,33 @@ console.log('Conneted!');
 import './bobermanMain.css';
 
 export const initBomberman = (players, grid) => {
-  console.log("grid: ", grid);
   const root = document.querySelector('#bomberman-root');
   root.appendChild(generateGrid(grid.grid));
+
+
+  console.log(players);
   const getAllTiles = document.querySelectorAll('.square');
   getAllTiles[players.player1].classList.add('player1');
-  // getAllTiles[players.player2].classList.add('player2');
-  // getAllTiles[players.player3].classList.add('player3');
-  // getAllTiles[players.player4].classList.add('player4');
-  let playerPos = 32
+  getAllTiles[players.player2].classList.add('player2');
+  getAllTiles[players.player3].classList.add('player3');
+  getAllTiles[players.player4].classList.add('player4');
+  let playerPos = 16
     window.addEventListener('keydown', (event) => {
       switch (event.code) {
         case 'ArrowUp':
-          let newPositionUp = getAllTiles[playerPos - 31]
+          let newPositionUp = getAllTiles[playerPos - 15]
           if (!newPositionUp.hasAttribute('indestructible')) {
             getAllTiles[playerPos].classList.remove('player1');
-            playerPos = playerPos - 31;
+            playerPos = playerPos - 15;
            // setPlayerLocation(playerPos);
             getAllTiles[playerPos].classList.add('player1');
           }
         break;
       case 'ArrowDown':
-          let newPositionDown = getAllTiles[playerPos + 31]
+          let newPositionDown = getAllTiles[playerPos + 15]
           if (!newPositionDown.hasAttribute('indestructible')) {
             getAllTiles[playerPos].classList.remove('player1');
-            playerPos = playerPos + 31;
+            playerPos = playerPos + 15;
             // setPlayerLocation(playerPos);
             getAllTiles[playerPos].classList.add('player1');
           }
@@ -72,6 +74,7 @@ const generateGrid = (grid) => {
         column.setAttribute('indestructible', 'indestructible')
       } else if (grid[x][y].WallType == 1) {
         column.classList.add('destroyable-wall');
+        column.setAttribute('indestructible', 'indestructible')
       } else {
         column.classList.add('walk-tile');
       }
@@ -92,7 +95,7 @@ const bombCoordinate = (coord, bombLevel) => {
   // draw line from middle to edge
   let topWallBlock = false
   for (let i = 2; i <= bombLevel; i++) {
-    var tile = getAllTiles[coordCalculation - 31 * (i-1)]
+    var tile = getAllTiles[coordCalculation - 15 * (i-1)]
     tile && !tile.hasAttribute('indestructible') && tile.classList.add('bomb-pipe')
     if (tile.hasAttribute('indestructible')) {
       topWallBlock = true
@@ -102,7 +105,7 @@ const bombCoordinate = (coord, bombLevel) => {
 
   // draw top bomb edge
   if (topWallBlock == false) {
-    var tile = getAllTiles[coordCalculation - bombLevel * 31]
+    var tile = getAllTiles[coordCalculation - bombLevel * 15]
     tile && !tile.hasAttribute('indestructible') && tile.classList.add('bomb-top-edge')
   }
   
@@ -143,7 +146,7 @@ const bombCoordinate = (coord, bombLevel) => {
   // draw line from middle to edge
   let bottomWallBlock = false
   for (let i = 2; i <= bombLevel; i++) {
-    let tile = getAllTiles[coordCalculation + 31 * (i-1)]
+    let tile = getAllTiles[coordCalculation + 15 * (i-1)]
     tile && !tile.hasAttribute('indestructible') && tile.classList.add('bomb-pipe')
     if (tile.hasAttribute('indestructible')) {
       bottomWallBlock = true
@@ -153,7 +156,7 @@ const bombCoordinate = (coord, bombLevel) => {
 
   // draw bomb bottom edge
   if (bottomWallBlock == false) {
-    var tile = getAllTiles[coordCalculation + bombLevel * 31]
+    var tile = getAllTiles[coordCalculation + bombLevel * 15]
     tile && !tile.hasAttribute('indestructible') && tile.classList.add('bomb-bottom-edge')
   }
 
