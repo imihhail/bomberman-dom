@@ -2,9 +2,10 @@ import { useEffect, useState, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { GetStatus } from '../../../../connections/statusConnection';
 
-import { initBomberman } from './main';
+import { initBomberman, generateGrid, movePlayer } from './main';
 
-const InitBomberman = ({ grid, currentUser }) => {
+const InitBomberman = ({ grid, currentUser, gameParty }) => {
+  const [playerPos, setPlayerPos] = useState(0)
   const [player1Location, setPlayer1Location] = useState(16);
   const [player2Location, setPlayer2Location] = useState(28);
   const [player3Location, setPlayer3Location] = useState(166);
@@ -22,17 +23,33 @@ const InitBomberman = ({ grid, currentUser }) => {
       if (data?.login !== 'success') {
         logout();
       } else {
-        initBomberman(players, grid, currentUser);
+        const root = document.querySelector('#bomberman-root');
+        root.appendChild(generateGrid(grid));
+        initBomberman(players, currentUser, setPlayerPos);
         modal(false);
       }
     });
   }, []);
+  
   useEffect(() => {
-    sendJsonMessage({
-      type: 'bombermanCoords',
-      coords: player1Location.toString(),
-    });
-  }, [player1Location]);
+    if (playerPos !== 0) {
+      sendJsonMessage({
+        type: 'bombermanCoords',
+        coords: playerPos.toString(),
+        gameParty: gameParty
+      });
+    }
+  }, [playerPos]);
+  
+  useEffect(() => {
+    if (lastMessage) {
+      const messageData = JSON.parse(lastMessage.data);
+      if (messageData.type == 'bombermanCoords') {
+        movePlayer(messageData.fromuserId , messageData.coords);
+      }
+    }
+  }, [lastMessage]);  
+
   return <div id='bomberman-root'></div>;
 };
 

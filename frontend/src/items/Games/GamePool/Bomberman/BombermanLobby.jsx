@@ -11,6 +11,7 @@ const BombermanLobby = () => {
   const [activeGame, setActiveGame] = useState(false);
   const [gameQueue, setGameQueue] = useState([]);
   const [userEmail, setUserEmail] = useState([]);
+  const [gameParty, setGameParty] = useState([]);
   const [lobbyInfo, setLobbyInfo] = useState('');
   const [timer, setTimer] = useState('');
   const [grid, setGrid] = useState([]);
@@ -70,6 +71,7 @@ const BombermanLobby = () => {
           setGrid(messageData.grid)           
         }
         if (messageData.gamestatus == 'Fight') {
+          setGameParty(messageData.gameParty)
           setTimeout(() => {
             setTimer('')
             setLobbyInfo("FIGHT!!!")
@@ -86,7 +88,7 @@ const BombermanLobby = () => {
   }, [lastMessage]);  
   
    return activeGame ? (
-    <InitBomberman grid={grid} currentUser={currentUser} />
+    <InitBomberman grid={grid} currentUser={currentUser} gameParty={gameParty} />
   ) : (
     <div className={styles.bombermanLobby}>
       <div className={styles.gameCounter}>{timer}</div>
