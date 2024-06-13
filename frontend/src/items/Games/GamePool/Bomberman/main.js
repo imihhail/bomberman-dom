@@ -1,67 +1,7 @@
 console.log('Conneted!');
 import './bobermanMain.css';
 
-export const initBomberman = (players, grid, currentUser) => {
-  const root = document.querySelector('#bomberman-root');
-  root.appendChild(generateGrid(grid));
-
-  const getAllTiles = document.querySelectorAll('.square');
-  getAllTiles[players.player1].classList.add('player1');
-  getAllTiles[players.player2].classList.add('player2');
-  getAllTiles[players.player3].classList.add('player3');
-  getAllTiles[players.player4].classList.add('player4');
-  
-  let playerPos = players[`player${currentUser}`];
-
-    window.addEventListener('keydown', (event) => {
-      switch (event.code) {
-        case 'ArrowUp':
-          let newPositionUp = getAllTiles[playerPos - 15]
-          if (!newPositionUp.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
-            playerPos = playerPos - 15;
-           // setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add(`player${currentUser}`);
-          }
-        break;
-      case 'ArrowDown':
-          let newPositionDown = getAllTiles[playerPos + 15]
-          if (!newPositionDown.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
-            playerPos = playerPos + 15;
-            // setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add(`player${currentUser}`);
-          }
-        break;
-      case 'ArrowLeft':
-          let newPositionLeft = getAllTiles[playerPos - 1]
-          if (!newPositionLeft.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
-            playerPos = playerPos - 1;
-          //  setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add(`player${currentUser}`);
-          }
-        break;
-      case 'ArrowRight':
-          let newPositionRight = getAllTiles[playerPos + 1]
-          if (!newPositionRight.hasAttribute('indestructible')) {
-            getAllTiles[playerPos].classList.remove(`player${currentUser}`);
-            playerPos = playerPos + 1;
-            // setPlayerLocation(playerPos);
-            getAllTiles[playerPos].classList.add(`player${currentUser}`);
-          }
-        break;
-        case 'Space':
-          bombCoordinate(playerPos, 2);
-          setTimeout(() => {
-            // removeBomb(playerPos, 1);
-          });
-          break;
-      }
-    });
-};
-
-const generateGrid = (grid) => {
+export const generateGrid = (grid) => {
   const gameGrid = document.createElement('div');
   for (let y = 0; y < 13; y++) {
     const row = document.createElement('div');
@@ -85,6 +25,62 @@ const generateGrid = (grid) => {
   return gameGrid;
 };
 
+export const movePlayer = (currentUser, newLocation) => {
+  const previousLocation = document.querySelector(`.player${currentUser}`)
+  const getAllTiles = document.querySelectorAll('.square');
+
+  previousLocation.classList.remove(`player${currentUser}`);
+  getAllTiles[newLocation].classList.add(`player${currentUser}`);
+}
+
+export const initBomberman = (players, currentUser, setPlayerPos) => {
+  const getAllTiles = document.querySelectorAll('.square');
+  getAllTiles[players.player1].classList.add('player1');
+  getAllTiles[players.player2].classList.add('player2');
+  getAllTiles[players.player3].classList.add('player3');
+  getAllTiles[players.player4].classList.add('player4');
+  
+  let playerPos = players[`player${currentUser}`];
+
+    window.addEventListener('keydown', (event) => {
+      switch (event.code) {
+        case 'ArrowUp':
+          let newPositionUp = getAllTiles[playerPos - 15]
+          if (!newPositionUp.hasAttribute('indestructible')) {
+            playerPos = playerPos - 15;
+            setPlayerPos(playerPos);
+          }
+        break;
+      case 'ArrowDown':
+          let newPositionDown = getAllTiles[playerPos + 15]
+          if (!newPositionDown.hasAttribute('indestructible')) {
+            playerPos = playerPos + 15;
+            setPlayerPos(playerPos);
+          }
+        break;
+      case 'ArrowLeft':
+          let newPositionLeft = getAllTiles[playerPos - 1]
+          if (!newPositionLeft.hasAttribute('indestructible')) {
+            playerPos = playerPos - 1;
+            setPlayerPos(playerPos);
+          }
+        break;
+      case 'ArrowRight':
+          let newPositionRight = getAllTiles[playerPos + 1]
+          if (!newPositionRight.hasAttribute('indestructible')) {
+            playerPos = playerPos + 1;
+            setPlayerPos(playerPos);
+          }
+        break;
+        case 'Space':
+          bombCoordinate(playerPos, 2);
+          setTimeout(() => {
+            // removeBomb(playerPos, 1);
+          });
+          break;
+      }
+    });
+};
 
 const bombCoordinate = (coord, bombLevel) => {
   const getAllTiles = document.querySelectorAll('.square')

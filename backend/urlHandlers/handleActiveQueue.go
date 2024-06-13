@@ -73,6 +73,7 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 						time.Sleep(1 * time.Second)
 						msg.Type = "countDown"
 						msg.CountDown = countdown
+						msg.GameParty = updateGameParty()
 						broadcast <- msg
 						countdown--
 
