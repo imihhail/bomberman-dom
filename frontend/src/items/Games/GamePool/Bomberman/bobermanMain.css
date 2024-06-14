@@ -10,11 +10,11 @@
 .bomb {
   height: 3rem;
   width: 3rem;
-  animation: explosion-middle 2s linear infinite;
+  animation: bomb-animation 1s linear  ;
   background-color: #107830;
 }
 
-@keyframes explosion-middle {
+@keyframes bomb-animation {
   0% {
     content: url("./assets/bomb/bomb1.png");
   }
@@ -33,10 +33,20 @@
   33% {
     content: url("./assets/bomb/bomb2.png");
   }
-  39.6% {
+  66% {
     content: url("./assets/bomb/bomb3.png");
   }
-  46.2% {
+}
+
+.innerExplosion {
+  height: 3rem;
+  width: 3rem;
+  animation: innerExplosion-animation 1s linear  ;
+  background-color: #107830;
+}
+
+@keyframes innerExplosion-animation {
+  0% {
     content: url("./assets/explosion/stage1/innerExplosion.png");
   }
   52.8% {
@@ -64,36 +74,16 @@
     content: url("./assets/explosion/stage1/innerExplosion.png");
   }
 }
+
 .bomb-right-edge {
   height: 3rem;
   width: 3rem;
-  animation: explosion-right-edge 2s linear infinite;
+  animation: explosion-right-edge 1s linear  ;
   background-color: #107830;
 }
 
 @keyframes explosion-right-edge {
   0% {
-    content: url("./assets/map/walkTile.png");
-  }
-  6.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  13.2% {
-    content: url("./assets/map/walkTile.png");
-  }
-  19.8% {
-    content: url("./assets/map/walkTile.png");
-  }
-  26.4% {
-    content: url("./assets/map/walkTile.png");
-  }
-  33% {
-    content: url("./assets/map/walkTile.png");
-  }
-  39.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  46.2% {
     content: url("./assets/explosion/stage1/rightEnd.png");
   }
   52.8% {
@@ -124,33 +114,12 @@
 .bomb-left-edge {
   height: 3rem;
   width: 3rem;
-  animation: explosion-left-edge 2s linear infinite;
+  animation: explosion-left-edge 1s linear  ;
   background-color: #107830;
 }
 
 @keyframes explosion-left-edge {
   0% {
-    content: url("./assets/map/walkTile.png");
-  }
-  6.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  13.2% {
-    content: url("./assets/map/walkTile.png");
-  }
-  19.8% {
-    content: url("./assets/map/walkTile.png");
-  }
-  26.4% {
-    content: url("./assets/map/walkTile.png");
-  }
-  33% {
-    content: url("./assets/map/walkTile.png");
-  }
-  39.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  46.2% {
     content: url("./assets/explosion/stage1/leftEnd.png");
   }
   52.8% {
@@ -181,33 +150,13 @@
 .bomb-top-edge {
   height: 3rem;
   width: 3rem;
-  animation: explosion-top-edge 2s linear infinite;
+  animation: explosion-top-edge 1s linear ;
   background-color: #107830;
 }
 
 @keyframes explosion-top-edge {
+
   0% {
-    content: url("./assets/map/walkTile.png");
-  }
-  6.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  13.2% {
-    content: url("./assets/map/walkTile.png");
-  }
-  19.8% {
-    content: url("./assets/map/walkTile.png");
-  }
-  26.4% {
-    content: url("./assets/map/walkTile.png");
-  }
-  33% {
-    content: url("./assets/map/walkTile.png");
-  }
-  39.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  46.2% {
     content: url("./assets/explosion/stage1/topEnd.png");
   }
   52.8% {
@@ -234,37 +183,17 @@
   99% {
     content: url("./assets/explosion/stage1/topEnd.png");
   }
+
 }
 .bomb-bottom-edge {
   height: 3rem;
   width: 3rem;
-  animation: explosion-bottom-edge 2s linear infinite;
+  animation: explosion-bottom-edge 1s linear  ;
   background-color: #107830;
 }
 
 @keyframes explosion-bottom-edge {
   0% {
-    content: url("./assets/map/walkTile.png");
-  }
-  6.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  13.2% {
-    content: url("./assets/map/walkTile.png");
-  }
-  19.8% {
-    content: url("./assets/map/walkTile.png");
-  }
-  26.4% {
-    content: url("./assets/map/walkTile.png");
-  }
-  33% {
-    content: url("./assets/map/walkTile.png");
-  }
-  39.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  46.2% {
     content: url("./assets/explosion/stage1/bottomEnd.png");
   }
   52.8% {
@@ -295,33 +224,12 @@
 .bomb-pipe {
   height: 3rem;
   width: 3rem;
-  animation: explosion-pipe 2s linear infinite;
+  animation: explosion-pipe 1s linear  ;
   background-color: #107830;
 }
 
 @keyframes explosion-pipe {
   0% {
-    content: url("./assets/map/walkTile.png");
-  }
-  6.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  13.2% {
-    content: url("./assets/map/walkTile.png");
-  }
-  19.8% {
-    content: url("./assets/map/walkTile.png");
-  }
-  26.4% {
-    content: url("./assets/map/walkTile.png");
-  }
-  33% {
-    content: url("./assets/map/walkTile.png");
-  }
-  39.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  46.2% {
     content: url("./assets/explosion/stage1/pipe.png");
   }
   52.8% {
@@ -352,33 +260,12 @@
 .bomb-line {
   height: 3rem;
   width: 3rem;
-  animation: explosion-line 2s linear infinite;
+  animation: explosion-line 1s linear  ;
   background-color: #107830;
 }
 
 @keyframes explosion-line {
   0% {
-    content: url("./assets/map/walkTile.png");
-  }
-  6.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  13.2% {
-    content: url("./assets/map/walkTile.png");
-  }
-  19.8% {
-    content: url("./assets/map/walkTile.png");
-  }
-  26.4% {
-    content: url("./assets/map/walkTile.png");
-  }
-  33% {
-    content: url("./assets/map/walkTile.png");
-  }
-  39.6% {
-    content: url("./assets/map/walkTile.png");
-  }
-  46.2% {
     content: url("./assets/explosion/stage1/line.png");
   }
   52.8% {
@@ -431,23 +318,23 @@
 .player1 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/characters/frontStanding.png");
+  content: url("./assets/characters/blue/frontS1.png");
 }
 
 .player2 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/bomb/bomb2.png");
+  content: url("./assets/characters/green/frontS1.png");
 }
 
 .player3 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/bomb/bomb3.png");
+  content: url("./assets/characters/pink/frontS1.png");
 }
 
 .player4 {
   height: 3rem;
   width: 3rem;
-  content: url("./assets/explosion/stage1/innerExplosion.png");
+  content: url("./assets/characters/red/frontS1.png");
 }/*# sourceMappingURL=bobermanMain.css.map */
