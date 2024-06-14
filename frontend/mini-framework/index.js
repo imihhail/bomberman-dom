@@ -95,6 +95,9 @@ export const StorageBooleanCount = (key) => {
 
 export const Point = (item) => {
   let target = document.querySelector(`#${item}`);
+  if (target == undefined) {
+    return document.querySelectorAll(`.${item}`);
+  }
   return target;
 };
 

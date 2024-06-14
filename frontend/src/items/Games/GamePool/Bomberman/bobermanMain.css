@@ -7,295 +7,9 @@
   height: 100%;
 }
 
-.bomb {
-  height: 3rem;
-  width: 3rem;
-  animation: bomb-animation 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes bomb-animation {
-  0% {
-    content: url("./assets/bomb/bomb1.png");
-  }
-  6.6% {
-    content: url("./assets/bomb/bomb2.png");
-  }
-  13.2% {
-    content: url("./assets/bomb/bomb3.png");
-  }
-  19.8% {
-    content: url("./assets/bomb/bomb2.png");
-  }
-  26.4% {
-    content: url("./assets/bomb/bomb1.png");
-  }
-  33% {
-    content: url("./assets/bomb/bomb2.png");
-  }
-  66% {
-    content: url("./assets/bomb/bomb3.png");
-  }
-}
-
-.innerExplosion {
-  height: 3rem;
-  width: 3rem;
-  animation: innerExplosion-animation 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes innerExplosion-animation {
-  0% {
-    content: url("./assets/explosion/stage1/innerExplosion.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/innerExplosion.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/innerExplosion.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/innerExplosion.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/innerExplosion.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/innerExplosion.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/innerExplosion.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/innerExplosion.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/innerExplosion.png");
-  }
-}
-
-.bomb-right-edge {
-  height: 3rem;
-  width: 3rem;
-  animation: explosion-right-edge 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes explosion-right-edge {
-  0% {
-    content: url("./assets/explosion/stage1/rightEnd.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/rightEnd.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/rightEnd.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/rightEnd.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/rightEnd.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/rightEnd.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/rightEnd.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/rightEnd.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/rightEnd.png");
-  }
-}
-.bomb-left-edge {
-  height: 3rem;
-  width: 3rem;
-  animation: explosion-left-edge 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes explosion-left-edge {
-  0% {
-    content: url("./assets/explosion/stage1/leftEnd.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/leftEnd.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/leftEnd.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/leftEnd.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/leftEnd.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/leftEnd.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/leftEnd.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/leftEnd.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/leftEnd.png");
-  }
-}
-.bomb-top-edge {
-  height: 3rem;
-  width: 3rem;
-  animation: explosion-top-edge 1s linear ;
-  background-color: #107830;
-}
-
-@keyframes explosion-top-edge {
-
-  0% {
-    content: url("./assets/explosion/stage1/topEnd.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/topEnd.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/topEnd.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/topEnd.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/topEnd.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/topEnd.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/topEnd.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/topEnd.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/topEnd.png");
-  }
-
-}
-.bomb-bottom-edge {
-  height: 3rem;
-  width: 3rem;
-  animation: explosion-bottom-edge 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes explosion-bottom-edge {
-  0% {
-    content: url("./assets/explosion/stage1/bottomEnd.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/bottomEnd.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/bottomEnd.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/bottomEnd.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/bottomEnd.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/bottomEnd.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/bottomEnd.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/bottomEnd.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/bottomEnd.png");
-  }
-}
-.bomb-pipe {
-  height: 3rem;
-  width: 3rem;
-  animation: explosion-pipe 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes explosion-pipe {
-  0% {
-    content: url("./assets/explosion/stage1/pipe.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/pipe.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/pipe.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/pipe.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/pipe.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/pipe.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/pipe.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/pipe.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/pipe.png");
-  }
-}
-.bomb-line {
-  height: 3rem;
-  width: 3rem;
-  animation: explosion-line 1s linear  ;
-  background-color: #107830;
-}
-
-@keyframes explosion-line {
-  0% {
-    content: url("./assets/explosion/stage1/line.png");
-  }
-  52.8% {
-    content: url("./assets/explosion/stage2/line.png");
-  }
-  59.4% {
-    content: url("./assets/explosion/stage3/line.png");
-  }
-  66% {
-    content: url("./assets/explosion/stage4/line.png");
-  }
-  72.6% {
-    content: url("./assets/explosion/stage5/line.png");
-  }
-  79.2% {
-    content: url("./assets/explosion/stage4/line.png");
-  }
-  85.8% {
-    content: url("./assets/explosion/stage3/line.png");
-  }
-  92.4% {
-    content: url("./assets/explosion/stage2/line.png");
-  }
-  99% {
-    content: url("./assets/explosion/stage1/line.png");
-  }
-}
 .walk-tile {
-  height: 3rem;
-  width: 3rem;
+  height: 50px;
+  width: 50px;
   content: url("./assets/map/walkTile.png");
 }
 
@@ -304,37 +18,37 @@
 }
 
 .indestructible-wall {
-  height: 3rem;
-  width: 3rem;
+  height: 50px;
+  width: 50px;
   content: url("./assets/map/indestructibleWall.png");
 }
 
-.destroyable-wall {
-  height: 3rem;
-  width: 3rem;
-  content: url("./assets/map/destroyableWall.png");
+.gameContainer {
+  position: relative;
 }
 
 .player1 {
-  height: 3rem;
-  width: 3rem;
-  content: url("./assets/characters/blue/frontS1.png");
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  height: 50px;
+  width: 50px;
 }
 
 .player2 {
-  height: 3rem;
-  width: 3rem;
-  content: url("./assets/characters/green/frontS1.png");
+  height: 50px;
+  width: 50px;
+  content: url("./assets/map/indestructibleWall.png");
 }
 
 .player3 {
-  height: 3rem;
-  width: 3rem;
-  content: url("./assets/characters/pink/frontS1.png");
+  height: 50px;
+  width: 50px;
+  content: url("./assets/map/indestructibleWall.png");
 }
 
 .player4 {
-  height: 3rem;
-  width: 3rem;
-  content: url("./assets/characters/red/frontS1.png");
+  height: 50px;
+  width: 50px;
+  content: url("./assets/map/indestructibleWall.png");
 }/*# sourceMappingURL=bobermanMain.css.map */

@@ -1,20 +1,25 @@
 console.log('Conneted!');
-import './bobermanMain.css';
+import { NewElement, Point } from '../../../../../mini-framework/index.js';
+// import './bobermanMain.css';
+
+let tick = 0;
+let tickSpeed = 3;
+let playerSpeed = 1;
+let lastTimestamp = performance.now();
+const minFrameTime = 1000 / 60;
+let moveDirection = null;
 
 export const generateGrid = (grid) => {
-  const gameGrid = document.createElement('div');
+  const gameGrid = NewElement('div', 'gameContainer');
   for (let y = 0; y < 13; y++) {
-    const row = document.createElement('div');
-    row.classList.add('map-row');
+    const row = NewElement('div', 'map-row');
     for (let x = 0; x < 15; x++) {
-      const column = document.createElement('div');
-      column.classList.add('square');
-      if (grid[x][y].WallType == 9 ) {
+      const column = NewElement('div', 'square');
+      if (grid[x][y].WallType == 9) {
         column.classList.add('indestructible-wall');
-        column.setAttribute('indestructible', 'indestructible')
+        column.setAttribute('indestructible', 'indestructible');
       } else if (grid[x][y].WallType == 1) {
-        column.classList.add('walk-tile');
-        column.classList.add('destroyable-wall');
+        column.classList.add('walk-tile', 'destroyable-wall');
       } else {
         column.classList.add('walk-tile');
       }
@@ -25,212 +30,331 @@ export const generateGrid = (grid) => {
   return gameGrid;
 };
 
-export const movePlayer = (currentUser, newLocation) => {
-  const previousLocation = document.querySelector(`.player${currentUser}`)
-  const getAllTiles = document.querySelectorAll('.square');
+const player1MoveLeft = [
+  './assets/characters/blue/moveL6.png',
+  './assets/characters/blue/moveL5.png',
+  './assets/characters/blue/moveL4.png',
+  './assets/characters/blue/moveL3.png',
+  './assets/characters/blue/moveL2.png',
+  './assets/characters/blue/moveL1.png',
+];
+const player1MoveRight = [
+  './assets/characters/blue/moveR1.png',
+  './assets/characters/blue/moveR2.png',
+  './assets/characters/blue/moveR3.png',
+  './assets/characters/blue/moveR4.png',
+  './assets/characters/blue/moveR5.png',
+  './assets/characters/blue/moveR6.png',
+];
 
-  previousLocation.classList.remove(`player${currentUser}`);
-  getAllTiles[newLocation].classList.add(`player${currentUser}`);
-}
+const stopMovement = (e) => {
+  if (
+    (moveDirection === 'up' && e.code === 'ArrowUp') ||
+    (moveDirection === 'down' && e.code === 'ArrowDown') ||
+    (moveDirection === 'left' && e.code === 'ArrowLeft') ||
+    (moveDirection === 'right' && e.code === 'ArrowRight')
+  ) {
+    moveDirection = null;
+  }
+};
 
-export const initBomberman = (players, currentUser, setPlayerPos) => {
-  const getAllTiles = document.querySelectorAll('.square');
-  getAllTiles[players.player1].classList.add('player1');
-  getAllTiles[players.player2].classList.add('player2');
-  getAllTiles[players.player3].classList.add('player3');
-  getAllTiles[players.player4].classList.add('player4');
-  
-  let playerPos = players[`player${currentUser}`];
+const handleMovemement = (e) => {
+  switch (e.code) {
+    case 'ArrowUp':
+      moveDirection = 'up';
+      break;
+    case 'ArrowDown':
+      moveDirection = 'down';
+      break;
+    case 'ArrowLeft':
+      moveDirection = 'left';
+      break;
+    case 'ArrowRight':
+      moveDirection = 'right';
+      break;
+    case 'Space':
+      // place bomb
+      break;
+  }
+};
 
-    window.addEventListener('keydown', (event) => {
-      switch (event.code) {
-        case 'ArrowUp':
-          let newPositionUp = getAllTiles[playerPos - 15]
-          if (!newPositionUp.hasAttribute('indestructible') && !newPositionUp.classList.contains('destroyable-wall')) {
-            playerPos = playerPos - 15;
-            setPlayerPos(playerPos);
-          }
-        break;
-      case 'ArrowDown':
-          let newPositionDown = getAllTiles[playerPos + 15]
-          if (!newPositionDown.hasAttribute('indestructible') && !newPositionDown.classList.contains('destroyable-wall')) {
-            playerPos = playerPos + 15;
-            setPlayerPos(playerPos);
-          }
-        break;
-      case 'ArrowLeft':
-          let newPositionLeft = getAllTiles[playerPos - 1]
-          if (!newPositionLeft.hasAttribute('indestructible') && !newPositionLeft.classList.contains('destroyable-wall')) {
-            playerPos = playerPos - 1;
-            setPlayerPos(playerPos);
-          }
-        break;
-      case 'ArrowRight':
-          let newPositionRight = getAllTiles[playerPos + 1]
-          if (!newPositionRight.hasAttribute('indestructible') && !newPositionRight.classList.contains('destroyable-wall')) {
-            playerPos = playerPos + 1;
-            setPlayerPos(playerPos);
-          }
-        break;
-        case 'Space':
-          bombCoordinate(playerPos, 2);
+export const initBomberman = (grid) => {
+  let playerXLocation = 50;
+  let playerYLocation = 50;
+
+  Point('bomberman-root').appendChild(generateGrid(grid));
+  const player1 = Point('gameContainer')[0].appendChild(
+    NewElement('img', 'player1')
+  );
+  player1.src = './assets/characters/blue/frontS1.png';
+
+  //animation
+  const refresh = (timestamp) => {
+    //max fps
+    const deltaTime = timestamp - lastTimestamp;
+    if (deltaTime < minFrameTime) {
+      requestAnimationFrame(refresh);
+      return;
+    }
+    // handle game speed
+    if (tick >= tickSpeed) {
+      tick = 0;
+      switch (moveDirection) {
+        case 'up':
+          playerYLocation -= playerSpeed;
+          player1.style.top = playerYLocation + 'px';
+          break;
+        case 'down':
+          playerYLocation += playerSpeed;
+          player1.style.top = playerYLocation + 'px';
+          break;
+        case 'left':
+          player1.src = player1MoveLeft[playerXLocation % 6];
+          playerXLocation -= playerSpeed;
+          player1.style.left = playerXLocation + 'px';
+          break;
+        case 'right':
+          player1.src = player1MoveRight[playerXLocation % 6];
+          playerXLocation += playerSpeed;
+          player1.style.left = playerXLocation + 'px';
           break;
       }
-    });
+    }
+
+    tick++;
+    lastTimestamp = timestamp;
+    requestAnimationFrame(refresh);
+  };
+  //keyboard
+  window.addEventListener('keydown', handleMovemement);
+  window.addEventListener('keyup', stopMovement);
+  requestAnimationFrame(refresh);
 };
 
-const bombCoordinate = (coord, bombLevel) => {
-  const getAllTiles = document.querySelectorAll('.square')
-  let coordCalculation = coord;
-  getAllTiles[coordCalculation].classList.add('bomb')
-
-  
-  setTimeout(() => {
-    getAllTiles[coordCalculation].classList.add('innerExplosion')
-
-    // draw line from middle to edge
-    let topWallBlock = false
-    for (let i = 2; i <= bombLevel; i++) {
-      var tile = getAllTiles[coordCalculation - 15 * (i-1)]
-      if (tile) {
-        if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
-          tile.classList.add('bomb-pipe')
-        }
-        if (tile.hasAttribute('indestructible')) {
-          topWallBlock = true
-          break
-        }
-        if (tile.classList.contains('destroyable-wall')) {
-          tile.classList.add('bomb-top-edge')
-          tile.classList.remove('destroyable-wall')
-          topWallBlock = true
-          break
-        }
-      }
-    }
-  
-  // draw top bomb edge
-  if (topWallBlock == false) {
-    var tile = getAllTiles[coordCalculation - bombLevel * 15]
-    if (tile) {
-      if (!tile.hasAttribute('indestructible')) {
-        tile.classList.add('bomb-top-edge')
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.remove('destroyable-wall')
-      }
-    }
-  }
-
-  // draw line from middle to edge
-  let leftWallBlock = false
-  for (let i = 1; i <= bombLevel - 1; i++) {
-    var tile = getAllTiles[coordCalculation - i * 1]
-    if (tile) {
-      if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
-        tile.classList.add('bomb-line')
-      }
-      if (tile.hasAttribute('indestructible')) {
-        leftWallBlock = true
-        break
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.add('bomb-left-edge')
-        tile.classList.remove('destroyable-wall')
-        leftWallBlock = true
-        break
-      }
-    }
-  }
-
-  // draw bomb left edge
-  if (leftWallBlock == false) {
-    var tile = getAllTiles[coordCalculation - bombLevel * 1]
-    if (tile) {
-      if (!tile.hasAttribute('indestructible')) {
-        tile.classList.add('bomb-left-edge')
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.remove('destroyable-wall')
-      }
-    }
-  }
-
-  // draw line from middle to edge
-  let rightWallBlock = false
-  for (let i = 1; i <= bombLevel - 1; i++) {
-    let tile = getAllTiles[coordCalculation + i * 1]
-     if (tile) {
-      if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
-        tile.classList.add('bomb-line')
-      }
-      if (tile.hasAttribute('indestructible')) {
-        rightWallBlock = true
-        break
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.add('bomb-right-edge')
-        tile.classList.remove('destroyable-wall')
-        rightWallBlock = true
-        break
-      }
-    }
-  }
-
-  // draw bomb right edge
-  if (rightWallBlock == false) {
-    var tile = getAllTiles[coordCalculation + bombLevel * 1]
-    if (tile) {
-      if (!tile.hasAttribute('indestructible')) {
-        tile.classList.add('bomb-right-edge')
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.remove('destroyable-wall')
-      }
-    }
-  }
-
-  // draw line from middle to edge
-  let bottomWallBlock = false
-  for (let i = 2; i <= bombLevel; i++) {
-    let tile = getAllTiles[coordCalculation + 15 * (i-1)]
-    if (tile) {
-      if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
-        tile.classList.add('bomb-pipe')
-      }
-      if (tile.hasAttribute('indestructible')) {
-        bottomWallBlock = true
-        break
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.add('bomb-bottom-edge')
-        tile.classList.remove('destroyable-wall')
-        bottomWallBlock = true
-        break
-      }
-    }
-  }
-
-  // draw bomb bottom edge
-  if (bottomWallBlock == false) {
-    var tile = getAllTiles[coordCalculation + bombLevel * 15]
-    if (tile) {
-      if (!tile.hasAttribute('indestructible')) {
-        tile.classList.add('bomb-bottom-edge')
-      }
-      if (tile.classList.contains('destroyable-wall')) {
-        tile.classList.remove('destroyable-wall')
-      }
-    }
-  }
-
-  }, 1000)
-
-  setTimeout(() => {
-    document.querySelectorAll('.bomb, .bomb-pipe, .bomb-line, .bomb-top-edge, .bomb-left-edge, .bomb-right-edge, .bomb-bottom-edge, .innerExplosion').forEach(tile => {
-      tile.classList.remove('bomb', 'bomb-pipe', 'bomb-line', 'bomb-top-edge', 'bomb-left-edge', 'bomb-right-edge', 'bomb-bottom-edge', 'innerExplosion');
-    });
-  }, 2000);
-};
-
-// initBomberman(31);
+initBomberman([
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 0, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+  [
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+    { WallType: 9, PowerUp: 0 },
+  ],
+]);
