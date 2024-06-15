@@ -16,9 +16,13 @@ func HandleJoinGameQueue(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("socialNetworkSession")
 		userId := validators.ValidateUserSession(cookie.Value)
 		callback["login"] = "success"
-		valid := validators.ValidateJoinQueue(userId)
-		if valid {
-			callback["join"] = "success"
+		if len(validators.ValidateQueue()) < 4 {
+			valid := validators.ValidateJoinQueue(userId)
+			if valid {
+				callback["join"] = "success"
+			} else {
+				callback["join"] = "fail"
+			}
 		} else {
 			callback["join"] = "fail"
 		}

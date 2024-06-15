@@ -997,3 +997,34 @@ func GetQueue() []structs.GameQueue {
 	}
 	return lobbies
 }
+
+func ActiveGameParty(groupId string) []structs.GamePlayer {
+	db := sqlite.DbConnection()
+	defer db.Close()
+
+	var gamePlayers []structs.GamePlayer
+
+	command := "SELECT * FROM activegame WHERE group_uuid = ?"
+	rows, err := db.Query(command, groupId)
+	if err != nil {
+		helpers.CheckErr("GetQueue selecting error: ", err)
+		return nil
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var player structs.GamePlayer
+
+		err = rows.Scan(&player.Id, &player.GroupId, &player.User, &player.PlayerTag)
+		if err != nil {
+			helpers.CheckErr("GetQueue Next error: ", err)
+			continue
+		}
+		gamePlayers = append(gamePlayers, player)
+	}
+
+	if err = rows.Err(); err != nil {
+		helpers.CheckErr("ActiveGameParty", err)
+	}
+	return gamePlayers
+}

@@ -4,6 +4,8 @@ import (
 	"backend/database"
 	"backend/helpers"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // Create new user in users table
@@ -89,7 +91,7 @@ func ValidateSetNewGroupRequest(groupId, messageSender, messageReceiver string) 
 	return database.SetNewGroupRequest(groupId, messageSender, messageReceiver)
 }
 
-func ValidateSetNewFollowNotification(fromId, touser string) string{
+func ValidateSetNewFollowNotification(fromId, touser string) string {
 	return database.SetNewFollowNotification(fromId, touser)
 }
 
@@ -101,6 +103,21 @@ func ValidateUnfollowUser(sessionId, unFollowId string) {
 	database.Unfollow(sessionId, unFollowId)
 }
 
-func ValidateJoinQueue(userId string) bool{
+func ValidateJoinQueue(userId string) bool {
 	return database.JoinQueue(userId)
+}
+
+func ValidateEmptyGameQueue(userlist []string) {
+	for _, v := range userlist {
+		database.EmptyUserFromQueue(v)
+	}
+}
+
+func ValidateCreateNewGame(userlist []string) string {
+	groupId := uuid.New().String()
+	playerTagList := []string{"player1", "player2", "player3", "player4"}
+	for key, v := range userlist {
+		database.EnterUserToActiveGame(groupId, v, playerTagList[key])
+	}
+	return groupId
 }

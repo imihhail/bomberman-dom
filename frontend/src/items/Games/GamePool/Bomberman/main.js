@@ -1,51 +1,24 @@
 console.log('Conneted!');
 import { NewElement, Point } from '../../../../../mini-framework/index.js';
-// import './bobermanMain.css';
+import {
+  GenerateGrid,
+  Player1MoveLeft,
+  Player1MoveRight,
+  Player2MoveLeft,
+  Player2MoveRight,
+} from './components.js';
+import player1FrontStyle from './assets/characters/blue/frontS1.png';
+import player2FrontStyle from './assets/characters/green/frontS1.png';
+import player3FrontStyle from './assets/characters/pink/frontS1.png';
+import player4FrontStyle from './assets/characters/red/frontS1.png';
+import './bobermanMain.css';
 
 let tick = 0;
-let tickSpeed = 3;
-let playerSpeed = 1;
+let tickSpeed = 5;
+let playerSpeed = 3;
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
 let moveDirection = null;
-
-export const generateGrid = (grid) => {
-  const gameGrid = NewElement('div', 'gameContainer');
-  for (let y = 0; y < 13; y++) {
-    const row = NewElement('div', 'map-row');
-    for (let x = 0; x < 15; x++) {
-      const column = NewElement('div', 'square');
-      if (grid[x][y].WallType == 9) {
-        column.classList.add('indestructible-wall');
-        column.setAttribute('indestructible', 'indestructible');
-      } else if (grid[x][y].WallType == 1) {
-        column.classList.add('walk-tile', 'destroyable-wall');
-      } else {
-        column.classList.add('walk-tile');
-      }
-      row.appendChild(column);
-    }
-    gameGrid.appendChild(row);
-  }
-  return gameGrid;
-};
-
-const player1MoveLeft = [
-  './assets/characters/blue/moveL6.png',
-  './assets/characters/blue/moveL5.png',
-  './assets/characters/blue/moveL4.png',
-  './assets/characters/blue/moveL3.png',
-  './assets/characters/blue/moveL2.png',
-  './assets/characters/blue/moveL1.png',
-];
-const player1MoveRight = [
-  './assets/characters/blue/moveR1.png',
-  './assets/characters/blue/moveR2.png',
-  './assets/characters/blue/moveR3.png',
-  './assets/characters/blue/moveR4.png',
-  './assets/characters/blue/moveR5.png',
-  './assets/characters/blue/moveR6.png',
-];
 
 const stopMovement = (e) => {
   if (
@@ -78,15 +51,68 @@ const handleMovemement = (e) => {
   }
 };
 
-export const initBomberman = (grid) => {
-  let playerXLocation = 50;
-  let playerYLocation = 50;
+export const updatePlayerPosition = (player, x, y) => {
+  player.style.left = x + 'px';
+  player.style.top = y + 'px';
+};
 
-  Point('bomberman-root').appendChild(generateGrid(grid));
+export const initBomberman = (
+  grid,
+  gameTag,
+  group,
+  sendJsonMessage,
+  playersRef,
+  currentUser
+) => {
+  Point('bomberman-root').appendChild(GenerateGrid(grid));
+
   const player1 = Point('gameContainer')[0].appendChild(
     NewElement('img', 'player1')
   );
-  player1.src = './assets/characters/blue/frontS1.png';
+  let player1XCoord = 50;
+  let player1YCoord = 50;
+  player1.src = player1FrontStyle;
+  player1.style.left = player1XCoord + 'px';
+  player1.style.top = player1YCoord + 'px';
+
+  // player2
+  const player2 = Point('gameContainer')[0].appendChild(
+    NewElement('img', 'player2')
+  );
+  let player2XCoord = 650;
+  let player2YCoord = 50;
+  player2.src = player2FrontStyle;
+  player2.style.left = player2XCoord + 'px';
+  player2.style.top = player2YCoord + 'px';
+
+  // player3
+  const player3 = Point('gameContainer')[0].appendChild(
+    NewElement('img', 'player3')
+  );
+  let player3XCoord = 50;
+  let player3YCoord = 550;
+  player3.src = player3FrontStyle;
+  player3.style.left = player3XCoord + 'px';
+  player3.style.top = player3YCoord + 'px';
+
+  // player4
+  const player4 = Point('gameContainer')[0].appendChild(
+    NewElement('img', 'player4')
+  );
+  let player4XCoord = 650;
+  let player4YCoord = 550;
+  player4.src = player4FrontStyle;
+  player4.style.left = player4XCoord + 'px';
+  player4.style.top = player4YCoord + 'px';
+
+  playersRef.current = {
+    player1: { element: player1, x: player1XCoord, y: player1YCoord },
+    player2: { element: player2, x: player2XCoord, y: player2YCoord },
+    player3: { element: player3, x: player3XCoord, y: player3YCoord },
+    player4: { element: player4, x: player4XCoord, y: player4YCoord },
+  };
+
+  // movement
 
   //animation
   const refresh = (timestamp) => {
@@ -99,26 +125,35 @@ export const initBomberman = (grid) => {
     // handle game speed
     if (tick >= tickSpeed) {
       tick = 0;
+
       switch (moveDirection) {
         case 'up':
-          playerYLocation -= playerSpeed;
-          player1.style.top = playerYLocation + 'px';
+          playersRef.current[gameTag].y -= playerSpeed;
           break;
         case 'down':
-          playerYLocation += playerSpeed;
-          player1.style.top = playerYLocation + 'px';
+          playersRef.current[gameTag].y += playerSpeed;
           break;
         case 'left':
-          player1.src = player1MoveLeft[playerXLocation % 6];
-          playerXLocation -= playerSpeed;
-          player1.style.left = playerXLocation + 'px';
+          playersRef.current[gameTag].x -= playerSpeed;
           break;
         case 'right':
-          player1.src = player1MoveRight[playerXLocation % 6];
-          playerXLocation += playerSpeed;
-          player1.style.left = playerXLocation + 'px';
+          playersRef.current[gameTag].x += playerSpeed;
           break;
       }
+
+      updatePlayerPosition(
+        playersRef.current[gameTag].element,
+        playersRef.current[gameTag].x,
+        playersRef.current[gameTag].y
+      );
+      sendJsonMessage({
+        type: 'bombermanCoords',
+        fromuserid: currentUser,
+        gameTag: gameTag,
+        gameGroup: group,
+        coordX: playersRef.current[gameTag].x.toString(),
+        coordY: playersRef.current[gameTag].y.toString(),
+      });
     }
 
     tick++;
@@ -130,231 +165,3 @@ export const initBomberman = (grid) => {
   window.addEventListener('keyup', stopMovement);
   requestAnimationFrame(refresh);
 };
-
-initBomberman([
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 0, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-  [
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-    { WallType: 9, PowerUp: 0 },
-  ],
-]);

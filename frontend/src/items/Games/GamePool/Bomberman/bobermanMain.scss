@@ -42,23 +42,21 @@ $bit-size: 50px;
 
 .player1 {
   position: absolute;
-  left: 50px;
-  top: 50px;
   height: $bit-size;
   width: $bit-size;
 }
 .player2 {
+  position: absolute;
   height: $bit-size;
   width: $bit-size;
-  content: url('./assets/map/indestructibleWall.png');
 }
 .player3 {
+  position: absolute;
   height: $bit-size;
   width: $bit-size;
-  content: url('./assets/map/indestructibleWall.png');
 }
 .player4 {
+  position: absolute;
   height: $bit-size;
   width: $bit-size;
-  content: url('./assets/map/indestructibleWall.png');
 }

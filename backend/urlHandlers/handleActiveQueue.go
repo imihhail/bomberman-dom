@@ -12,10 +12,8 @@ import (
 )
 
 var (
-	isCountdownRunning bool
-	countdownMutex     sync.Mutex
-	lobbyFull          bool
-	gameStarted        bool
+	countdowns = make(map[string]bool)
+	mutex      sync.Mutex
 )
 
 func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +21,7 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 
 	if handleSession(w, r) {
 		var callback = make(map[string]interface{})
-		cookie, err := r.Cookie("socialNetworkSession")
+		cookie, _ := r.Cookie("socialNetworkSession")
 		userId := validators.ValidateUserSession(cookie.Value)
 		callback["login"] = "success"
 		callback["userid"] = userId
@@ -35,87 +33,87 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 			gameParty = append(gameParty, queue[i].UserId)
 		}
 
-		if len(queue) >= 0 {
-			var msg SocketMessage
-			msg.Type = "gameLogic"
-			msg.GameStatus = "Start"
-			msg.GameParty = gameParty
-			broadcast <- msg
-		}
-
-		if len(queue) == 3 {
-			lobbyFull = true
-		}
-
 		if len(queue) >= 2 {
-			countdownMutex.Lock()
-			if !isCountdownRunning {
-				isCountdownRunning = true
-				countdownMutex.Unlock()
-
-				go func() {
-					countdown := 20
-					var msg SocketMessage
-
-					for countdown > -1 {
-						if lobbyFull {
-							countdown = 10
-							lobbyFull = false
-							gameStarted = true
-							var msg SocketMessage
-							msg.Type = "gameLogic"
-							msg.GameStatus = "Prepare"
-							msg.GameParty = updateGameParty()
-							msg.Grid = generateGrid()
-							broadcast <- msg
-						}
-
-						time.Sleep(1 * time.Second)
-						msg.Type = "countDown"
-						msg.CountDown = countdown
-						msg.GameParty = updateGameParty()
-						broadcast <- msg
-						countdown--
-
-						if !gameStarted && countdown == -1 {
-							countdown = 10
-							var msg SocketMessage
-							msg.Type = "gameLogic"
-							msg.GameStatus = "Prepare"
-							msg.GameParty = updateGameParty()
-							msg.Grid = generateGrid()
-							broadcast <- msg
-							gameStarted = true
-						}
-					}
-					countdownMutex.Lock()
-					isCountdownRunning = false
-					countdownMutex.Unlock()
-
-					msg.Type = "gameLogic"
-					msg.GameStatus = "Fight"
-					msg.GameParty = updateGameParty()
-					broadcast <- msg
-					gameStarted = true
-					fmt.Println("GAME STARTED!!!")
-				}()
-			} else {
-				countdownMutex.Unlock()
+			mutex.Lock()
+			if !countdowns[queueKey(gameParty)] {
+				countdowns[queueKey(gameParty)] = true
+				go startInitialCountdown(gameParty)
 			}
+			mutex.Unlock()
 		}
 		writeData, err := json.Marshal(callback)
-		helpers.CheckErr("HandleStatus", err)
+		helpers.CheckErr("HandleActiveQueue", err)
 		w.Write(writeData)
 	}
 }
 
-func updateGameParty() []string {
-	queue := validators.ValidateQueue()
-	var gameParty []string
-	for i := 0; i < len(queue); i++ {
-		gameParty = append(gameParty, queue[i].UserId)
+func queueKey(gameParty []string) string {
+	key := ""
+	for _, id := range gameParty {
+		key += id
 	}
-	return gameParty
+	return key
+}
+
+func startInitialCountdown(gameParty []string) {
+	// change to 20 when ready
+	countdown := 2
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	for countdown >= 0 {
+		select {
+		case <-ticker.C:
+			if len(gameParty) >= 4 {
+				startFinalCountdown(gameParty)
+				return
+			}
+			var msg SocketMessage
+			msg.Type = "countDown"
+			msg.CountDown = countdown
+			msg.GameParty = gameParty
+			broadcast <- msg
+			countdown--
+		}
+	}
+
+	startFinalCountdown(gameParty)
+}
+
+func startFinalCountdown(gameParty []string) {
+	// change to 10 when ready
+	countdown := 2
+
+	groupId := validators.ValidateCreateNewGame(gameParty)
+	validators.ValidateEmptyGameQueue(gameParty)
+	newGroup := validators.ValidateActiveGameParty(groupId)
+	var msg SocketMessage
+	msg.GameParty = gameParty
+	msg.Grid = generateGrid()
+	msg.ActiveGameParty = newGroup
+	msg.GameGroupId = groupId
+	msg.Type = "gameLogic"
+	msg.GameStatus = "Prepare"
+	msg.CountDown = countdown
+	broadcast <- msg
+	for countdown >= 0 {
+		msg.Type = "countDown"
+		msg.CountDown = countdown
+		time.Sleep(1 * time.Second)
+		msg.Grid = [15][13]Cord{}
+		broadcast <- msg
+		countdown--
+	}
+
+	msg.Type = "gameLogic"
+	msg.GameStatus = "Fight"
+	msg.ActiveGameParty = newGroup
+	msg.GameGroupId = groupId
+	broadcast <- msg
+
+	mutex.Lock()
+    delete(countdowns, queueKey(gameParty))
+    mutex.Unlock()
 }
 
 func rndNr(rng *rand.Rand) int {

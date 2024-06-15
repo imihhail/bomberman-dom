@@ -341,10 +341,26 @@ func JoinQueue(userId string) bool {
 	var id string
 	command := "INSERT INTO gamequeue (user_fk_users) VALUES (?) returning id"
 	err := db.QueryRow(command, userId).Scan(&id)
-	helpers.CheckErr("SetNewGroupNotification - Insert: ", err)
+	helpers.CheckErr("JoinQueue", err)
 	if id != "0" {
 		return true
 	} else {
 		return false
 	}
+}
+
+func EmptyUserFromQueue(userId string) {
+	db := sqlite.DbConnection()
+	defer db.Close()
+	command := "DELETE FROM gamequeue WHERE user_fk_users = ?"
+	_, err := db.Exec(command, userId)
+	helpers.CheckErr("EmptyQueue - Insert: ", err)
+
+}
+
+func EnterUserToActiveGame(uuid, userId, playerTag string) {
+	db := sqlite.DbConnection()
+	defer db.Close()
+	command := "INSERT OR REPLACE INTO activegame (group_uuid, user_fk_users, player_tag) VALUES (?, ?, ?)"
+	db.Exec(command, uuid, userId, playerTag)
 }
