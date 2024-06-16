@@ -42,15 +42,6 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   if (lastMessage) {
-  //     const messageData = JSON.parse(lastMessage.data);
-  //     if (messageData.type == 'bombermanCoords') {
-  //       movePlayer(messageData.playerTag, messageData.coords);
-  //     }
-  //   }
-  // }, [lastMessage]);
-
   return <div id='bomberman-root'></div>;
 };
 
