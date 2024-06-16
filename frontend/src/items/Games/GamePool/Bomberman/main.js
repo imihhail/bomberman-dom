@@ -221,16 +221,36 @@ export const initBomberman = (
 
       switch (moveDirection) {
         case 'up':
-          playersRef.current[gameTag].y -= playerSpeed;
+          {
+            const checkFuture = playersRef.current[gameTag].y - playerSpeed;
+            if (checkFuture > 50) {
+              playersRef.current[gameTag].y = checkFuture;
+            }
+          }
           break;
         case 'down':
-          playersRef.current[gameTag].y += playerSpeed;
+          {
+            const checkFuture = playersRef.current[gameTag].y + playerSpeed;
+            if (checkFuture <= 550) {
+              playersRef.current[gameTag].y = checkFuture;
+            }
+          }
           break;
         case 'left':
-          playersRef.current[gameTag].x -= playerSpeed;
+          {
+            const checkFuture = playersRef.current[gameTag].x - playerSpeed;
+            if (checkFuture > 50) {
+              playersRef.current[gameTag].x = checkFuture;
+            }
+          }
           break;
         case 'right':
-          playersRef.current[gameTag].x += playerSpeed;
+          {
+            const checkFuture = playersRef.current[gameTag].x + playerSpeed;
+            if (checkFuture < 650) {
+              playersRef.current[gameTag].x = checkFuture;
+            }
+          }
           break;
       }
 
