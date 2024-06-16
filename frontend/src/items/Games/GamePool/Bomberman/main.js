@@ -224,11 +224,7 @@ export const initBomberman = (
           {
             const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
             const checkFutureX = playersRef.current[gameTag].x;
-            if (
-              checkFutureY > 50 &&
-              Math.floor(checkFutureY / 50) % 2 == 1 &&
-              Math.floor(checkFutureX / 50) % 2 == 1
-            ) {
+            if (checkFutureY > 50 && Math.round(checkFutureX / 50) % 2 == 1) {
               playersRef.current[gameTag].y = checkFutureY;
             }
           }
@@ -237,11 +233,7 @@ export const initBomberman = (
           {
             const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
             const checkFutureX = playersRef.current[gameTag].x;
-            if (
-              checkFutureY <= 550 &&
-              Math.floor(checkFutureY / 50) % 2 == 1 &&
-              Math.floor(checkFutureX / 50) % 2 == 1
-            ) {
+            if (checkFutureY <= 550 && Math.round(checkFutureX / 50) % 2 == 1) {
               playersRef.current[gameTag].y = checkFutureY;
             }
           }
@@ -250,11 +242,7 @@ export const initBomberman = (
           {
             const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
             const checkFutureY = playersRef.current[gameTag].y;
-            if (
-              checkFutureX > 50 &&
-              Math.floor(checkFutureY / 50) % 2 == 1 &&
-              Math.floor(checkFutureX / 50) % 2 == 1
-            ) {
+            if (checkFutureX > 50 && Math.round(checkFutureY / 50) % 2 == 1) {
               playersRef.current[gameTag].x = checkFutureX;
             }
           }
@@ -263,11 +251,7 @@ export const initBomberman = (
           {
             const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
             const checkFutureY = playersRef.current[gameTag].y;
-            if (
-              checkFutureX < 650 &&
-              Math.floor(checkFutureY / 50) % 2 == 1 &&
-              Math.floor(checkFutureX / 50) % 2 == 1
-            ) {
+            if (checkFutureX < 650 && Math.round(checkFutureY / 50) % 2 == 1) {
               playersRef.current[gameTag].x = checkFutureX;
             }
           }
