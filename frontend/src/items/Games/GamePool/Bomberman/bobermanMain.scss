@@ -12,7 +12,7 @@ $bit-size: 50px;
 .walk-tile {
   height: $bit-size;
   width: $bit-size;
-  content: url('./assets/map/walkTile.png');
+  // content: url('./assets/map/walkTile.png');
 }
 
 .map-row {
@@ -46,6 +46,11 @@ $bit-size: 50px;
 }
 .player4 {
   position: absolute;
+  height: $bit-size;
+  width: $bit-size;
+}
+.bomb {
+  // position: absolute;
   height: $bit-size;
   width: $bit-size;
 }

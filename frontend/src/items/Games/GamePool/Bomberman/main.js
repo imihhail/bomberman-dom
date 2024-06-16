@@ -18,6 +18,7 @@ import {
   Player4MoveRight,
   Player4MoveTop,
   Player4MoveBottom,
+  BombInit,
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -28,6 +29,9 @@ import './bobermanMain.css';
 let tick = 0;
 let tickSpeed = 1;
 let playerSpeed = 2;
+let bombsPlaced = false;
+let bombFrameCounter = 0;
+// let bombPower = 1;
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
 let moveDirection = null;
@@ -74,7 +78,7 @@ const handleMovemement = (e) => {
       moveDirection = 'right';
       break;
     case 'Space':
-      // place bomb
+      bombsPlaced = true; // bombsPlaced + 1
       break;
   }
 };
@@ -148,6 +152,42 @@ export const updatePlayerPosition = (player, x, y) => {
   player.style.left = x + 'px';
   player.style.top = y + 'px';
 };
+
+export const updateBombPositions = (playerX, playerY) => {
+
+  if (bombsPlaced) {
+    console.log(playerX, playerY)
+    // Calculate which square div the bomb should be placed in
+    let squareX = Math.floor((playerX+25) / 50);
+    let squareY = Math.floor((playerY+25) / 50);
+
+    const getAllTiles = document.querySelectorAll('.square')
+    let coordCalculation = squareY * 15 + squareX;
+    let tile = getAllTiles[coordCalculation];
+
+    // Create a new bomb element
+    const bomb = document.createElement('img');
+    bomb.classList.add('bomb');
+    bomb.src = BombInit[0]; // Set the initial bomb image
+    tile.appendChild(bomb);
+    bombsPlaced = false;
+  }
+};
+
+const updateBombExplosion = () => {
+  // Update bomb animations
+  const allBombs = document.querySelectorAll('.bomb');
+  allBombs.forEach(bomb => {
+    bombFrameCounter++;
+    let frame = Math.floor(bombFrameCounter / 60) % BombInit.length; // Calculate the frame index
+    if (bombFrameCounter % 60 === 0) { // Only update the bomb image once per second
+      bomb.src = BombInit[frame]; // Update the bomb image
+      if (frame >= 3) { // If it's the third frame or later
+        bomb.remove(); // Remove the bomb from the DOM
+      }
+    }
+  });
+}
 
 export const initBomberman = (
   grid,
@@ -237,8 +277,16 @@ export const initBomberman = (
       updatePlayerPosition(
         playersRef.current[gameTag].element,
         playersRef.current[gameTag].x,
+        playersRef.current[gameTag].y,
+      );
+
+      updateBombPositions(
+        playersRef.current[gameTag].x,
         playersRef.current[gameTag].y
       );
+
+      updateBombExplosion();
+
       sendJsonMessage({
         type: 'bombermanCoords',
         fromuserid: currentUser,

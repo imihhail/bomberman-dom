@@ -10,7 +10,6 @@
 .walk-tile {
   height: 50px;
   width: 50px;
-  content: url("./assets/map/walkTile.png");
 }
 
 .map-row {
@@ -47,6 +46,11 @@
 
 .player4 {
   position: absolute;
+  height: 50px;
+  width: 50px;
+}
+
+.bomb {
   height: 50px;
   width: 50px;
 }/*# sourceMappingURL=bobermanMain.css.map */

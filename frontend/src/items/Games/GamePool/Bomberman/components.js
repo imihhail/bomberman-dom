@@ -244,3 +244,113 @@ export const Player4MoveBottom = [
   Player4moveBottom2,
   Player4moveBottom2,
 ];
+
+// bomb
+
+import bombInit1 from './assets/bomb/bomb1.png';
+import bombInit2 from './assets/bomb/bomb2.png';
+import bombInit3 from './assets/bomb/bomb3.png';
+
+export const BombInit = [
+  bombInit1,
+  bombInit2,
+  bombInit3,
+  bombInit3,
+];
+
+// explosion import
+import stage1explosion1 from './assets/explosion/stage1/bottomEnd.png';
+import stage1explosion2 from './assets/explosion/stage1/innerExplosion.png';
+import stage1explosion3 from './assets/explosion/stage1/leftEnd.png';
+import stage1explosion4 from './assets/explosion/stage1/line.png';
+import stage1explosion5 from './assets/explosion/stage1/pipe.png';
+import stage1explosion6 from './assets/explosion/stage1/rightEnd.png';
+import stage1explosion7 from './assets/explosion/stage1/topEnd.png';
+import stage2explosion1 from './assets/explosion/stage2/bottomEnd.png';
+import stage2explosion2 from './assets/explosion/stage2/innerExplosion.png';
+import stage2explosion3 from './assets/explosion/stage2/leftEnd.png';
+import stage2explosion4 from './assets/explosion/stage2/line.png';
+import stage2explosion5 from './assets/explosion/stage2/pipe.png';
+import stage2explosion6 from './assets/explosion/stage2/rightEnd.png';
+import stage2explosion7 from './assets/explosion/stage2/topEnd.png';
+import stage3explosion1 from './assets/explosion/stage3/bottomEnd.png';
+import stage3explosion2 from './assets/explosion/stage3/innerExplosion.png';
+import stage3explosion3 from './assets/explosion/stage3/leftEnd.png';
+import stage3explosion4 from './assets/explosion/stage3/line.png';
+import stage3explosion5 from './assets/explosion/stage3/pipe.png';
+import stage3explosion6 from './assets/explosion/stage3/rightEnd.png';
+import stage3explosion7 from './assets/explosion/stage3/topEnd.png';
+import stage4explosion1 from './assets/explosion/stage4/bottomEnd.png';
+import stage4explosion2 from './assets/explosion/stage4/innerExplosion.png';
+import stage4explosion3 from './assets/explosion/stage4/leftEnd.png';
+import stage4explosion4 from './assets/explosion/stage4/line.png';
+import stage4explosion5 from './assets/explosion/stage4/pipe.png';
+import stage4explosion6 from './assets/explosion/stage4/rightEnd.png';
+import stage4explosion7 from './assets/explosion/stage4/topEnd.png';
+import stage5explosion1 from './assets/explosion/stage5/bottomEnd.png';
+import stage5explosion2 from './assets/explosion/stage5/innerExplosion.png';
+import stage5explosion3 from './assets/explosion/stage5/leftEnd.png';
+import stage5explosion4 from './assets/explosion/stage5/line.png';
+import stage5explosion5 from './assets/explosion/stage5/pipe.png';
+import stage5explosion6 from './assets/explosion/stage5/rightEnd.png';
+import stage5explosion7 from './assets/explosion/stage5/topEnd.png';
+
+// explosion stage 1
+
+export const ExplosionStage1 = [
+  stage1explosion1,
+  stage1explosion2,
+  stage1explosion3,
+  stage1explosion4,
+  stage1explosion5,
+  stage1explosion6,
+  stage1explosion7,
+];
+
+// explosion stage 2
+
+export const ExplosionStage2 = [
+  stage2explosion1,
+  stage2explosion2,
+  stage2explosion3,
+  stage2explosion4,
+  stage2explosion5,
+  stage2explosion6,
+  stage2explosion7,
+];
+
+// explosion stage 3
+
+export const ExplosionStage3 = [
+  stage3explosion1,
+  stage3explosion2,
+  stage3explosion3,
+  stage3explosion4,
+  stage3explosion5,
+  stage3explosion6,
+  stage3explosion7,
+];
+
+// explosion stage 4
+
+export const ExplosionStage4 = [
+  stage4explosion1,
+  stage4explosion2,
+  stage4explosion3,
+  stage4explosion4,
+  stage4explosion5,
+  stage4explosion6,
+  stage4explosion7,
+];
+
+// explosion stage 5
+
+export const ExplosionStage5 = [
+  stage5explosion1,
+  stage5explosion2,
+  stage5explosion3,
+  stage5explosion4,
+  stage5explosion5,
+  stage5explosion6,
+  stage5explosion7,
+];
