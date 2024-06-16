@@ -11,22 +11,21 @@ const BombermanLobby = () => {
   const [activeGame, setActiveGame] = useState(false);
   const [gameQueue, setGameQueue] = useState([]);
   const [userEmail, setUserEmail] = useState([]);
-  const [gameParty, setGameParty] = useState([]);
+  const [gameTag, setGameTag] = useState();
   const [lobbyInfo, setLobbyInfo] = useState('');
   const [timer, setTimer] = useState('');
   const [grid, setGrid] = useState([]);
+  const [group, setGroup] = useState([]);
   const [currentUser, setCurrentUser] = useState('');
-  const [lobbySize, setLobbySize] = useState(0);
-
 
   const handleGameQUeue = () => {
     GetGameQueue().then((data) => {
-      setCurrentUser(data.userid)
       if (data?.login !== 'success') {
         logout();
       } else {
         setGameQueue(data.gameQueue);
         setUserEmail(data.useremail);
+        setCurrentUser(data.userid);
       }
     });
   };
@@ -57,38 +56,48 @@ const BombermanLobby = () => {
   useEffect(() => {
     if (lastMessage) {
       const messageData = JSON.parse(lastMessage.data);
-      //console.log("msgData: ",messageData);
       if (messageData.type == 'refreshQueue') {
         handleGameQUeue();
       } else if (messageData.type == 'gameLogic') {
         if (messageData.gamestatus == 'Start') {
-          setLobbyInfo("Waiting for other players...")
+          setLobbyInfo('Waiting for other players...');
         }
         if (messageData.gamestatus == 'Prepare') {
           setTimeout(() => {
-            setLobbyInfo("Prepare for Battle!")
-          }, 1000)
-          setGrid(messageData.grid)           
+            setLobbyInfo('Prepare for Battle!');
+          }, 1000);
+          if (messageData.grid) {
+            setGrid(messageData.grid);
+          }
+          if (messageData.gameTag) {
+            setGameTag(messageData.gameTag);
+          }
+          if (messageData.gameGroup) {
+            setGroup(messageData.gameGroup);
+          }
         }
         if (messageData.gamestatus == 'Fight') {
-          setGameParty(messageData.gameParty)
           setTimeout(() => {
-            setTimer('')
-            setLobbyInfo("FIGHT!!!")
-          }, 1000)
+            setTimer('');
+            setLobbyInfo('FIGHT!!!');
+          }, 1000);
           setTimeout(() => {
-            setActiveGame(true)
-          }, 2000)      
+            setActiveGame(true);
+          }, 2000);
         }
-
       } else if (messageData.type == 'countDown') {
-        setTimer(messageData.countDown)
+        setTimer(messageData.countDown);
       }
     }
-  }, [lastMessage]);  
-  
-   return activeGame ? (
-    <InitBomberman grid={grid} currentUser={currentUser} gameParty={gameParty} />
+  }, [lastMessage]);
+
+  return activeGame ? (
+    <InitBomberman
+      currentUser={currentUser}
+      grid={grid}
+      gameTag={gameTag}
+      group={group}
+    />
   ) : (
     <div className={styles.bombermanLobby}>
       <div className={styles.gameCounter}>{timer}</div>

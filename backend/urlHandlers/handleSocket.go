@@ -1,6 +1,7 @@
 package urlHandlers
 
 import (
+	"backend/structs"
 	"backend/validators"
 	"fmt"
 	"net/http"
@@ -37,28 +38,32 @@ var clientConnections = make(map[string]*Client)
 var broadcast = make(chan SocketMessage)
 
 type SocketMessage struct {
-	Type              string       `json:"type"`
-	Status            string       `json:"status"`
-	FromId            string       `json:"fromuserid"`
-	From_HandleSocket string       `json:"fromuserId"` //experimental
-	Message           string       `json:"message"`
-	Description       string       `json:"description"`
-	To                string       `json:"touser"`
-	Participation     string       `json:"participation"`
-	ConnectedClients  []string     `json:"connectedclients"`
-	NotificationId    string       `json:"NotificationId"`
-	SenderEmail       string       `json:"SenderEmail"`
-	EventTitle        string       `json:"EventTitle"`
-	EventDescription  string       `json:"EventDescription"`
-	EventTime         string       `json:"EventTime"`
-	EventId           string       `json:"EventId"`
-	GroupId           string       `json:"GroupId"`
-	GroupTitle        string       `json:"GroupTitle"`
-	Coords            string       `json:"coords"`
-	GameStatus        string       `json:"gamestatus"`
-	GameParty         []string     `json:"gameParty"`
-	CountDown         int          `json:"countDown"`
-	Grid              [15][13]Cord `json:"grid"`
+	Type              string               `json:"type"`
+	Status            string               `json:"status"`
+	FromId            string               `json:"fromuserid"`
+	From_HandleSocket string               `json:"fromuserId"` //experimental
+	Message           string               `json:"message"`
+	Description       string               `json:"description"`
+	To                string               `json:"touser"`
+	Participation     string               `json:"participation"`
+	ConnectedClients  []string             `json:"connectedclients"`
+	NotificationId    string               `json:"NotificationId"`
+	SenderEmail       string               `json:"SenderEmail"`
+	EventTitle        string               `json:"EventTitle"`
+	EventDescription  string               `json:"EventDescription"`
+	EventTime         string               `json:"EventTime"`
+	EventId           string               `json:"EventId"`
+	GroupId           string               `json:"GroupId"`
+	GroupTitle        string               `json:"GroupTitle"`
+	CoordX            string               `json:"coordX"`
+	CoordY            string               `json:"coordY"`
+	GameStatus        string               `json:"gamestatus"`
+	GameParty         []string             `json:"gameParty"`
+	ActiveGameParty   []structs.GamePlayer `json:"gameGroup"`
+	GameTag           string               `json:"gameTag"`
+	GameGroupId       string               `json:"gameGroupId"`
+	CountDown         int                  `json:"countDown"`
+	Grid              [15][13]Cord         `json:"grid"`
 }
 
 type Client struct {
@@ -263,43 +268,82 @@ func handleMessages() {
 			}
 
 		case "countDown":
-			for i := 0; i < len(msg.GameParty); i++ {
-				if clientConnections[msg.GameParty[i]] != nil {
-					clientConnections[msg.GameParty[i]].mu.Lock()
-					err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
-					if err != nil {
-						fmt.Println("Error writing gameLogic to client:", err)
-						clientConnections[msg.GameParty[i]].mu.Unlock()
-						return
+			if msg.GameStatus == "Prepare" || msg.GameStatus == "Fight" {
+				for i := 0; i < len(msg.ActiveGameParty); i++ {
+					if clientConnections[msg.ActiveGameParty[i].User] != nil {
+						clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
+						msg.GameTag = msg.ActiveGameParty[i].PlayerTag
+						err := clientConnections[msg.ActiveGameParty[i].User].connection.WriteJSON(msg)
+						if err != nil {
+							fmt.Println("Error writing gameLogic to client:", err)
+							clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
+							return
+						}
+						clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
 					}
-					clientConnections[msg.GameParty[i]].mu.Unlock()
+				}
+			} else {
+				for i := 0; i < len(msg.GameParty); i++ {
+					if clientConnections[msg.GameParty[i]] != nil {
+						clientConnections[msg.GameParty[i]].mu.Lock()
+						err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
+						if err != nil {
+							fmt.Println("Error writing gameLogic to client:", err)
+							clientConnections[msg.GameParty[i]].mu.Unlock()
+							return
+						}
+						clientConnections[msg.GameParty[i]].mu.Unlock()
+					}
 				}
 			}
 
 		case "gameLogic":
-			for i := 0; i < len(msg.GameParty); i++ {
-				if clientConnections[msg.GameParty[i]] != nil {
-					clientConnections[msg.GameParty[i]].mu.Lock()
-					err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
-					if err != nil {
-						fmt.Println("Error writing gameLogic to client:", err)
-						clientConnections[msg.GameParty[i]].mu.Unlock()
-						return
+			if msg.GameStatus == "Prepare" || msg.GameStatus == "Fight" {
+				for i := 0; i < len(msg.ActiveGameParty); i++ {
+					if clientConnections[msg.ActiveGameParty[i].User] != nil {
+						clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
+						msg.GameTag = msg.ActiveGameParty[i].PlayerTag
+
+						err := clientConnections[msg.ActiveGameParty[i].User].connection.WriteJSON(msg)
+						msg.GameTag = ""
+						if err != nil {
+							fmt.Println("Error writing gameLogic to client:", err)
+							clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
+							return
+						}
+						clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
 					}
-					clientConnections[msg.GameParty[i]].mu.Unlock()
 				}
+			} else {
+				for i := 0; i < len(msg.GameParty); i++ {
+					if clientConnections[msg.GameParty[i]] != nil {
+						clientConnections[msg.GameParty[i]].mu.Lock()
+						err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
+						if err != nil {
+							fmt.Println("Error writing gameLogic to client:", err)
+							clientConnections[msg.GameParty[i]].mu.Unlock()
+							return
+						}
+						clientConnections[msg.GameParty[i]].mu.Unlock()
+					}
+				}
+
 			}
 		case "bombermanCoords":
-			for i := 0; i < len(msg.GameParty); i++ {
-				if clientConnections[msg.GameParty[i]] != nil {
-					clientConnections[msg.GameParty[i]].mu.Lock()
-					err := clientConnections[msg.GameParty[i]].connection.WriteJSON(msg)
+			for i := 0; i < len(msg.ActiveGameParty); i++ {
+				if clientConnections[msg.ActiveGameParty[i].User] != nil {
+					clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
+
+					if msg.FromId == msg.ActiveGameParty[i].User {
+						msg.GameTag = msg.ActiveGameParty[i].PlayerTag
+					}
+					err := clientConnections[msg.ActiveGameParty[i].User].connection.WriteJSON(msg)
 					if err != nil {
-						fmt.Println("Error writing COORDS to client:", err)
-						clientConnections[msg.GameParty[i]].mu.Unlock()
+						fmt.Println("Error writing gameLogic to client:", err)
+						clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
 						return
 					}
-					clientConnections[msg.GameParty[i]].mu.Unlock()
+					clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
 				}
 			}
 

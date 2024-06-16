@@ -182,6 +182,10 @@ func ValidateFollowing(userId string) []structs.FollowRequests {
 	return database.GetFollowing(userId)
 }
 
-func ValidateQueue() []structs.GameQueue{
+func ValidateQueue() []structs.GameQueue {
 	return database.GetQueue()
+}
+
+func ValidateActiveGameParty(gameGroupId string) []structs.GamePlayer {
+	return database.ActiveGameParty(gameGroupId)
 }
