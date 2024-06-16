@@ -26,7 +26,7 @@ import player4FrontStyle from './assets/characters/red/frontS1.png';
 import './bobermanMain.css';
 
 let tick = 0;
-let tickSpeed = 1;
+let tickSpeed = 12;
 let playerSpeed = 2;
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
@@ -205,72 +205,77 @@ export const initBomberman = (
     player4: { element: player4, x: player4XCoord, y: player4YCoord },
   };
 
-  // movement
+  const gameMatrix = Point('square');
+  gameMatrix[82].src
+  console.log(gameMatrix);
 
   //animation
   const refresh = (timestamp) => {
-    //max fps
+    //limit fps to 60
     const deltaTime = timestamp - lastTimestamp;
     if (deltaTime < minFrameTime) {
       requestAnimationFrame(refresh);
       return;
     }
-    // handle game speed
+
+    // character movements
+    switch (moveDirection) {
+      case 'up':
+        {
+          const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
+          const checkFutureX = playersRef.current[gameTag].x;
+          if (checkFutureY > 50 && Math.round(checkFutureX / 50) % 2 == 1) {
+            playersRef.current[gameTag].y = checkFutureY;
+          }
+        }
+        break;
+      case 'down':
+        {
+          const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
+          const checkFutureX = playersRef.current[gameTag].x;
+          if (checkFutureY <= 550 && Math.round(checkFutureX / 50) % 2 == 1) {
+            playersRef.current[gameTag].y = checkFutureY;
+          }
+        }
+        break;
+      case 'left':
+        {
+          const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
+          const checkFutureY = playersRef.current[gameTag].y;
+          if (checkFutureX > 50 && Math.round(checkFutureY / 50) % 2 == 1) {
+            playersRef.current[gameTag].x = checkFutureX;
+          }
+        }
+        break;
+      case 'right':
+        {
+          const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
+          const checkFutureY = playersRef.current[gameTag].y;
+          if (checkFutureX < 650 && Math.round(checkFutureY / 50) % 2 == 1) {
+            playersRef.current[gameTag].x = checkFutureX;
+          }
+        }
+        break;
+    }
+
+    updatePlayerPosition(
+      playersRef.current[gameTag].element,
+      playersRef.current[gameTag].x,
+      playersRef.current[gameTag].y
+    );
+    // let others know your movements
+    sendJsonMessage({
+      type: 'bombermanCoords',
+      fromuserid: currentUser,
+      gameTag: gameTag,
+      gameGroup: group,
+      coordX: playersRef.current[gameTag].x.toString(),
+      coordY: playersRef.current[gameTag].y.toString(),
+    });
+
+    // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
       tick = 0;
-
-      switch (moveDirection) {
-        case 'up':
-          {
-            const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
-            const checkFutureX = playersRef.current[gameTag].x;
-            if (checkFutureY > 50 && Math.round(checkFutureX / 50) % 2 == 1) {
-              playersRef.current[gameTag].y = checkFutureY;
-            }
-          }
-          break;
-        case 'down':
-          {
-            const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
-            const checkFutureX = playersRef.current[gameTag].x;
-            if (checkFutureY <= 550 && Math.round(checkFutureX / 50) % 2 == 1) {
-              playersRef.current[gameTag].y = checkFutureY;
-            }
-          }
-          break;
-        case 'left':
-          {
-            const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
-            const checkFutureY = playersRef.current[gameTag].y;
-            if (checkFutureX > 50 && Math.round(checkFutureY / 50) % 2 == 1) {
-              playersRef.current[gameTag].x = checkFutureX;
-            }
-          }
-          break;
-        case 'right':
-          {
-            const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
-            const checkFutureY = playersRef.current[gameTag].y;
-            if (checkFutureX < 650 && Math.round(checkFutureY / 50) % 2 == 1) {
-              playersRef.current[gameTag].x = checkFutureX;
-            }
-          }
-          break;
-      }
-
-      updatePlayerPosition(
-        playersRef.current[gameTag].element,
-        playersRef.current[gameTag].x,
-        playersRef.current[gameTag].y
-      );
-      sendJsonMessage({
-        type: 'bombermanCoords',
-        fromuserid: currentUser,
-        gameTag: gameTag,
-        gameGroup: group,
-        coordX: playersRef.current[gameTag].x.toString(),
-        coordY: playersRef.current[gameTag].y.toString(),
-      });
     }
 
     tick++;
