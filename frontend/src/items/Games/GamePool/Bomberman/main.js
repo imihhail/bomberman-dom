@@ -222,33 +222,53 @@ export const initBomberman = (
       switch (moveDirection) {
         case 'up':
           {
-            const checkFuture = playersRef.current[gameTag].y - playerSpeed;
-            if (checkFuture > 50) {
-              playersRef.current[gameTag].y = checkFuture;
+            const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
+            const checkFutureX = playersRef.current[gameTag].x;
+            if (
+              checkFutureY > 50 &&
+              Math.floor(checkFutureY / 50) % 2 == 1 &&
+              Math.floor(checkFutureX / 50) % 2 == 1
+            ) {
+              playersRef.current[gameTag].y = checkFutureY;
             }
           }
           break;
         case 'down':
           {
-            const checkFuture = playersRef.current[gameTag].y + playerSpeed;
-            if (checkFuture <= 550) {
-              playersRef.current[gameTag].y = checkFuture;
+            const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
+            const checkFutureX = playersRef.current[gameTag].x;
+            if (
+              checkFutureY <= 550 &&
+              Math.floor(checkFutureY / 50) % 2 == 1 &&
+              Math.floor(checkFutureX / 50) % 2 == 1
+            ) {
+              playersRef.current[gameTag].y = checkFutureY;
             }
           }
           break;
         case 'left':
           {
-            const checkFuture = playersRef.current[gameTag].x - playerSpeed;
-            if (checkFuture > 50) {
-              playersRef.current[gameTag].x = checkFuture;
+            const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
+            const checkFutureY = playersRef.current[gameTag].y;
+            if (
+              checkFutureX > 50 &&
+              Math.floor(checkFutureY / 50) % 2 == 1 &&
+              Math.floor(checkFutureX / 50) % 2 == 1
+            ) {
+              playersRef.current[gameTag].x = checkFutureX;
             }
           }
           break;
         case 'right':
           {
-            const checkFuture = playersRef.current[gameTag].x + playerSpeed;
-            if (checkFuture < 650) {
-              playersRef.current[gameTag].x = checkFuture;
+            const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
+            const checkFutureY = playersRef.current[gameTag].y;
+            if (
+              checkFutureX < 650 &&
+              Math.floor(checkFutureY / 50) % 2 == 1 &&
+              Math.floor(checkFutureX / 50) % 2 == 1
+            ) {
+              playersRef.current[gameTag].x = checkFutureX;
             }
           }
           break;
