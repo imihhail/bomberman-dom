@@ -64,6 +64,7 @@ type SocketMessage struct {
 	GameGroupId       string               `json:"gameGroupId"`
 	CountDown         int                  `json:"countDown"`
 	Grid              [15][13]Cord         `json:"grid"`
+	Bombs             []structs.Bomb       `json:"bombs"`
 }
 
 type Client struct {

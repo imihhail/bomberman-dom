@@ -255,7 +255,6 @@ export const BombInit = [
   bombInit1,
   bombInit2,
   bombInit3,
-  bombInit3,
 ];
 
 // explosion import

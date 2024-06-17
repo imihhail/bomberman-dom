@@ -29,12 +29,21 @@ import './bobermanMain.css';
 let tick = 0;
 let tickSpeed = 12;
 let playerSpeed = 2;
-let bombsPlaced = false;
-let bombFrameCounter = 0;
+let bombPlaced = false;
 // let bombPower = 1;
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
 let moveDirection = null;
+
+class Bomb {
+  constructor(coordCalculation, bombLevel, animationNumber) {
+    this.coordCalculation = coordCalculation;
+    this.bombLevel = bombLevel;
+    this.animationNumber = animationNumber;
+  }
+}
+
+let bombs = [];
 
 const stopMovement = (e) => {
   if (
@@ -78,7 +87,7 @@ const handleMovemement = (e) => {
       moveDirection = 'right';
       break;
     case 'Space':
-      bombsPlaced = true; // bombsPlaced + 1
+      bombPlaced = true; // bombsPlaced + 1
       break;
   }
 };
@@ -153,41 +162,66 @@ export const updatePlayerPosition = (player, x, y) => {
   player.style.top = y + 'px';
 };
 
-export const updateBombPositions = (playerX, playerY) => {
-
-  if (bombsPlaced) {
-    console.log(playerX, playerY)
-    // Calculate which square div the bomb should be placed in
-    let squareX = Math.floor((playerX+25) / 50);
-    let squareY = Math.floor((playerY+25) / 50);
-
-    const getAllTiles = document.querySelectorAll('.square')
-    let coordCalculation = squareY * 15 + squareX;
-    let tile = getAllTiles[coordCalculation];
-
-    // Create a new bomb element
-    const bomb = document.createElement('img');
-    bomb.classList.add('bomb');
-    bomb.src = BombInit[0]; // Set the initial bomb image
-    tile.appendChild(bomb);
-    bombsPlaced = false;
+const userPlacedBomb = (playerX, playerY) => {
+  let coordCalculation = calculateBombPosition(playerX, playerY);
+  // Check if a bomb with the same coordCalculation already exists
+  if (bombs.some(bomb => bomb.coordCalculation === coordCalculation)) {
+    bombPlaced = false;
+    return;
   }
+  let bombActiveLevel = 1;
+  let bombAnimationNumber = 0;
+  let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
+  bombs.push(bomb);
+  console.log('Bombs: ', bombs);
+  bombPlaced = false;
+}
+
+const calculateBombPosition = (playerX, playerY) => {
+  // Calculate which square div the bomb should be placed in
+  let squareX = Math.floor((playerX+25) / 50);
+  let squareY = Math.floor((playerY+25) / 50);
+
+  let coordCalculation = squareY * 15 + squareX;
+  return coordCalculation;
 };
 
-const updateBombExplosion = () => {
-  // Update bomb animations
-  const allBombs = document.querySelectorAll('.bomb');
-  allBombs.forEach(bomb => {
-    bombFrameCounter++;
-    let frame = Math.floor(bombFrameCounter / 60) % BombInit.length; // Calculate the frame index
-    if (bombFrameCounter % 60 === 0) { // Only update the bomb image once per second
-      bomb.src = BombInit[frame]; // Update the bomb image
-      if (frame >= 3) { // If it's the third frame or later
-        bomb.remove(); // Remove the bomb from the DOM
+export const updateBombPosition = (bombs) => {
+  const getAllTiles = document.querySelectorAll('.square')
+
+  bombs.forEach((bomb, index) => {
+    let tile = getAllTiles[bomb.coordCalculation];
+    // Check if a bomb already exists at this position
+    let bombElement = tile.querySelector('.bomb');
+    if (!bombElement) {
+      // Create a new bomb element
+      bombElement = document.createElement('img');
+      bombElement.classList.add('bomb');
+      bombElement.src = BombInit[0]; // Set the initial bomb image
+      tile.appendChild(bombElement);
+      bombPlaced = false;
+    }
+
+    // Update the bomb explosion
+    bomb.animationNumber++;
+    if (bombElement) {
+      // Update the bomb image every 60 frames
+      if (bomb.animationNumber % 60 === 0) {
+        bombElement.src = BombInit[bomb.animationNumber / 60]; 
+      }
+    }
+
+    if (bomb.animationNumber / 60 > 3) { // If it's the fourth frame or later, maybe third? must experiment
+      // Remove the bomb from the bombs array
+      bombs.splice(index, 1);
+      // Remove the bomb from the DOM
+      if (bombElement) {
+        bombElement.remove();
       }
     }
   });
-}
+};
+
 
 export const initBomberman = (
   grid,
@@ -303,11 +337,14 @@ export const initBomberman = (
         playersRef.current[gameTag].x,
         playersRef.current[gameTag].y
       );
-      updateBombPositions(
-        playersRef.current[gameTag].x,
-        playersRef.current[gameTag].y
-      );
-      updateBombExplosion();
+
+      if (bombPlaced) {
+        userPlacedBomb(
+          playersRef.current[gameTag].x,
+          playersRef.current[gameTag].y
+        );
+      }
+      updateBombPosition(bombs);
       sendJsonMessage({
         type: 'bombermanCoords',
         fromuserid: currentUser,
@@ -315,6 +352,7 @@ export const initBomberman = (
         gameGroup: group,
         coordX: playersRef.current[gameTag].x.toString(),
         coordY: playersRef.current[gameTag].y.toString(),
+        bombs: bombs,
       });
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
