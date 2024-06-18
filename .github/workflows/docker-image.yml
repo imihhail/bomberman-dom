@@ -19,13 +19,13 @@ jobs:
       - name: Deploy Docker image to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2 }} << 'ENDSSH'
-          cd networking
+          cd boberman
           git pull
           cd backend
           sudo docker container stop backend
           sudo docker container rm backend
-          sudo docker image rm estonian/social-network-backend:latest
-          sudo docker build -t estonian/social-network-backend:latest .
+          sudo docker image rm estonian/boberman:latest
+          sudo docker build -t estonian/boberman:latest .
           cd ..
           cd frontend
           npm install
@@ -33,7 +33,7 @@ jobs:
           cd ..
           sudo cp -r frontend/dist/* /usr/share/nginx/html/
           sudo systemctl restart nginx
-          sudo docker run -d --name backend -p 8080:8080 estonian/social-network-backend:latest 
+          sudo docker run -d --name backend -p 8080:8080 estonian/boberman:latest 
           # sudo docker cp /etc/letsencrypt/archive/devpipe.ee/fullchain1.pem backend:/certs/fullchain.pem
           # sudo docker cp /etc/letsencrypt/archive/devpipe.ee/privkey1.pem backend:/certs/privkey.pem
           ENDSSH
