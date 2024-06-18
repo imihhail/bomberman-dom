@@ -30,6 +30,7 @@ let tick = 0;
 let tickSpeed = 12;
 let playerSpeed = 2;
 let bombPlaced = false;
+let tolerance = 15; // bigger number makes the walkpath wider
 // let bombPower = 1;
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
@@ -165,7 +166,7 @@ export const updatePlayerPosition = (player, x, y) => {
 const userPlacedBomb = (playerX, playerY) => {
   let coordCalculation = calculateBombPosition(playerX, playerY);
   // Check if a bomb with the same coordCalculation already exists
-  if (bombs.some(bomb => bomb.coordCalculation === coordCalculation)) {
+  if (bombs.some((bomb) => bomb.coordCalculation === coordCalculation)) {
     bombPlaced = false;
     return;
   }
@@ -175,19 +176,19 @@ const userPlacedBomb = (playerX, playerY) => {
   bombs.push(bomb);
   console.log('Bombs: ', bombs);
   bombPlaced = false;
-}
+};
 
 const calculateBombPosition = (playerX, playerY) => {
   // Calculate which square div the bomb should be placed in
-  let squareX = Math.floor((playerX+25) / 50);
-  let squareY = Math.floor((playerY+25) / 50);
+  let squareX = Math.floor((playerX + 25) / 50);
+  let squareY = Math.floor((playerY + 25) / 50);
 
   let coordCalculation = squareY * 15 + squareX;
   return coordCalculation;
 };
 
 export const updateBombPosition = (bombs) => {
-  const getAllTiles = document.querySelectorAll('.square')
+  const getAllTiles = document.querySelectorAll('.square');
 
   bombs.forEach((bomb, index) => {
     let tile = getAllTiles[bomb.coordCalculation];
@@ -207,11 +208,12 @@ export const updateBombPosition = (bombs) => {
     if (bombElement) {
       // Update the bomb image every 60 frames
       if (bomb.animationNumber % 60 === 0) {
-        bombElement.src = BombInit[bomb.animationNumber / 60]; 
+        bombElement.src = BombInit[bomb.animationNumber / 60];
       }
     }
 
-    if (bomb.animationNumber / 60 > 3) { // If it's the fourth frame or later, maybe third? must experiment
+    if (bomb.animationNumber / 60 > 3) {
+      // If it's the fourth frame or later, maybe third? must experiment
       // Remove the bomb from the bombs array
       bombs.splice(index, 1);
       // Remove the bomb from the DOM
@@ -221,7 +223,6 @@ export const updateBombPosition = (bombs) => {
     }
   });
 };
-
 
 export const initBomberman = (
   grid,
@@ -280,7 +281,7 @@ export const initBomberman = (
   };
 
   const gameMatrix = Point('square');
-  gameMatrix[82].src
+  gameMatrix[82].src;
   console.log(gameMatrix);
 
   //animation
@@ -298,7 +299,16 @@ export const initBomberman = (
         {
           const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
           const checkFutureX = playersRef.current[gameTag].x;
-          if (checkFutureY > 50 && Math.round(checkFutureX / 50) % 2 == 1) {
+          if (
+            (checkFutureY > 50 &&
+              Math.round(checkFutureX / 50) % 2 == 1 &&
+              checkFutureX % 50 >= 0 &&
+              checkFutureX % 50 < tolerance) ||
+            (checkFutureY > 50 &&
+              Math.round(checkFutureX / 50) % 2 == 1 &&
+              checkFutureX % 50 >= 0 &&
+              checkFutureX % 50 > 50 - tolerance)
+          ) {
             playersRef.current[gameTag].y = checkFutureY;
           }
         }
@@ -307,7 +317,17 @@ export const initBomberman = (
         {
           const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
           const checkFutureX = playersRef.current[gameTag].x;
-          if (checkFutureY <= 550 && Math.round(checkFutureX / 50) % 2 == 1) {
+
+          if (
+            (checkFutureY < 550 &&
+              Math.round(checkFutureX / 50) % 2 == 1 &&
+              checkFutureX % 50 >= 0 &&
+              checkFutureX % 50 < tolerance) ||
+            (checkFutureY < 550 &&
+              Math.round(checkFutureX / 50) % 2 == 1 &&
+              checkFutureX % 50 >= 0 &&
+              checkFutureX % 50 > 50 - tolerance)
+          ) {
             playersRef.current[gameTag].y = checkFutureY;
           }
         }
@@ -316,7 +336,16 @@ export const initBomberman = (
         {
           const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
           const checkFutureY = playersRef.current[gameTag].y;
-          if (checkFutureX > 50 && Math.round(checkFutureY / 50) % 2 == 1) {
+          if (
+            (checkFutureX > 50 &&
+              Math.round(checkFutureY / 50) % 2 == 1 &&
+              checkFutureY % 50 >= 0 &&
+              checkFutureY % 50 < tolerance) ||
+            (checkFutureX > 50 &&
+              Math.round(checkFutureY / 50) % 2 == 1 &&
+              checkFutureY % 50 >= 0 &&
+              checkFutureY % 50 > 50 - tolerance)
+          ) {
             playersRef.current[gameTag].x = checkFutureX;
           }
         }
@@ -325,35 +354,44 @@ export const initBomberman = (
         {
           const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
           const checkFutureY = playersRef.current[gameTag].y;
-          if (checkFutureX < 650 && Math.round(checkFutureY / 50) % 2 == 1) {
+          if (
+            (checkFutureX < 650 &&
+              Math.round(checkFutureY / 50) % 2 == 1 &&
+              checkFutureY % 50 >= 0 &&
+              checkFutureY % 50 < tolerance) ||
+            (checkFutureX < 650 &&
+              Math.round(checkFutureY / 50) % 2 == 1 &&
+              checkFutureY % 50 >= 0 &&
+              checkFutureY % 50 > 50 - tolerance)
+          ) {
             playersRef.current[gameTag].x = checkFutureX;
           }
         }
         break;
     }
 
-      updatePlayerPosition(
-        playersRef.current[gameTag].element,
+    updatePlayerPosition(
+      playersRef.current[gameTag].element,
+      playersRef.current[gameTag].x,
+      playersRef.current[gameTag].y
+    );
+
+    if (bombPlaced) {
+      userPlacedBomb(
         playersRef.current[gameTag].x,
         playersRef.current[gameTag].y
       );
-
-      if (bombPlaced) {
-        userPlacedBomb(
-          playersRef.current[gameTag].x,
-          playersRef.current[gameTag].y
-        );
-      }
-      updateBombPosition(bombs);
-      sendJsonMessage({
-        type: 'bombermanCoords',
-        fromuserid: currentUser,
-        gameTag: gameTag,
-        gameGroup: group,
-        coordX: playersRef.current[gameTag].x.toString(),
-        coordY: playersRef.current[gameTag].y.toString(),
-        bombs: bombs,
-      });
+    }
+    updateBombPosition(bombs);
+    sendJsonMessage({
+      type: 'bombermanCoords',
+      fromuserid: currentUser,
+      gameTag: gameTag,
+      gameGroup: group,
+      coordX: playersRef.current[gameTag].x.toString(),
+      coordY: playersRef.current[gameTag].y.toString(),
+      bombs: bombs,
+    });
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
       tick = 0;

@@ -12,7 +12,6 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
     if (lastMessage) {
       const messageData = JSON.parse(lastMessage.data);
       if (messageData.type === 'bombermanCoords') {
-        console.log('messageData.bombs', messageData.bombs)
         if (messageData.gameTag && playersRef.current[messageData.gameTag]) {
           updatePlayerPosition(
             playersRef.current[messageData.gameTag].element,
