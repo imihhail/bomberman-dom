@@ -309,6 +309,12 @@ export const initBomberman = (
               checkFutureX % 50 >= 0 &&
               checkFutureX % 50 > 50 - tolerance)
           ) {
+            if (checkFutureX % 50 > 50 - tolerance) {
+              console.log('centering down');
+              playersRef.current[gameTag].x += playerSpeed;
+            } else if (checkFutureX % 50 > playerSpeed) {
+              playersRef.current[gameTag].x -= playerSpeed;
+            }
             playersRef.current[gameTag].y = checkFutureY;
           }
         }
@@ -328,6 +334,12 @@ export const initBomberman = (
               checkFutureX % 50 >= 0 &&
               checkFutureX % 50 > 50 - tolerance)
           ) {
+            if (checkFutureX % 50 > 50 - tolerance) {
+              console.log('centering down');
+              playersRef.current[gameTag].x += playerSpeed;
+            } else if (checkFutureX % 50 > playerSpeed) {
+              playersRef.current[gameTag].x -= playerSpeed;
+            }
             playersRef.current[gameTag].y = checkFutureY;
           }
         }
@@ -336,6 +348,7 @@ export const initBomberman = (
         {
           const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
           const checkFutureY = playersRef.current[gameTag].y;
+          console.log(checkFutureY % 50);
           if (
             (checkFutureX > 50 &&
               Math.round(checkFutureY / 50) % 2 == 1 &&
@@ -346,6 +359,12 @@ export const initBomberman = (
               checkFutureY % 50 >= 0 &&
               checkFutureY % 50 > 50 - tolerance)
           ) {
+            if (checkFutureY % 50 > 50 - tolerance) {
+              console.log('centering down');
+              playersRef.current[gameTag].y += playerSpeed;
+            } else if (checkFutureY % 50 > playerSpeed) {
+              playersRef.current[gameTag].y -= playerSpeed;
+            }
             playersRef.current[gameTag].x = checkFutureX;
           }
         }
@@ -364,6 +383,12 @@ export const initBomberman = (
               checkFutureY % 50 >= 0 &&
               checkFutureY % 50 > 50 - tolerance)
           ) {
+            if (checkFutureY % 50 > 50 - tolerance) {
+              console.log('centering down');
+              playersRef.current[gameTag].y += playerSpeed;
+            } else if (checkFutureY % 50 > playerSpeed) {
+              playersRef.current[gameTag].y -= playerSpeed;
+            }
             playersRef.current[gameTag].x = checkFutureX;
           }
         }
