@@ -9,21 +9,24 @@ $bit-size: 50px;
   height: 100%;
 }
 
-.walk-tile {
+.walkTile {
   height: $bit-size;
   width: $bit-size;
-  // content: url('./assets/map/walkTile.png');
+}
+
+.indestructibleWall {
+  height: $bit-size;
+  width: $bit-size;
+}
+.destroyableWall {
+  height: $bit-size;
+  width: $bit-size;
 }
 
 .map-row {
   display: flex;
 }
 
-.indestructible-wall {
-  height: $bit-size;
-  width: $bit-size;
-  content: url('./assets/map/indestructibleWall.png');
-}
 
 .gameContainer {
   position: relative;

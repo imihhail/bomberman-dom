@@ -7,19 +7,23 @@
   height: 100%;
 }
 
-.walk-tile {
+.walkTile {
+  height: 50px;
+  width: 50px;
+}
+
+.indestructibleWall {
+  height: 50px;
+  width: 50px;
+}
+
+.destroyableWall {
   height: 50px;
   width: 50px;
 }
 
 .map-row {
   display: flex;
-}
-
-.indestructible-wall {
-  height: 50px;
-  width: 50px;
-  content: url("./assets/map/indestructibleWall.png");
 }
 
 .gameContainer {

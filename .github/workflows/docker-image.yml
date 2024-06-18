@@ -32,6 +32,7 @@ jobs:
           VITE_APP_BACKEND_URL=https://devpipe.ee/backend VITE_APP_BACKEND_PICTURE_URL=https://devpipe.ee npm run build
           cd ..
           sudo cp -r frontend/dist/* /usr/share/nginx/html/
+          sudo cp -r frontend/nginx.conf /etc/nginx/nginx.conf
           sudo systemctl restart nginx
           sudo docker run -d --name backend -p 8080:8080 estonian/boberman:latest 
           # sudo docker cp /etc/letsencrypt/archive/devpipe.ee/fullchain1.pem backend:/certs/fullchain.pem

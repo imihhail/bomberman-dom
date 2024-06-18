@@ -19,12 +19,8 @@ var upgrader = websocket.Upgrader{
 		switch origin {
 		case "http://localhost:3000",
 			"ws://localhost:3000",
-			"http://www.devpipe.ee",
-			"http://devpipe.ee",
 			"wss://www.devpipe.ee",
 			"wss://devpipe.ee",
-			"ws://www.devpipe.ee",
-			"ws://devpipe.ee",
 			"https://www.devpipe.ee",
 			"https://devpipe.ee":
 			return true

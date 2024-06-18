@@ -1,18 +1,25 @@
 import { NewElement } from '../../../../../mini-framework/index.js';
 
+import indestructibleWall from './assets/map/indestructibleWall.png';
+import destroyableWall from './assets/map/destroyableWall.png';
+import walkTile from './assets/map/walkTile.png';
+
 export const GenerateGrid = (grid) => {
   const gameGrid = NewElement('div', 'gameContainer');
   for (let y = 0; y < 13; y++) {
     const row = NewElement('div', 'map-row');
     for (let x = 0; x < 15; x++) {
-      const column = NewElement('div', 'square');
+      const column = NewElement('img', 'square');
       if (grid[x][y].WallType == 9) {
-        column.classList.add('indestructible-wall');
+        column.src = indestructibleWall;
+        column.classList.add('indestructibleWall');
         column.setAttribute('indestructible', 'indestructible');
       } else if (grid[x][y].WallType == 1) {
-        column.classList.add('walk-tile', 'destroyable-wall');
+        column.src = destroyableWall;
+        column.classList.add("destroyableWall");
       } else {
-        column.classList.add('walk-tile');
+        column.src = walkTile;
+        column.classList.add('walkTile');
       }
       row.appendChild(column);
     }
@@ -251,11 +258,7 @@ import bombInit1 from './assets/bomb/bomb1.png';
 import bombInit2 from './assets/bomb/bomb2.png';
 import bombInit3 from './assets/bomb/bomb3.png';
 
-export const BombInit = [
-  bombInit1,
-  bombInit2,
-  bombInit3,
-];
+export const BombInit = [bombInit1, bombInit2, bombInit3];
 
 // explosion import
 import stage1explosion1 from './assets/explosion/stage1/bottomEnd.png';
