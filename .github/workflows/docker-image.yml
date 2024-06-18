@@ -1,0 +1,39 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      - name: Deploy Docker image to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2 }} << 'ENDSSH'
+          cd networking
+          git pull
+          cd backend
+          sudo docker container stop backend
+          sudo docker container rm backend
+          sudo docker image rm estonian/social-network-backend:latest
+          sudo docker build -t estonian/social-network-backend:latest .
+          cd ..
+          cd frontend
+          npm install
+          VITE_APP_BACKEND_URL=https://devpipe.ee/backend VITE_APP_BACKEND_PICTURE_URL=https://devpipe.ee npm run build
+          cd ..
+          sudo cp -r frontend/dist/* /usr/share/nginx/html/
+          sudo systemctl restart nginx
+          sudo docker run -d --name backend -p 8080:8080 estonian/social-network-backend:latest 
+          # sudo docker cp /etc/letsencrypt/archive/devpipe.ee/fullchain1.pem backend:/certs/fullchain.pem
+          # sudo docker cp /etc/letsencrypt/archive/devpipe.ee/privkey1.pem backend:/certs/privkey.pem
+          ENDSSH
