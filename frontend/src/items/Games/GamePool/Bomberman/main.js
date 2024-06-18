@@ -311,9 +311,9 @@ export const initBomberman = (
           ) {
             if (checkFutureX % 50 > 50 - tolerance) {
               console.log('centering down');
-              playersRef.current[gameTag].x += playerSpeed;
+              playersRef.current[gameTag].x += 1;
             } else if (checkFutureX % 50 > playerSpeed) {
-              playersRef.current[gameTag].x -= playerSpeed;
+              playersRef.current[gameTag].x -= 1;
             }
             playersRef.current[gameTag].y = checkFutureY;
           }
@@ -336,9 +336,9 @@ export const initBomberman = (
           ) {
             if (checkFutureX % 50 > 50 - tolerance) {
               console.log('centering down');
-              playersRef.current[gameTag].x += playerSpeed;
+              playersRef.current[gameTag].x += 1;
             } else if (checkFutureX % 50 > playerSpeed) {
-              playersRef.current[gameTag].x -= playerSpeed;
+              playersRef.current[gameTag].x -= 1;
             }
             playersRef.current[gameTag].y = checkFutureY;
           }
@@ -361,9 +361,9 @@ export const initBomberman = (
           ) {
             if (checkFutureY % 50 > 50 - tolerance) {
               console.log('centering down');
-              playersRef.current[gameTag].y += playerSpeed;
+              playersRef.current[gameTag].y += 1;
             } else if (checkFutureY % 50 > playerSpeed) {
-              playersRef.current[gameTag].y -= playerSpeed;
+              playersRef.current[gameTag].y -= 1;
             }
             playersRef.current[gameTag].x = checkFutureX;
           }
@@ -385,9 +385,9 @@ export const initBomberman = (
           ) {
             if (checkFutureY % 50 > 50 - tolerance) {
               console.log('centering down');
-              playersRef.current[gameTag].y += playerSpeed;
+              playersRef.current[gameTag].y += 1;
             } else if (checkFutureY % 50 > playerSpeed) {
-              playersRef.current[gameTag].y -= playerSpeed;
+              playersRef.current[gameTag].y -= 1;
             }
             playersRef.current[gameTag].x = checkFutureX;
           }
