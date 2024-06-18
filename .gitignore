@@ -3,7 +3,7 @@ terraform/*
 
 ### Social-network PROJECT ###
 backend/database/sqlite/social-network.db
-backend/database/images/*
+# backend/database/images/*
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
