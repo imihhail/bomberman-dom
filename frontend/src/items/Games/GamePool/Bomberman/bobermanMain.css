@@ -8,8 +8,10 @@
 }
 
 .walkTile {
+  position: relative;
   height: 50px;
   width: 50px;
+  z-index: 1;
 }
 
 .indestructibleWall {
@@ -34,27 +36,41 @@
   position: absolute;
   height: 50px;
   width: 50px;
+  z-index: 2;
 }
 
 .player2 {
   position: absolute;
   height: 50px;
   width: 50px;
+  z-index: 2;
 }
 
 .player3 {
   position: absolute;
   height: 50px;
   width: 50px;
+  z-index: 2;
 }
 
 .player4 {
   position: absolute;
   height: 50px;
   width: 50px;
+  z-index: 2;
+}
+
+.imgContainer {
+  position: relative;
+  height: 50px;
+  width: 50px;
 }
 
 .bomb {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 50px;
   width: 50px;
+  z-index: 3;
 }/*# sourceMappingURL=bobermanMain.css.map */
