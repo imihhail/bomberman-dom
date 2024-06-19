@@ -234,55 +234,75 @@ export const initBomberman = (
 ) => {
   Point('bomberman-root').appendChild(GenerateGrid(grid));
 
-  const player1 = Point('gameContainer')[0].appendChild(
-    NewElement('img', 'player1')
-  );
-  let player1XCoord = 50;
-  let player1YCoord = 50;
-  player1.src = player1FrontStyle;
-  player1.style.left = player1XCoord + 'px';
-  player1.style.top = player1YCoord + 'px';
+  playersRef.current = {};
 
-  // player2
-  const player2 = Point('gameContainer')[0].appendChild(
-    NewElement('img', 'player2')
-  );
-  let player2XCoord = 650;
-  let player2YCoord = 50;
-  player2.src = player2FrontStyle;
-  player2.style.left = player2XCoord + 'px';
-  player2.style.top = player2YCoord + 'px';
+  if (group.length > 0) {
+    // player1
+    const player1 = Point('gameContainer')[0].appendChild(
+      NewElement('img', 'player1')
+    );
+    let player1XCoord = 50;
+    let player1YCoord = 50;
+    player1.src = player1FrontStyle;
+    player1.style.left = player1XCoord + 'px';
+    player1.style.top = player1YCoord + 'px';
+    playersRef.current['player1'] = {
+      element: player1,
+      x: player1XCoord,
+      y: player1YCoord,
+    };
+  }
 
-  // player3
-  const player3 = Point('gameContainer')[0].appendChild(
-    NewElement('img', 'player3')
-  );
-  let player3XCoord = 50;
-  let player3YCoord = 550;
-  player3.src = player3FrontStyle;
-  player3.style.left = player3XCoord + 'px';
-  player3.style.top = player3YCoord + 'px';
+  if (group.length > 1) {
+    // player2
+    const player2 = Point('gameContainer')[0].appendChild(
+      NewElement('img', 'player2')
+    );
+    let player2XCoord = 650;
+    let player2YCoord = 50;
+    player2.src = player2FrontStyle;
+    player2.style.left = player2XCoord + 'px';
+    player2.style.top = player2YCoord + 'px';
+    playersRef.current['player2'] = {
+      element: player2,
+      x: player2XCoord,
+      y: player2YCoord,
+    };
+  }
 
-  // player4
-  const player4 = Point('gameContainer')[0].appendChild(
-    NewElement('img', 'player4')
-  );
-  let player4XCoord = 650;
-  let player4YCoord = 550;
-  player4.src = player4FrontStyle;
-  player4.style.left = player4XCoord + 'px';
-  player4.style.top = player4YCoord + 'px';
+  if (group.length > 2) {
+    // player3
+    const player3 = Point('gameContainer')[0].appendChild(
+      NewElement('img', 'player3')
+    );
+    let player3XCoord = 50;
+    let player3YCoord = 550;
+    player3.src = player3FrontStyle;
+    player3.style.left = player3XCoord + 'px';
+    player3.style.top = player3YCoord + 'px';
+    playersRef.current['player3'] = {
+      element: player3,
+      x: player3XCoord,
+      y: player3YCoord,
+    };
+  }
 
-  playersRef.current = {
-    player1: { element: player1, x: player1XCoord, y: player1YCoord },
-    player2: { element: player2, x: player2XCoord, y: player2YCoord },
-    player3: { element: player3, x: player3XCoord, y: player3YCoord },
-    player4: { element: player4, x: player4XCoord, y: player4YCoord },
-  };
-
-  // const gameMatrix = Point('square');
-  // gameMatrix[82].src;
-  // console.log(gameMatrix);
+  if (group.length > 3) {
+    // player4
+    const player4 = Point('gameContainer')[0].appendChild(
+      NewElement('img', 'player4')
+    );
+    let player4XCoord = 650;
+    let player4YCoord = 550;
+    player4.src = player4FrontStyle;
+    player4.style.left = player4XCoord + 'px';
+    player4.style.top = player4YCoord + 'px';
+    playersRef.current['player4'] = {
+      element: player4,
+      x: player4XCoord,
+      y: player4YCoord,
+    };
+  }
 
   //animation
   const refresh = (timestamp) => {
@@ -300,12 +320,9 @@ export const initBomberman = (
           const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
           const checkFutureX = playersRef.current[gameTag].x;
 
-          console.log("FUTUREX: ",  checkFutureX)
-          console.log("FUTUREY: ",  checkFutureY)
-
-          let wall = grid[Math.ceil(checkFutureX / 50)][(Math.ceil(checkFutureY / 50)) -1].WallType
-          console.log("X: ",  Math.ceil(checkFutureX / 50))
-          console.log("Y: ",  (Math.ceil(checkFutureY / 50)) -1)
+          let wall =
+            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50) - 1]
+              .WallType;
 
           if (
             (checkFutureY > 50 &&
@@ -332,12 +349,10 @@ export const initBomberman = (
         {
           const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
           const checkFutureX = playersRef.current[gameTag].x;
-          console.log("FUTUREX: ",  checkFutureX)
-          console.log("FUTUREY: ",  checkFutureY)
 
-          let wall = grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)].WallType
-          console.log("X: ",  Math.ceil(checkFutureX / 50))
-          console.log("Y: ",  Math.ceil(checkFutureY / 50))
+          let wall =
+            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
+              .WallType;
 
           if (
             (checkFutureY < 550 &&
@@ -349,14 +364,14 @@ export const initBomberman = (
               checkFutureX % 50 >= 0 &&
               checkFutureX % 50 > 50 - tolerance)
           ) {
-              if (checkFutureX % 50 > 50 - tolerance) {
-                playersRef.current[gameTag].x += 1;
-              } else if (checkFutureX % 50 > 0) {
-                playersRef.current[gameTag].x -= 4;
-              }
-              if (wall != 1) {
-                playersRef.current[gameTag].y = checkFutureY;
-              }   
+            if (checkFutureX % 50 > 50 - tolerance) {
+              playersRef.current[gameTag].x += 1;
+            } else if (checkFutureX % 50 > 0) {
+              playersRef.current[gameTag].x -= 4;
+            }
+            if (wall != 1) {
+              playersRef.current[gameTag].y = checkFutureY;
+            }
           }
         }
         break;
@@ -364,13 +379,10 @@ export const initBomberman = (
         {
           const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
           const checkFutureY = playersRef.current[gameTag].y;
-          console.log("FUTUREX: ",  checkFutureX)
-          console.log("FUTUREY: ",  checkFutureY)
 
-
-          let wall = grid[(Math.ceil(checkFutureX / 50)) - 1][Math.ceil(checkFutureY / 50)].WallType
-          console.log("X: ",  (Math.ceil(checkFutureX / 50))-1)
-          console.log("Y: ",  Math.ceil(checkFutureY / 50))
+          let wall =
+            grid[Math.ceil(checkFutureX / 50) - 1][Math.ceil(checkFutureY / 50)]
+              .WallType;
 
           if (
             (checkFutureX > 50 &&
@@ -388,7 +400,7 @@ export const initBomberman = (
               playersRef.current[gameTag].y -= 4;
             }
             if (wall != 1) {
-             playersRef.current[gameTag].x = checkFutureX;
+              playersRef.current[gameTag].x = checkFutureX;
             }
           }
         }
@@ -397,12 +409,10 @@ export const initBomberman = (
         {
           const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
           var checkFutureY = playersRef.current[gameTag].y;
-          console.log("FUTUREX: ",  checkFutureX)
-          console.log("FUTUREY: ",  checkFutureY)
 
-          let wall = grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)].WallType
-          console.log("X: ",  Math.ceil(checkFutureX / 50))
-          console.log("Y: ",  Math.ceil(checkFutureY / 50))
+          let wall =
+            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
+              .WallType;
 
           if (
             (checkFutureX < 650 &&
