@@ -33,7 +33,7 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 			gameParty = append(gameParty, queue[i].UserId)
 		}
 
-		if len(queue) >= 2 {
+		if len(queue) >= 1 {
 			mutex.Lock()
 			if !countdowns[queueKey(gameParty)] {
 				countdowns[queueKey(gameParty)] = true
@@ -57,7 +57,7 @@ func queueKey(gameParty []string) string {
 
 func startInitialCountdown(gameParty []string) {
 	// change to 20 when ready
-	countdown := 2
+	countdown := 1
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
@@ -82,7 +82,7 @@ func startInitialCountdown(gameParty []string) {
 
 func startFinalCountdown(gameParty []string) {
 	// change to 10 when ready
-	countdown := 2
+	countdown := 1
 
 	groupId := validators.ValidateCreateNewGame(gameParty)
 	validators.ValidateEmptyGameQueue(gameParty)
