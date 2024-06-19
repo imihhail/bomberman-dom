@@ -170,7 +170,7 @@ const userPlacedBomb = (playerX, playerY) => {
     bombPlaced = false;
     return;
   }
-  let bombActiveLevel = 3;
+  let bombActiveLevel = 1;
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
   bombs.push(bomb);
