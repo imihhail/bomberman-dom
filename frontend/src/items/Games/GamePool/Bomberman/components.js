@@ -258,41 +258,41 @@ export const BombInit = [
 ];
 
 // explosion import
-import stage1explosion1 from './assets/explosion/stage1/bottomEnd.png';
-import stage1explosion2 from './assets/explosion/stage1/innerExplosion.png';
-import stage1explosion3 from './assets/explosion/stage1/leftEnd.png';
+import stage1explosion1 from './assets/explosion/stage1/innerExplosion.png';
+import stage1explosion2 from './assets/explosion/stage1/pipe.png';
+import stage1explosion3 from './assets/explosion/stage1/topEnd.png';
 import stage1explosion4 from './assets/explosion/stage1/line.png';
-import stage1explosion5 from './assets/explosion/stage1/pipe.png';
+import stage1explosion5 from './assets/explosion/stage1/leftEnd.png';
 import stage1explosion6 from './assets/explosion/stage1/rightEnd.png';
-import stage1explosion7 from './assets/explosion/stage1/topEnd.png';
-import stage2explosion1 from './assets/explosion/stage2/bottomEnd.png';
-import stage2explosion2 from './assets/explosion/stage2/innerExplosion.png';
-import stage2explosion3 from './assets/explosion/stage2/leftEnd.png';
+import stage1explosion7 from './assets/explosion/stage1/bottomEnd.png';
+import stage2explosion1 from './assets/explosion/stage2/innerExplosion.png';
+import stage2explosion2 from './assets/explosion/stage2/pipe.png';
+import stage2explosion3 from './assets/explosion/stage2/topEnd.png';
 import stage2explosion4 from './assets/explosion/stage2/line.png';
-import stage2explosion5 from './assets/explosion/stage2/pipe.png';
+import stage2explosion5 from './assets/explosion/stage2/leftEnd.png';
 import stage2explosion6 from './assets/explosion/stage2/rightEnd.png';
-import stage2explosion7 from './assets/explosion/stage2/topEnd.png';
-import stage3explosion1 from './assets/explosion/stage3/bottomEnd.png';
-import stage3explosion2 from './assets/explosion/stage3/innerExplosion.png';
-import stage3explosion3 from './assets/explosion/stage3/leftEnd.png';
+import stage2explosion7 from './assets/explosion/stage2/bottomEnd.png';
+import stage3explosion1 from './assets/explosion/stage3/innerExplosion.png';
+import stage3explosion2 from './assets/explosion/stage3/pipe.png';
+import stage3explosion3 from './assets/explosion/stage3/topEnd.png';
 import stage3explosion4 from './assets/explosion/stage3/line.png';
-import stage3explosion5 from './assets/explosion/stage3/pipe.png';
+import stage3explosion5 from './assets/explosion/stage3/leftEnd.png';
 import stage3explosion6 from './assets/explosion/stage3/rightEnd.png';
-import stage3explosion7 from './assets/explosion/stage3/topEnd.png';
-import stage4explosion1 from './assets/explosion/stage4/bottomEnd.png';
-import stage4explosion2 from './assets/explosion/stage4/innerExplosion.png';
-import stage4explosion3 from './assets/explosion/stage4/leftEnd.png';
+import stage3explosion7 from './assets/explosion/stage3/bottomEnd.png';
+import stage4explosion1 from './assets/explosion/stage4/innerExplosion.png';
+import stage4explosion2 from './assets/explosion/stage4/pipe.png';
+import stage4explosion3 from './assets/explosion/stage4/topEnd.png';
 import stage4explosion4 from './assets/explosion/stage4/line.png';
-import stage4explosion5 from './assets/explosion/stage4/pipe.png';
+import stage4explosion5 from './assets/explosion/stage4/leftEnd.png';
 import stage4explosion6 from './assets/explosion/stage4/rightEnd.png';
-import stage4explosion7 from './assets/explosion/stage4/topEnd.png';
-import stage5explosion1 from './assets/explosion/stage5/bottomEnd.png';
-import stage5explosion2 from './assets/explosion/stage5/innerExplosion.png';
-import stage5explosion3 from './assets/explosion/stage5/leftEnd.png';
+import stage4explosion7 from './assets/explosion/stage4/bottomEnd.png';
+import stage5explosion1 from './assets/explosion/stage5/innerExplosion.png';
+import stage5explosion2 from './assets/explosion/stage5/pipe.png';
+import stage5explosion3 from './assets/explosion/stage5/topEnd.png';
 import stage5explosion4 from './assets/explosion/stage5/line.png';
-import stage5explosion5 from './assets/explosion/stage5/pipe.png';
+import stage5explosion5 from './assets/explosion/stage5/leftEnd.png';
 import stage5explosion6 from './assets/explosion/stage5/rightEnd.png';
-import stage5explosion7 from './assets/explosion/stage5/topEnd.png';
+import stage5explosion7 from './assets/explosion/stage5/bottomEnd.png';
 
 // explosion stage 1
 

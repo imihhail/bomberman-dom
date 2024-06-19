@@ -19,6 +19,7 @@ import {
   Player4MoveTop,
   Player4MoveBottom,
   BombInit,
+  ExplosionStage1,
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -169,11 +170,10 @@ const userPlacedBomb = (playerX, playerY) => {
     bombPlaced = false;
     return;
   }
-  let bombActiveLevel = 1;
+  let bombActiveLevel = 3;
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
   bombs.push(bomb);
-  console.log('Bombs: ', bombs);
   bombPlaced = false;
 }
 
@@ -188,7 +188,6 @@ const calculateBombPosition = (playerX, playerY) => {
 
 export const updateBombPosition = (bombs) => {
   const getAllTiles = document.querySelectorAll('.square')
-
   bombs.forEach((bomb, index) => {
     let tile = getAllTiles[bomb.coordCalculation];
     // Check if a bomb already exists at this position
@@ -202,7 +201,7 @@ export const updateBombPosition = (bombs) => {
       bombPlaced = false;
     }
 
-    // Update the bomb explosion
+    // Update the bomb bulge animation
     bomb.animationNumber++;
     if (bombElement) {
       // Update the bomb image every 60 frames
@@ -211,12 +210,205 @@ export const updateBombPosition = (bombs) => {
       }
     }
 
-    if (bomb.animationNumber / 60 > 3) { // If it's the fourth frame or later, maybe third? must experiment
+    if (bomb.animationNumber / 60 >= 3) { // If it's the fourth frame or later, maybe third? must experiment
       // Remove the bomb from the bombs array
       bombs.splice(index, 1);
       // Remove the bomb from the DOM
       if (bombElement) {
-        bombElement.remove();
+        if (bomb.animationNumber % 60 === 0) {
+          bombElement.classList.remove('bomb');
+          bombElement.classList.add('explosion');
+          bombElement.src = ExplosionStage1[0];
+          // draw line from middle to edge
+          let topWallBlock = false
+          for (let i = 2; i <= bomb.bombLevel; i++) {
+            console.log("top triggered")
+            let tile = getAllTiles[bomb.coordCalculation - 15 * (i-1)]
+            console.log("tile:", tile)
+            if (tile) {
+              if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[1]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-pipe')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                topWallBlock = true
+                break
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[2]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-top-edge')
+                tile.classList.remove('destroyable-wall')
+                topWallBlock = true
+                break
+              }
+            }
+          }
+
+          // draw top bomb edge
+          if (topWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 15]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[2]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-top-edge')
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                tile.classList.remove('destroyable-wall')
+              }
+            }
+          }
+
+          // draw line from middle to edge
+          let leftWallBlock = false
+          for (let i = 1; i <= bomb.bombLevel - 1; i++) {
+            let tile = getAllTiles[bomb.coordCalculation - i * 1]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[3]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-line')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                leftWallBlock = true
+                break
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[4]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-left-edge')
+                tile.classList.remove('destroyable-wall')
+                leftWallBlock = true
+                break
+              }
+            }
+          }
+
+          // draw bomb left edge
+          if (leftWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 1]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[4]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-left-edge')
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                tile.classList.remove('destroyable-wall')
+              }
+            }
+          }
+
+          // draw line from middle to edge
+          let rightWallBlock = false
+          for (let i = 1; i <= bomb.bombLevel - 1; i++) {
+            let tile = getAllTiles[bomb.coordCalculation + i * 1]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[3]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-line')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                rightWallBlock = true
+                break
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[5]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-right-edge')
+                tile.classList.remove('destroyable-wall')
+                rightWallBlock = true
+                break
+              }
+            }
+          }
+
+          // draw bomb right edge
+          if (rightWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 1]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[5]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-right-edge')
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                tile.classList.remove('destroyable-wall')
+              }
+            }
+          }
+
+          // draw line from middle to edge
+          let bottomWallBlock = false
+          for (let i = 2; i <= bomb.bombLevel; i++) {
+            console.log("bottom triggered")
+            let tile = getAllTiles[bomb.coordCalculation + 15 * (i-1)]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible') && !tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[1]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-pipe')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                bottomWallBlock = true
+                break
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[6]
+                tile.appendChild(exp)
+                // tile.classList.add('bomb-bottom-edge')
+                tile.classList.remove('destroyable-wall')
+                bottomWallBlock = true
+                break
+              }
+            }
+          }
+
+          // draw bomb bottom edge
+          if (bottomWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 15]
+            if (tile) {
+              if (!tile.hasAttribute('indestructible') && !tile.hasAttribute('explosion')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[6]
+                tile.appendChild(exp)
+
+                // tile.classList.add('bomb-bottom-edge')
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                tile.classList.remove('destroyable-wall')
+              }
+            }
+          }          
+        }
+
+
       }
     }
   });
@@ -354,6 +546,7 @@ export const initBomberman = (
         coordY: playersRef.current[gameTag].y.toString(),
         bombs: bombs,
       });
+
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
       tick = 0;
