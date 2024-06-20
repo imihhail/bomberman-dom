@@ -9,7 +9,7 @@ export const GenerateGrid = (grid) => {
   for (let y = 0; y < 13; y++) {
     const row = NewElement('div', 'map-row');
     for (let x = 0; x < 15; x++) {
-      const column = NewElement('div', "imgContainer");
+      const column = NewElement('div', 'imgContainer');
       const columnImg = NewElement('img', 'square');
       if (grid[x][y].WallType == 9) {
         columnImg.src = indestructibleWall;

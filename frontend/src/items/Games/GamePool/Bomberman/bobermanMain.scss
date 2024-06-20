@@ -72,3 +72,12 @@ $bit-size: 50px;
   width: $bit-size;
   z-index: 3;
 }
+
+.explosion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: $bit-size;
+  width: $bit-size;
+  z-index: 3;
+}

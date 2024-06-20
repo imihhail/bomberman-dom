@@ -73,4 +73,13 @@
   height: 50px;
   width: 50px;
   z-index: 3;
+}
+
+.explosion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  z-index: 3;
 }/*# sourceMappingURL=bobermanMain.css.map */
