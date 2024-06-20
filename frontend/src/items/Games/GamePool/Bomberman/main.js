@@ -193,13 +193,12 @@ export const updateBombPosition = (bombs) => {
   bombs.forEach((bomb, index) => {
     let tile = getAllTiles[bomb.coordCalculation];
     // Check if a bomb already exists at this position
-    let bombElement = tile.querySelector('.bomb');
+    let bombElement = tile.parentElement.querySelector('.bomb');
     if (!bombElement) {
       // Create a new bomb element
-      bombElement = document.createElement('img');
-      bombElement.classList.add('bomb');
+      bombElement = NewElement('img', 'bomb');
       bombElement.src = BombInit[0]; // Set the initial bomb image
-      tile.appendChild(bombElement);
+      tile.parentElement.appendChild(bombElement);
       bombPlaced = false;
     }
 

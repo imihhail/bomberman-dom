@@ -38,7 +38,11 @@ const BombermanLobby = () => {
       JoinGameQueue().then((data) => {
         if (data.join == 'success') {
           if (gameQueue != null) {
-            setGameQueue((prev) => [...prev, { LobbyUser: userEmail }]);
+            if (gameQueue.length == 0) {
+              setGameQueue([{ LobbyUser: userEmail }]);
+            } else {
+              setGameQueue((prev) => [...prev, { LobbyUser: userEmail }]);
+            }
           } else {
             setGameQueue([{ LobbyUser: userEmail }]);
           }

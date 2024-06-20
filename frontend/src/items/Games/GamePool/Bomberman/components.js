@@ -10,23 +10,23 @@ export const GenerateGrid = (grid) => {
   for (let y = 0; y < 13; y++) {
     const row = NewElement('div', 'map-row');
     for (let x = 0; x < 15; x++) {
-      const column = NewElement('img', 'square');
+      const column = NewElement('div', "imgContainer");
+      const columnImg = NewElement('img', 'square');
       if (grid[x][y].WallType == 9) {
-        column.src = indestructibleWall;
-        column.classList.add('indestructibleWall');
-        column.setAttribute('indestructible', 'indestructible');
-
+        columnImg.src = indestructibleWall;
+        columnImg.classList.add('indestructibleWall');
+        columnImg.setAttribute('indestructible', 'indestructible');
       } else if (grid[x][y].WallType == 1) {
         if (grid[x][y].PowerUp > 0 && grid[x][y].PowerUp < 4) {
           column.classList.add(`powerUp${grid[x][y].PowerUp}`)   
         }
-        column.src = destroyableWall;
-        column.classList.add("destroyableWall");
-
+        columnImg.src = destroyableWall;
+        columnImg.classList.add('destroyableWall');
       } else {
-        column.src = walkTile;
-        column.classList.add('walkTile');
+        columnImg.src = walkTile;
+        columnImg.classList.add('walkTile');
       }
+      column.appendChild(columnImg);
       row.appendChild(column);
     }
     gameGrid.appendChild(row);

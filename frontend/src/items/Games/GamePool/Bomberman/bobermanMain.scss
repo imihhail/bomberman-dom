@@ -10,8 +10,10 @@ $bit-size: 50px;
 }
 
 .walkTile {
+  position: relative;
   height: $bit-size;
   width: $bit-size;
+  z-index: 1;
 }
 
 .indestructibleWall {
@@ -27,7 +29,6 @@ $bit-size: 50px;
   display: flex;
 }
 
-
 .gameContainer {
   position: relative;
 }
@@ -36,24 +37,38 @@ $bit-size: 50px;
   position: absolute;
   height: $bit-size;
   width: $bit-size;
+  z-index: 2;
 }
 .player2 {
   position: absolute;
   height: $bit-size;
   width: $bit-size;
+  z-index: 2;
 }
 .player3 {
   position: absolute;
   height: $bit-size;
   width: $bit-size;
+  z-index: 2;
 }
 .player4 {
   position: absolute;
   height: $bit-size;
   width: $bit-size;
+  z-index: 2;
 }
-.bomb {
-  // position: absolute;
+
+.imgContainer {
+  position: relative;
   height: $bit-size;
   width: $bit-size;
+}
+
+.bomb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: $bit-size;
+  width: $bit-size;
+  z-index: 3;
 }
