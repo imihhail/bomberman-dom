@@ -76,7 +76,6 @@ func startInitialCountdown(gameParty []string) {
 			countdown--
 		}
 	}
-
 	startFinalCountdown(gameParty)
 }
 

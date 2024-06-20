@@ -2,7 +2,9 @@ import { NewElement } from '../../../../../mini-framework/index.js';
 
 import indestructibleWall from './assets/map/indestructibleWall.png';
 import destroyableWall from './assets/map/destroyableWall.png';
-//import powerUp3 from './assets/pickUps/speedUp.png';
+import powerUp1 from './assets/pickUps/moreBombs.png';
+import powerUp2 from './assets/pickUps/powerUp.png';
+import powerUp3 from './assets/pickUps/speedUp.png';
 import walkTile from './assets/map/walkTile.png';
 
 export const GenerateGrid = (grid) => {
@@ -12,21 +14,41 @@ export const GenerateGrid = (grid) => {
     for (let x = 0; x < 15; x++) {
       const column = NewElement('div', "imgContainer");
       const columnImg = NewElement('img', 'square');
+      const brickWall = NewElement('img', 'brickWall');
+      const powerUps = NewElement('img', 'powerUp');
       if (grid[x][y].WallType == 9) {
         columnImg.src = indestructibleWall;
         columnImg.classList.add('indestructibleWall');
         columnImg.setAttribute('indestructible', 'indestructible');
       } else if (grid[x][y].WallType == 1) {
         if (grid[x][y].PowerUp > 0 && grid[x][y].PowerUp < 4) {
-          column.classList.add(`powerUp${grid[x][y].PowerUp}`)   
-        }
-        columnImg.src = destroyableWall;
-        columnImg.classList.add('destroyableWall');
+          switch (grid[x][y].PowerUp) {
+            case 1:
+              powerUps.src = powerUp1;
+              powerUps.classList.add('powerUp1');
+              break;
+            case 2:
+              powerUps.src = powerUp2;
+              powerUps.classList.add('powerUp2');
+              break;
+            case 3:
+              powerUps.src = powerUp3;
+              powerUps.classList.add('powerUp3');
+              break; 
+          }     
+        } 
+        brickWall.src = destroyableWall;
+        brickWall.classList.add('destroyableWall');
+        columnImg.setAttribute('destroyable-wall', 'destroyable-wall');
       } else {
         columnImg.src = walkTile;
         columnImg.classList.add('walkTile');
       }
+      
       column.appendChild(columnImg);
+      column.appendChild(powerUps);
+      column.appendChild(brickWall);
+
       row.appendChild(column);
     }
     gameGrid.appendChild(row);

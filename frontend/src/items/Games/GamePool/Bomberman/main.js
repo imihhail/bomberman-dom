@@ -19,6 +19,7 @@ import {
   Player4MoveTop,
   Player4MoveBottom,
   BombInit,
+  ExplosionStage1,
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -187,8 +188,10 @@ const calculateBombPosition = (playerX, playerY) => {
   return coordCalculation;
 };
 
-export const updateBombPosition = (bombs) => {
-  const getAllTiles = document.querySelectorAll('.square');
+export const updateBombPosition = (bombs, grid) => {
+  const getAllTiles = Point('square');
+
+  let getAllContainers = Point('imgContainer');
 
   bombs.forEach((bomb, index) => {
     let tile = getAllTiles[bomb.coordCalculation];
@@ -201,8 +204,7 @@ export const updateBombPosition = (bombs) => {
       tile.parentElement.appendChild(bombElement);
       bombPlaced = false;
     }
-
-    // Update the bomb explosion
+    // Update the bomb bulge animation
     bomb.animationNumber++;
     if (bombElement) {
       // Update the bomb image every 60 frames
@@ -210,29 +212,221 @@ export const updateBombPosition = (bombs) => {
         bombElement.src = BombInit[bomb.animationNumber / 60];
       }
     }
-
-    if (bomb.animationNumber / 60 > 3) {
+    if (bomb.animationNumber / 60 >= 3) {
       // If it's the fourth frame or later, maybe third? must experiment
       // Remove the bomb from the bombs array
       bombs.splice(index, 1);
       // Remove the bomb from the DOM
       if (bombElement) {
-        bombElement.remove();
+        
+        if (bomb.animationNumber % 60 === 0) {
+          bombElement.classList.remove('bomb');
+          bombElement.classList.add('explosion');
+          bombElement.src = ExplosionStage1[1];
+          console.log(bombElement);
+          // draw line from middle to edge
+          let topWallBlock = false;
+          for (let i = 2; i <= bomb.bombLevel; i++) {
+            console.log('top triggered');
+            let tile = getAllTiles[bomb.coordCalculation - 15 * (i - 1)];
+            console.log('tile:', tile);
+            if (tile) {
+              if (
+                !tile.hasAttribute('indestructible') &&
+                !tile.classList.contains('destroyable-wall')
+              ) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[2];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-pipe')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                topWallBlock = true;
+                break;
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = document.createElement('img');
+                exp.classList.add('explosion');
+                exp.src = ExplosionStage1[2];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-top-edge')
+                tile.classList.remove('destroyable-wall');
+                topWallBlock = true;
+                break;
+              }
+            }
+          }
+          // draw top bomb edge
+          if (topWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 15];
+            if (tile) {
+              if (!tile.hasAttribute('indestructible')) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[2];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-top-edge')
+              }
+              if (tile.classList.contains('destroyableWall')) {
+                tile.classList.remove('destroyableWall');
+              }
+            }
+          }
+          // draw line from middle to edge
+          let leftWallBlock = false;
+          for (let i = 1; i <= bomb.bombLevel - 1; i++) {
+            let tile = getAllTiles[bomb.coordCalculation - i * 1];
+            if (tile) {
+              if (
+                !tile.hasAttribute('indestructible') &&
+                !tile.classList.contains('destroyable-wall')
+              ) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[3];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-line')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                leftWallBlock = true;
+                break;
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[4];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-left-edge')
+                tile.classList.remove('destroyable-wall');
+                leftWallBlock = true;
+                break;
+              }
+            }
+          }
+          // draw bomb left edge
+          if (leftWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 1];
+            if (tile) {
+              if (!tile.hasAttribute('indestructible')) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[2];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-left-edge')
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                tile.classList.remove('destroyable-wall');
+              }
+            }
+          }
+          // draw line from middle to edge
+          let rightWallBlock = false;
+          for (let i = 1; i <= bomb.bombLevel - 1; i++) {
+            let tile = getAllTiles[bomb.coordCalculation + i];
+            if (tile) {
+              if (
+                !tile.hasAttribute('indestructible') &&
+                !tile.classList.contains('destroyable-wall')
+              ) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[3];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-line')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                rightWallBlock = true;
+                break;
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[5];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-right-edge')
+                tile.classList.remove('destroyable-wall');
+                rightWallBlock = true;
+                break;
+              }
+            }
+          }
+          // draw bomb right edge
+          if (rightWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 1];
+            if (tile) {
+              if (!tile.hasAttribute('indestructible')) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[5];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-right-edge')
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                tile.classList.remove('destroyable-wall');
+              }
+            }
+          }
+          // draw line from middle to edge
+          let bottomWallBlock = false;
+          for (let i = 2; i <= bomb.bombLevel; i++) {
+            console.log('bottom triggered');
+            let tile = getAllTiles[bomb.coordCalculation + 15 * (i - 1)];
+            if (tile) {
+              if (
+                !tile.hasAttribute('indestructible') &&
+                !tile.classList.contains('destroyable-wall')
+              ) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[1];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-pipe')
+              }
+              if (tile.hasAttribute('indestructible')) {
+                bottomWallBlock = true;
+                break;
+              }
+              if (tile.classList.contains('destroyable-wall')) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[6];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-bottom-edge')
+                tile.classList.remove('destroyable-wall');
+                bottomWallBlock = true;
+                break;
+              }
+            }
+          }
+          // draw bomb bottom edge
+          if (bottomWallBlock == false) {
+            let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 15];
+            let container = getAllContainers[bomb.coordCalculation + bomb.bombLevel * 15]
+
+            let x = container.offsetLeft/50
+            let y = container.offsetTop/50
+
+            if (tile) {
+              if (
+                !tile.hasAttribute('indestructible') &&
+                !tile.hasAttribute('explosion')
+              ) {
+                let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[0];
+                tile.parentElement.appendChild(exp);
+                // tile.classList.add('bomb-bottom-edge')
+              }
+              if (container.childNodes[2].classList.contains('brickWall')) {
+                container.childNodes[2].remove()
+                grid[x][y].WallType = 0
+              }
+            }
+          }
+        }
       }
     }
   });
 };
 
-const removePowerUp = (powerUp) => {
+export const removePowerUp = (powerUp, grid) => {
   let powerUps = document.querySelectorAll(`.powerUp${powerUp.nr}`)
-  powerUps.forEach(power => {
-    if(power.offsetTop / 50 == powerUp.coordY && 
-      power.offsetLeft / 50 == powerUp.coordX) {
 
-      power.classList.remove(`powerUp${powerUp.nr}`)
-      powerUp.nr == 1 && (console.log("PowerUp nr 1!"))
-      powerUp.nr == 2 && (console.log("PowerUp nr 2!")) 
-      powerUp.nr == 3 && (playerSpeed = 3)      
+  powerUps.forEach(power => {
+    if(power.offsetParent.offsetTop / 50 == powerUp.coordY && 
+      power.offsetParent.offsetLeft / 50 == powerUp.coordX) { 
+      power.remove()
+      grid[powerUp.coordX][powerUp.coordY].PowerUp = 0
     }
   });
 }
@@ -336,6 +530,7 @@ export const initBomberman = (
           let wall =
             grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50) - 1]
               .WallType;
+          let powerUpNr = grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50) - 1].PowerUp
 
           if (
             (checkFutureY > 50 &&
@@ -354,6 +549,24 @@ export const initBomberman = (
             }
             if (wall != 1) {
               playersRef.current[gameTag].y = checkFutureY;
+              if (powerUpNr > 0 && powerUpNr < 4) {
+                const powerUp = {
+                  nr: powerUpNr,
+                  coordX: Math.ceil(checkFutureX / 50),
+                  coordY: Math.ceil(checkFutureY / 50) - 1
+                }
+                sendJsonMessage({
+                  type: 'removePwrUp',
+                  removePwrUp: powerUp,
+                  fromuserid: currentUser,
+                  gameTag: gameTag,
+                  gameGroup: group,
+                });
+
+                powerUp.nr == 1 && (console.log("PowerUp nr 1!"))
+                powerUp.nr == 2 && (console.log("PowerUp nr 2!")) 
+                powerUp.nr == 3 && (playerSpeed = 3)   
+              }
             }
           }
         }
@@ -366,6 +579,7 @@ export const initBomberman = (
           let wall =
             grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
               .WallType;
+          let powerUpNr = grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)].PowerUp
 
           if (
             (checkFutureY < 550 &&
@@ -384,6 +598,23 @@ export const initBomberman = (
             }
             if (wall != 1) {
               playersRef.current[gameTag].y = checkFutureY;
+              if (powerUpNr > 0 && powerUpNr < 4) {
+                const powerUp = {
+                  nr: powerUpNr,
+                  coordX: Math.ceil(checkFutureX / 50),
+                  coordY: Math.ceil(checkFutureY / 50)
+                }
+                sendJsonMessage({
+                  type: 'removePwrUp',
+                  removePwrUp: powerUp,
+                  fromuserid: currentUser,
+                  gameTag: gameTag,
+                  gameGroup: group,
+                });
+                powerUp.nr == 1 && (console.log("PowerUp nr 1!"))
+                powerUp.nr == 2 && (console.log("PowerUp nr 2!")) 
+                powerUp.nr == 3 && (playerSpeed = 3)   
+              }
             }
           }
         }
@@ -393,6 +624,7 @@ export const initBomberman = (
           const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
           const checkFutureY = playersRef.current[gameTag].y;
 
+          let powerUpNr = grid[Math.ceil(checkFutureX / 50) -1][Math.ceil(checkFutureY / 50)].PowerUp
           let wall =
             grid[Math.ceil(checkFutureX / 50) - 1][Math.ceil(checkFutureY / 50)]
               .WallType;
@@ -412,8 +644,25 @@ export const initBomberman = (
             } else if (checkFutureY % 50 > 0) {
               playersRef.current[gameTag].y -= 4;
             }
-            if (wall != 2) {
+            if (wall != 1) {
               playersRef.current[gameTag].x = checkFutureX;
+              if (powerUpNr > 0 && powerUpNr < 4) {
+                const powerUp = {
+                  nr: powerUpNr,
+                  coordX: Math.ceil(checkFutureX / 50)- 1,
+                  coordY: Math.ceil(checkFutureY / 50) 
+                }
+                sendJsonMessage({
+                  type: 'removePwrUp',
+                  removePwrUp: powerUp,
+                  fromuserid: currentUser,
+                  gameTag: gameTag,
+                  gameGroup: group,
+                });
+                powerUp.nr == 1 && (console.log("PowerUp nr 1!"))
+                powerUp.nr == 2 && (console.log("PowerUp nr 2!")) 
+                powerUp.nr == 3 && (playerSpeed = 3)  
+              }
 
             }
           }
@@ -442,36 +691,31 @@ export const initBomberman = (
             } else if (checkFutureY % 50 > 0) {
               playersRef.current[gameTag].y -= 4;
             }
-            if (wall != 2) {
+            if (wall != 1) {
               playersRef.current[gameTag].x = checkFutureX;
 
               if (powerUpNr > 0 && powerUpNr < 4) {
-                //let powerUps = document.querySelectorAll(`.powerUp${powerUpNr}`)
                 const powerUp = {
                   nr: powerUpNr,
                   coordX: Math.ceil(checkFutureX / 50),
                   coordY: Math.ceil(checkFutureY / 50)
                 }
-                removePowerUp(powerUp)
-
-                // powerUps.forEach(powerUp => {
-                //   if(powerUp.offsetTop / 50 == Math.ceil(checkFutureY / 50) && 
-                //     powerUp.offsetLeft / 50 == Math.ceil(checkFutureX / 50)) {
-
-                //     powerUp.classList.remove(`powerUp${powerUpNr}`)
-                //     if (powerUpNr == 3) {
-                //       playerSpeed = 3
-                //     }                   
-                //   }
-                // });
+                sendJsonMessage({
+                  type: 'removePwrUp',
+                  removePwrUp: powerUp,
+                  fromuserid: currentUser,
+                  gameTag: gameTag,
+                  gameGroup: group,
+                });
+                powerUp.nr == 1 && (console.log("PowerUp nr 1!"))
+                powerUp.nr == 2 && (console.log("PowerUp nr 2!")) 
+                powerUp.nr == 3 && (playerSpeed = 3)   
               }
             }
           }
         }
         break;
     }
-
-
 
     updatePlayerPosition(
       playersRef.current[gameTag].element,
