@@ -78,7 +78,8 @@ const Container = () => {
         messageData.type != 'refreshQueue' &&
         messageData.type != 'gameLogic' &&
         messageData.type != 'countDown' &&
-        messageData.type != 'bombermanCoords'
+        messageData.type != 'bombermanCoords' &&
+        messageData.type != 'removePwrUp'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {

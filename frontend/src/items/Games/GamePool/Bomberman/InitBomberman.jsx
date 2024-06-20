@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { GetStatus } from '../../../../connections/statusConnection';
 
-import { initBomberman, updatePlayerPosition, updateBombPosition } from './main';
+import { initBomberman, updatePlayerPosition, updateBombPosition, removePowerUp } from './main';
 
 const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
   const [modal, logout, sendJsonMessage, lastMessage] = useOutletContext();
@@ -18,8 +18,11 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
             messageData.coordX,
             messageData.coordY
           );
-          updateBombPosition(messageData.bombs);
+          updateBombPosition(messageData.bombs, grid);
         }
+      }
+      if (messageData.type === 'removePwrUp') {
+        removePowerUp(messageData.removePwrUp, grid)
       }
     }
   });

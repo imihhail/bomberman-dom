@@ -22,6 +22,7 @@
 .destroyableWall {
   height: 50px;
   width: 50px;
+  opacity: 0.7;
 }
 
 .map-row {
@@ -72,8 +73,39 @@
   left: 0;
   height: 50px;
   width: 50px;
-  z-index: 3;
+}/*# sourceMappingURL=bobermanMain.css.map */
+
+.powerUp1 {
+  position:absolute;
+  height: 50px;
+  width: 50px;
+  animation: rotate 2s infinite linear;
 }
+
+.powerUp2 {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  animation: rotate 2s infinite linear;
+}
+
+.powerUp3 {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/*# sourceMappingURL=bobermanMain.css.map */
 
 .explosion {
   position: absolute;
