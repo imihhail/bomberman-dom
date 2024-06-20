@@ -2,6 +2,7 @@ import { NewElement } from '../../../../../mini-framework/index.js';
 
 import indestructibleWall from './assets/map/indestructibleWall.png';
 import destroyableWall from './assets/map/destroyableWall.png';
+//import powerUp3 from './assets/pickUps/speedUp.png';
 import walkTile from './assets/map/walkTile.png';
 
 export const GenerateGrid = (grid) => {
@@ -14,9 +15,14 @@ export const GenerateGrid = (grid) => {
         column.src = indestructibleWall;
         column.classList.add('indestructibleWall');
         column.setAttribute('indestructible', 'indestructible');
+
       } else if (grid[x][y].WallType == 1) {
+        if (grid[x][y].PowerUp > 0 && grid[x][y].PowerUp < 4) {
+          column.classList.add(`powerUp${grid[x][y].PowerUp}`)   
+        }
         column.src = destroyableWall;
         column.classList.add("destroyableWall");
+
       } else {
         column.src = walkTile;
         column.classList.add('walkTile');

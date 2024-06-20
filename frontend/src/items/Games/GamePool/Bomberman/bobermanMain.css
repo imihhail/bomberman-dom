@@ -58,3 +58,31 @@
   height: 50px;
   width: 50px;
 }/*# sourceMappingURL=bobermanMain.css.map */
+
+.powerUp1 {
+  height: 50px;
+  width: 50px;
+  content: url("./assets/pickUps/moreBombs.png");
+}
+
+.powerUp2 {
+  height: 50px;
+  width: 50px;
+  content: url("./assets/pickUps/powerUp.png");
+}
+
+.powerUp3 {
+  height: 50px;
+  width: 50px;
+  content: url("./assets/pickUps/speedUp.png");
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}

@@ -224,6 +224,20 @@ export const updateBombPosition = (bombs) => {
   });
 };
 
+const removePowerUp = (powerUp) => {
+  let powerUps = document.querySelectorAll(`.powerUp${powerUp.nr}`)
+  powerUps.forEach(power => {
+    if(power.offsetTop / 50 == powerUp.coordY && 
+      power.offsetLeft / 50 == powerUp.coordX) {
+
+      power.classList.remove(`powerUp${powerUp.nr}`)
+      powerUp.nr == 1 && (console.log("PowerUp nr 1!"))
+      powerUp.nr == 2 && (console.log("PowerUp nr 2!")) 
+      powerUp.nr == 3 && (playerSpeed = 3)      
+    }
+  });
+}
+
 export const initBomberman = (
   grid,
   gameTag,
@@ -399,8 +413,9 @@ export const initBomberman = (
             } else if (checkFutureY % 50 > 0) {
               playersRef.current[gameTag].y -= 4;
             }
-            if (wall != 1) {
+            if (wall != 2) {
               playersRef.current[gameTag].x = checkFutureX;
+
             }
           }
         }
@@ -410,10 +425,9 @@ export const initBomberman = (
           const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
           var checkFutureY = playersRef.current[gameTag].y;
 
-          let wall =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
-              .WallType;
-
+          let wall = grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)].WallType
+          let powerUpNr = grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)].PowerUp
+          
           if (
             (checkFutureX < 650 &&
               Math.round(checkFutureY / 50) % 2 == 1 &&
@@ -429,13 +443,36 @@ export const initBomberman = (
             } else if (checkFutureY % 50 > 0) {
               playersRef.current[gameTag].y -= 4;
             }
-            if (wall != 1) {
+            if (wall != 2) {
               playersRef.current[gameTag].x = checkFutureX;
+
+              if (powerUpNr > 0 && powerUpNr < 4) {
+                //let powerUps = document.querySelectorAll(`.powerUp${powerUpNr}`)
+                const powerUp = {
+                  nr: powerUpNr,
+                  coordX: Math.ceil(checkFutureX / 50),
+                  coordY: Math.ceil(checkFutureY / 50)
+                }
+                removePowerUp(powerUp)
+
+                // powerUps.forEach(powerUp => {
+                //   if(powerUp.offsetTop / 50 == Math.ceil(checkFutureY / 50) && 
+                //     powerUp.offsetLeft / 50 == Math.ceil(checkFutureX / 50)) {
+
+                //     powerUp.classList.remove(`powerUp${powerUpNr}`)
+                //     if (powerUpNr == 3) {
+                //       playerSpeed = 3
+                //     }                   
+                //   }
+                // });
+              }
             }
           }
         }
         break;
     }
+
+
 
     updatePlayerPosition(
       playersRef.current[gameTag].element,

@@ -112,8 +112,8 @@ func startFinalCountdown(gameParty []string) {
 	broadcast <- msg
 
 	mutex.Lock()
-    delete(countdowns, queueKey(gameParty))
-    mutex.Unlock()
+	delete(countdowns, queueKey(gameParty))
+	mutex.Unlock()
 }
 
 func rndNr(rng *rand.Rand) int {
