@@ -12,16 +12,19 @@ export const GenerateGrid = (grid) => {
   for (let y = 0; y < 13; y++) {
     const row = NewElement('div', 'map-row');
     for (let x = 0; x < 15; x++) {
-      const column = NewElement('div', "imgContainer");
+      const column = NewElement('div', 'imgContainer');
       const columnImg = NewElement('img', 'square');
-      const brickWall = NewElement('img', 'brickWall');
-      const powerUps = NewElement('img', 'powerUp');
       if (grid[x][y].WallType == 9) {
         columnImg.src = indestructibleWall;
         columnImg.classList.add('indestructibleWall');
-        columnImg.setAttribute('indestructible', 'indestructible');
-      } else if (grid[x][y].WallType == 1) {
+      } else {
+        columnImg.src = walkTile;
+        columnImg.classList.add('walkTile');
+      }
+      if (grid[x][y].WallType == 1) {
+        const brickWall = NewElement('img', 'destroyableWall');
         if (grid[x][y].PowerUp > 0 && grid[x][y].PowerUp < 4) {
+          const powerUps = NewElement('img', 'powerUp');
           switch (grid[x][y].PowerUp) {
             case 1:
               powerUps.src = powerUp1;
@@ -34,20 +37,15 @@ export const GenerateGrid = (grid) => {
             case 3:
               powerUps.src = powerUp3;
               powerUps.classList.add('powerUp3');
-              break; 
-          }     
-        } 
+              break;
+          }
+          column.appendChild(powerUps);
+        }
         brickWall.src = destroyableWall;
-        brickWall.classList.add('destroyableWall');
-        columnImg.setAttribute('destroyable-wall', 'destroyable-wall');
-      } else {
-        columnImg.src = walkTile;
-        columnImg.classList.add('walkTile');
+        column.appendChild(brickWall);
       }
-      
+
       column.appendChild(columnImg);
-      column.appendChild(powerUps);
-      column.appendChild(brickWall);
 
       row.appendChild(column);
     }

@@ -15,13 +15,20 @@
 }
 
 .indestructibleWall {
+  z-index: 4;
+}
+
+.square {
+  position: relative;
   height: 50px;
   width: 50px;
 }
 
 .destroyableWall {
+  position: absolute;
   height: 50px;
   width: 50px;
+  z-index: 2;
 }
 
 .map-row {

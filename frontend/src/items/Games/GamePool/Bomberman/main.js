@@ -225,7 +225,7 @@ export const updateBombPosition = (bombs, grid) => {
     if (bombElement) {
       // Update the bomb image every 60 frames
       if (bomb.animationNumber % 60 === 0) {
-        bombElement.src = BombInit[bomb.animationNumber / 60];
+        bombElement.src = BombInit[Math.round(bomb.animationNumber) / 60];
       }
     }
     if (bomb.animationNumber / 60 >= 3) {
