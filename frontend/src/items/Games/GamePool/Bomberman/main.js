@@ -33,6 +33,7 @@ import './bobermanMain.css';
 
 const explosionArray = [
   ExplosionStage1,
+  ExplosionStage1,
   ExplosionStage2,
   ExplosionStage3,
   ExplosionStage4,
@@ -43,6 +44,7 @@ let tickSpeed = 12;
 let playerSpeed = 2;
 let bombPlaced = false;
 let bombAnimationInterval = 100;
+let bombActiveLevel = 1;
 let frameCount = 0;
 let maxFrameCount = 0;
 let lastSecondTimestamp = 0;
@@ -187,11 +189,11 @@ const userPlacedBomb = (playerX, playerY) => {
     bombPlaced = false;
     return;
   }
-  let bombActiveLevel = 1;
+
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
   bombs.push(bomb);
-  console.log('Bombs: ', bombs);
+ // console.log('Bombs: ', bombs);
   bombPlaced = false;
 };
 
@@ -206,8 +208,6 @@ const calculateBombPosition = (playerX, playerY) => {
 
 export const updateBombPosition = (bombs, grid) => {
   const getAllTiles = Point('square');
-
-  // let getAllContainers = Point('imgContainer');
 
   bombs.forEach((bomb, index) => {
     let tile = getAllTiles[bomb.coordCalculation];
@@ -225,7 +225,7 @@ export const updateBombPosition = (bombs, grid) => {
     if (bombElement) {
       // Update the bomb image every 60 frames
       if (bomb.animationNumber % 60 === 0) {
-        bombElement.src = BombInit[Math.round(bomb.animationNumber) / 60];
+        bombElement.src = BombInit[bomb.animationNumber / 60];
       }
     }
     if (bomb.animationNumber / 60 >= 3) {
@@ -237,7 +237,6 @@ export const updateBombPosition = (bombs, grid) => {
         if (bomb.animationNumber % 60 === 0) {
           bombElement.classList.remove('bomb');
           bombElement.classList.add('explosion');
-          // bombElement.src = ExplosionStage1[1];
           bombElement.src = explosionArray[0][1];
 
           // bomb animation
@@ -247,40 +246,43 @@ export const updateBombPosition = (bombs, grid) => {
             explosionIndex++;
             if (explosionIndex == 5) {
               clearInterval(explosionAnimation);
-              // remove picture
               tile.parentElement.removeChild(bombElement);
             }
           }, bombAnimationInterval);
 
           // draw line from middle to top edge
-          let topWallBlock = false;
+          let topWallBlock = false
           for (let i = 2; i <= bomb.bombLevel; i++) {
-            console.log('top triggered');
             let tile = getAllTiles[bomb.coordCalculation - 15 * (i - 1)];
-            console.log('tile:', tile);
             if (tile) {
-              if (
-                !tile.hasAttribute('indestructible') &&
-                !tile.classList.contains('destroyable-wall')
-              ) {
+              let imgContainer = tile.parentElement;
+              let checkForWall = imgContainer.querySelector('.destroyableWall');
+              let x = imgContainer.offsetLeft / 50;
+              let y = imgContainer.offsetTop / 50;
+              let expImg = checkForWall ? 6 : 4
+
+              if (!tile.hasAttribute('indestructible')) {      
                 let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[2];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-pipe')
+                exp.src = ExplosionStage1[expImg];
+                imgContainer.appendChild(exp);
+                let explosionIndex = 0;
+                const explosionAnimation = setInterval(() => {
+                  exp.src = explosionArray[explosionIndex][expImg];
+                  explosionIndex++;
+                  if (explosionIndex == 5) {
+                    clearInterval(explosionAnimation);
+                    imgContainer.removeChild(exp);
+                    if (checkForWall) {            
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
+                  }
+                }, bombAnimationInterval);
               }
-              if (tile.hasAttribute('indestructible')) {
+
+              if (tile.hasAttribute('indestructible') || checkForWall) {
                 topWallBlock = true;
-                break;
-              }
-              if (tile.classList.contains('destroyable-wall')) {
-                let exp = document.createElement('img');
-                exp.classList.add('explosion');
-                exp.src = ExplosionStage1[2];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-top-edge')
-                tile.classList.remove('destroyable-wall');
-                topWallBlock = true;
-                break;
+                break        
               }
             }
           }
@@ -293,23 +295,22 @@ export const updateBombPosition = (bombs, grid) => {
               let y = imgContainer.offsetTop / 50;
               if (!tile.hasAttribute('indestructible')) {
                 let exp = NewElement('img', 'explosion');
+                exp.src = ExplosionStage1[6];
                 imgContainer.appendChild(exp);
-                // bomb animation
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
                   exp.src = explosionArray[explosionIndex][6];
                   explosionIndex++;
                   if (explosionIndex == 5) {
                     clearInterval(explosionAnimation);
-                    // remove picture
                     imgContainer.removeChild(exp);
+                    let checkForWall = imgContainer.querySelector('.destroyableWall');
+                    if (checkForWall) {
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
                   }
                 }, bombAnimationInterval);
-              }
-              let checkForWall = imgContainer.querySelector('.destroyableWall');
-              if (checkForWall) {
-                imgContainer.removeChild(checkForWall);
-                grid[x][y].WallType = 0;
               }
             }
           }
@@ -318,27 +319,34 @@ export const updateBombPosition = (bombs, grid) => {
           for (let i = 1; i <= bomb.bombLevel - 1; i++) {
             let tile = getAllTiles[bomb.coordCalculation - i * 1];
             if (tile) {
-              if (
-                !tile.hasAttribute('indestructible') &&
-                !tile.classList.contains('destroyable-wall')
-              ) {
+              let imgContainer = tile.parentElement;
+              let checkForWall = imgContainer.querySelector('.destroyableWall');
+              let x = imgContainer.offsetLeft / 50;
+              let y = imgContainer.offsetTop / 50;
+              let expImg = checkForWall ? 2 : 3
+
+              if (!tile.hasAttribute('indestructible')) {      
                 let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[3];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-line')
+                exp.src = ExplosionStage1[expImg];
+                imgContainer.appendChild(exp);
+                let explosionIndex = 0;
+                const explosionAnimation = setInterval(() => {
+                  exp.src = explosionArray[explosionIndex][expImg];
+                  explosionIndex++;
+                  if (explosionIndex == 5) {
+                    clearInterval(explosionAnimation);
+                    imgContainer.removeChild(exp);
+                    if (checkForWall) {            
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
+                  }
+                }, bombAnimationInterval);
               }
-              if (tile.hasAttribute('indestructible')) {
-                leftWallBlock = true;
-                break;
-              }
-              if (tile.classList.contains('destroyable-wall')) {
-                let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[4];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-left-edge')
-                tile.classList.remove('destroyable-wall');
-                leftWallBlock = true;
-                break;
+
+              if (tile.hasAttribute('indestructible') || checkForWall) {
+                leftWallBlock = true;   
+                break               
               }
             }
           }
@@ -353,22 +361,20 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[2];
                 imgContainer.appendChild(exp);
-                // bomb animation
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
                   exp.src = explosionArray[explosionIndex][2];
                   explosionIndex++;
                   if (explosionIndex == 5) {
                     clearInterval(explosionAnimation);
-                    // remove picture
                     imgContainer.removeChild(exp);
+                    let checkForWall = imgContainer.querySelector('.destroyableWall');
+                    if (checkForWall) {
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
                   }
                 }, bombAnimationInterval);
-              }
-              let checkForWall = imgContainer.querySelector('.destroyableWall');
-              if (checkForWall) {
-                imgContainer.removeChild(checkForWall);
-                grid[x][y].WallType = 0;
               }
             }
           }
@@ -377,27 +383,34 @@ export const updateBombPosition = (bombs, grid) => {
           for (let i = 1; i <= bomb.bombLevel - 1; i++) {
             let tile = getAllTiles[bomb.coordCalculation + i];
             if (tile) {
-              if (
-                !tile.hasAttribute('indestructible') &&
-                !tile.classList.contains('destroyable-wall')
-              ) {
+              let imgContainer = tile.parentElement;
+              let checkForWall = imgContainer.querySelector('.destroyableWall');
+              let x = imgContainer.offsetLeft / 50;
+              let y = imgContainer.offsetTop / 50;
+              let expImg = checkForWall ? 5 : 3
+
+              if (!tile.hasAttribute('indestructible')) {      
                 let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[3];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-line')
+                exp.src = ExplosionStage1[expImg];
+                imgContainer.appendChild(exp);
+                let explosionIndex = 0;
+                const explosionAnimation = setInterval(() => {
+                  exp.src = explosionArray[explosionIndex][expImg];
+                  explosionIndex++;
+                  if (explosionIndex == 5) {
+                    clearInterval(explosionAnimation);
+                    imgContainer.removeChild(exp);
+                    if (checkForWall) {            
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
+                  }
+                }, bombAnimationInterval);
               }
-              if (tile.hasAttribute('indestructible')) {
-                rightWallBlock = true;
-                break;
-              }
-              if (tile.classList.contains('destroyable-wall')) {
-                let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[5];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-right-edge')
-                tile.classList.remove('destroyable-wall');
-                rightWallBlock = true;
-                break;
+
+              if (tile.hasAttribute('indestructible') || checkForWall) {
+                rightWallBlock = true;     
+                break             
               }
             }
           }
@@ -412,52 +425,56 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[5];
                 imgContainer.appendChild(exp);
-                // bomb animation
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
                   exp.src = explosionArray[explosionIndex][5];
                   explosionIndex++;
                   if (explosionIndex == 5) {
                     clearInterval(explosionAnimation);
-                    // remove picture
                     imgContainer.removeChild(exp);
+                    let checkForWall = imgContainer.querySelector('.destroyableWall');
+                    if (checkForWall) {
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
                   }
                 }, bombAnimationInterval);
-              }
-              let checkForWall = imgContainer.querySelector('.destroyableWall');
-              if (checkForWall) {
-                imgContainer.removeChild(checkForWall);
-                grid[x][y].WallType = 0;
               }
             }
           }
           // draw line from middle to bottom edge
           let bottomWallBlock = false;
           for (let i = 2; i <= bomb.bombLevel; i++) {
-            console.log('bottom triggered');
             let tile = getAllTiles[bomb.coordCalculation + 15 * (i - 1)];
             if (tile) {
-              if (
-                !tile.hasAttribute('indestructible') &&
-                !tile.classList.contains('destroyable-wall')
-              ) {
+              let imgContainer = tile.parentElement;
+              let checkForWall = imgContainer.querySelector('.destroyableWall');
+              let x = imgContainer.offsetLeft / 50;
+              let y = imgContainer.offsetTop / 50;
+              let expImg = checkForWall ? 0 : 4
+
+              if (!tile.hasAttribute('indestructible')) {      
                 let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[1];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-pipe')
+                exp.src = ExplosionStage1[expImg];
+                imgContainer.appendChild(exp);
+                let explosionIndex = 0;
+                const explosionAnimation = setInterval(() => {
+                  exp.src = explosionArray[explosionIndex][expImg];
+                  explosionIndex++;              
+                  if (explosionIndex == 5) {
+                    clearInterval(explosionAnimation);
+                    imgContainer.removeChild(exp);
+                    if (checkForWall) {            
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
+                  }
+                }, bombAnimationInterval);
               }
-              if (tile.hasAttribute('indestructible')) {
-                bottomWallBlock = true;
-                break;
-              }
-              if (tile.classList.contains('destroyable-wall')) {
-                let exp = NewElement('img', 'explosion');
-                exp.src = ExplosionStage1[6];
-                tile.parentElement.appendChild(exp);
-                // tile.classList.add('bomb-bottom-edge')
-                tile.classList.remove('destroyable-wall');
-                bottomWallBlock = true;
-                break;
+
+              if (tile.hasAttribute('indestructible') || checkForWall) {
+                bottomWallBlock = true;     
+                break             
               }
             }
           }
@@ -475,22 +492,20 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[0];
                 imgContainer.appendChild(exp);
-                // bomb animation
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
                   exp.src = explosionArray[explosionIndex][0];
                   explosionIndex++;
                   if (explosionIndex == 5) {
                     clearInterval(explosionAnimation);
-                    // remove picture
                     imgContainer.removeChild(exp);
+                    let checkForWall = imgContainer.querySelector('.destroyableWall');
+                    if (checkForWall) {
+                      imgContainer.removeChild(checkForWall);
+                      grid[x][y].WallType = 0;
+                    }
                   }
                 }, bombAnimationInterval);
-              }
-              let checkForWall = imgContainer.querySelector('.destroyableWall');
-              if (checkForWall) {
-                imgContainer.removeChild(checkForWall);
-                grid[x][y].WallType = 0;
               }
             }
           }
@@ -676,7 +691,7 @@ export const initBomberman = (
                 });
 
                 powerUp.nr == 1 && console.log('PowerUp nr 1!');
-                powerUp.nr == 2 && console.log('PowerUp nr 2!');
+                powerUp.nr == 2 && (bombActiveLevel += 1);
                 powerUp.nr == 3 && (playerSpeed = 3);
               }
             }
@@ -726,7 +741,7 @@ export const initBomberman = (
                   gameGroup: group,
                 });
                 powerUp.nr == 1 && console.log('PowerUp nr 1!');
-                powerUp.nr == 2 && console.log('PowerUp nr 2!');
+                powerUp.nr == 2 && (bombActiveLevel += 1);
                 powerUp.nr == 3 && (playerSpeed = 3);
               }
             }
@@ -776,7 +791,7 @@ export const initBomberman = (
                   gameGroup: group,
                 });
                 powerUp.nr == 1 && console.log('PowerUp nr 1!');
-                powerUp.nr == 2 && console.log('PowerUp nr 2!');
+                powerUp.nr == 2 && (bombActiveLevel += 1);
                 powerUp.nr == 3 && (playerSpeed = 3);
               }
             }
@@ -827,7 +842,7 @@ export const initBomberman = (
                   gameGroup: group,
                 });
                 powerUp.nr == 1 && console.log('PowerUp nr 1!');
-                powerUp.nr == 2 && console.log('PowerUp nr 2!');
+                powerUp.nr == 2 && (bombActiveLevel += 1);
                 powerUp.nr == 3 && (playerSpeed = 3);
               }
             }
