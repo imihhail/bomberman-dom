@@ -19,7 +19,6 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
             messageData.coordY
           );
           updateBombPosition(messageData.bombs, grid);
-
         }
       }
       if (messageData.type === 'removePwrUp') {

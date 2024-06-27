@@ -596,7 +596,8 @@ export const initBomberman = (
   group,
   sendJsonMessage,
   playersRef,
-  currentUser
+  currentUser,
+  bombs
 ) => {
   Point('bomberman-root').appendChild(GenerateGrid(grid));
   json = sendJsonMessage
@@ -645,11 +646,7 @@ export const initBomberman = (
         moveDirection = 'right';
         break;
       case 'Space':
-        sendJsonMessage({
-          type: 'bombermanCoords',
-          fromuserid: currentUser,
-          gameTag: gameTag,
-        });
+        bombPlaced = true
         break;
     }
   };
@@ -725,8 +722,6 @@ export const initBomberman = (
       y: player4YCoord,
     };
   }
-
-  
 
   //animation
   const refresh = (timestamp) => {
@@ -976,7 +971,6 @@ export const initBomberman = (
           playersRef.current[gameTag].x = playerLives.get(gameTag).spawnX,
           playersRef.current[gameTag].y = playerLives.get(gameTag).spawnY
         );
-        //playerdied = false
       }
 
     if (bombPlaced && !playerLives.get(gameTag).dead) {
@@ -996,6 +990,7 @@ export const initBomberman = (
         gameGroup: group,
         coordX: playersRef.current[gameTag].x.toString(),
         coordY: playersRef.current[gameTag].y.toString(),
+        bombs: bombs
       });
       tick = 0;
     }
