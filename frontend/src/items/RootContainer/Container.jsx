@@ -81,7 +81,8 @@ const Container = () => {
         messageData.type != 'bombermanCoords' &&
         messageData.type != 'removePwrUp' &&
         messageData.type != 'deadPlayer' &&
-        messageData.type != 'lobbyMessage'
+        messageData.type != 'lobbyMessage' &&
+        messageData.type != 'bombPlanted'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {

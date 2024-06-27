@@ -72,7 +72,7 @@ func queueKey(gameParty []string) string {
 
 func startInitialCountdown(gameParty []string) {
 	// change to 20 when ready
-	countdown := 20
+	countdown := 2
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
@@ -97,7 +97,7 @@ func startInitialCountdown(gameParty []string) {
 
 func startFinalCountdown(gameParty []string) {
 	// change to 10 when ready
-	countdown := 10
+	countdown := 1
 
 	groupId := validators.ValidateCreateNewGame(gameParty)
 	validators.ValidateEmptyGameQueue(gameParty)

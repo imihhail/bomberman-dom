@@ -84,7 +84,7 @@ To audit the program, follow the steps [here](https://github.com/01-edu/public/t
 Here's screenshots of the project:
 
 ![Project Screenshot](socialNetwork.jpg)
-![Games Screenshot](games.jpg)
+![Games Screenshot](socialGaming.jpg)
 
 ## Usage
 

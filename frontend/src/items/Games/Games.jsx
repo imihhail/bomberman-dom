@@ -4,9 +4,9 @@ import { Link, Outlet, useOutletContext } from 'react-router-dom';
 import { GetStatus } from '../../connections/statusConnection';
 
 import tetris from './GamePool/Tetris/tetris.gif';
-import tetris2 from './GamePool/Tetris2/tetris2.jpg';
+import tetris2 from './GamePool/Tetris2/tetris2.gif';
 import bomberman from './GamePool/Bomberman/bomberman.gif';
-import Arkanoid from './GamePool/Arkanoid/Arkanoid.jpg';
+import Arkanoid from './GamePool/Arkanoid/arkanoid.gif';
 
 const Games = () => {
   const [gameSelected, setGameSelected] = useState(false);

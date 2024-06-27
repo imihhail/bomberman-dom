@@ -23,7 +23,7 @@ import {
   ExplosionStage3,
   ExplosionStage4,
   ExplosionStage5,
-  deathStages
+  deathStages,
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -79,7 +79,7 @@ class Bomb {
     this.animationNumber = animationNumber;
   }
 }
-let maxBombs = 10;
+let maxBombs = 1;
 let bombs = [];
 
 const stopMovement = (e) => {
@@ -167,6 +167,8 @@ export const updatePlayerPosition = (player, x, y) => {
   player.style.top = y + 'px';
 };
 
+let bombCount = 0;
+
 const userPlacedBomb = (playerX, playerY) => {
   let coordCalculation = calculateBombPosition(playerX, playerY);
   // Check if a bomb with the same coordCalculation already exists
@@ -175,8 +177,12 @@ const userPlacedBomb = (playerX, playerY) => {
   }
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
-  if (bombs.length < maxBombs) {
+  if (bombCount < maxBombs) {
     bombs.push(bomb);
+    bombCount++;
+    setTimeout(() => {
+      bombCount--;
+    }, 3000);
   }
 };
 
@@ -190,16 +196,17 @@ const calculateBombPosition = (playerX, playerY) => {
 };
 
 export const updateBombArray = (socketBombs) => {
-  socketBombs.forEach(newBomb => {
+  socketBombs?.forEach((newBomb) => {
     // Check if this bomb already exists in the bombs array
-    const existingBomb = bombs.find(bomb => bomb.coordCalculation === newBomb.coordCalculation);
+    const existingBomb = bombs.find(
+      (bomb) => bomb.coordCalculation === newBomb.coordCalculation
+    );
     if (!existingBomb) {
       // This is a new bomb, so add it to the bombs array
       bombs.push(newBomb);
     }
   });
 };
-
 
 const collusion = (element1, element2) => {
   let el1 = element1.getBoundingClientRect();
@@ -220,29 +227,27 @@ const collusion = (element1, element2) => {
   }
 };
 
-
-export const death = (playerDied, bloodStainXY) =>{
-  const player = document.querySelector(`.${playerDied}`)
-  const imgContainer = document.getElementById(bloodStainXY)
-
+export const death = (playerDied, bloodStainXY) => {
+  const player = document.querySelector(`.${playerDied}`);
+  const imgContainer = document.getElementById(bloodStainXY);
   if (player) {
-    playerLives.get(playerDied).lives -= 1
-    player.remove()
-    playerLives.get(playerDied).dead = true
+    playerLives.get(playerDied).lives -= 1;
+    Point('gameContainer')[0].removeChild(player);
+    playerLives.get(playerDied).dead = true;
     let bloodStain = NewElement('img', 'bloodStain');
     bloodStain.src = deathStages[0];
     imgContainer.appendChild(bloodStain);
-    let bloodIndex = 0
+    let bloodIndex = 0;
 
     const bloodyAnimation = setInterval(() => {
       bloodStain.src = deathStages[bloodIndex];
-      bloodIndex++
+      bloodIndex++;
       if (bloodIndex == 6) {
         clearInterval(bloodyAnimation);
         imgContainer.removeChild(bloodStain);
         if (playerLives.get(playerDied).lives != 0) {
-          Point('gameContainer')[0].appendChild(player)
-          playerLives.get(playerDied).dead = false
+          Point('gameContainer')[0].appendChild(player);
+          playerLives.get(playerDied).dead = false;
         }
       }
     }, 100);
@@ -1008,13 +1013,13 @@ export const initBomberman = (
       );
     }
 
-    if (!playerLives.get(gameTag).dead) {
-      userPlacedBomb(
-        playersRef.current[gameTag].x,
-        playersRef.current[gameTag].y
-      );
-    }
-  
+    // if (!playerLives.get(gameTag).dead) {
+    //   userPlacedBomb(
+    //     playersRef.current[gameTag].x,
+    //     playersRef.current[gameTag].y
+    //   );
+    // }
+
     updateBombPosition(bombs, grid);
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
