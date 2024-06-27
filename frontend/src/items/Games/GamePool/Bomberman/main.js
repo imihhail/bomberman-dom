@@ -23,6 +23,7 @@ import {
   ExplosionStage3,
   ExplosionStage4,
   ExplosionStage5,
+  deathStages
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -204,24 +205,39 @@ const collusion = (element1, element2) => {
     json({
       type: 'deadPlayer',
       deadPlayer: element1.className,
+      bloodStainXY: element2.id.toString(),
       gameTag: playerTag,
       gameGroup: groupId,
     });
   }
 };
 
-export const death = (playerDied) => {
-  const player = document.querySelector(`.${playerDied}`);
+
+export const death = (playerDied, bloodStainXY) =>{
+  const player = document.querySelector(`.${playerDied}`)
+  const imgContainer = document.getElementById(bloodStainXY)
+
   if (player) {
-    playerLives.get(playerDied).lives -= 1;
-    player.remove();
-    playerLives.get(playerDied).dead = true;
-    if (playerLives.get(playerDied).lives != 0) {
-      setTimeout(() => {
-        Point('gameContainer')[0].appendChild(player);
-        playerLives.get(playerDied).dead = false;
-      }, 1000);
-    }
+    playerLives.get(playerDied).lives -= 1
+    player.remove()
+    playerLives.get(playerDied).dead = true
+    let bloodStain = NewElement('img', 'bloodStain');
+    bloodStain.src = deathStages[0];
+    imgContainer.appendChild(bloodStain);
+    let bloodIndex = 0
+
+    const bloodyAnimation = setInterval(() => {
+      bloodStain.src = deathStages[bloodIndex];
+      bloodIndex++
+      if (bloodIndex == 6) {
+        clearInterval(bloodyAnimation);
+        imgContainer.removeChild(bloodStain);
+        if (playerLives.get(playerDied).lives != 0) {
+          Point('gameContainer')[0].appendChild(player)
+          playerLives.get(playerDied).dead = false
+        }
+      }
+    }, 100);
   }
 };
 
@@ -644,11 +660,12 @@ export const initBomberman = (
         moveDirection = 'right';
         break;
       case 'Space':
-        sendJsonMessage({
-          type: 'bombermanCoords',
-          fromuserid: currentUser,
-          gameTag: gameTag,
-        });
+        // sendJsonMessage({
+        //   type: 'bombermanCoords',
+        //   fromuserid: currentUser,
+        //   gameTag: gameTag,
+        // });
+        bombPlaced = true
         break;
     }
   };
@@ -976,7 +993,6 @@ export const initBomberman = (
         (playersRef.current[gameTag].x = playerLives.get(gameTag).spawnX),
         (playersRef.current[gameTag].y = playerLives.get(gameTag).spawnY)
       );
-      //playerdied = false
     }
 
     if (bombPlaced && !playerLives.get(gameTag).dead) {
@@ -996,6 +1012,7 @@ export const initBomberman = (
         gameGroup: group,
         coordX: playersRef.current[gameTag].x.toString(),
         coordY: playersRef.current[gameTag].y.toString(),
+        bombs: bombs,
       });
       tick = 0;
     }

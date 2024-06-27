@@ -19,14 +19,13 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
             messageData.coordY
           );
           updateBombPosition(messageData.bombs, grid);
-
         }
       }
       if (messageData.type === 'removePwrUp') {
         removePowerUp(messageData.removePwrUp, grid)
       }
       if (messageData.type === 'deadPlayer') {
-        death(messageData.deadPlayer)
+        death(messageData.deadPlayer, messageData.bloodStainXY)
       }
     }
   });

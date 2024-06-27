@@ -124,6 +124,15 @@
   z-index: 3;
 }
 
+.bloodStain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  z-index: 2;
+}
+
 .fps {
   position: absolute;
   top: 0;

@@ -64,6 +64,7 @@ type SocketMessage struct {
 	RemovePwrUp       structs.RemovePwrUp  `json:"removePwrUp"`
 	DeadPlayer        string               `json:"deadPlayer"`
 	GameLobbyMessage  string               `json:"gameLobbyMessage"`
+	BloodStain        string               `json:"bloodStainXY"`
 }
 
 type Client struct {
