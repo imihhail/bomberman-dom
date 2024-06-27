@@ -62,6 +62,7 @@ type SocketMessage struct {
 	Grid              [15][13]Cord         `json:"grid"`
 	Bombs             []structs.Bomb       `json:"bombs"`
 	RemovePwrUp       structs.RemovePwrUp  `json:"removePwrUp"`
+	DeadPlayer        string               `json:"deadPlayer"`
 }
 
 type Client struct {
@@ -328,6 +329,23 @@ func handleMessages() {
 
 			}
 		case "bombermanCoords":
+			for i := 0; i < len(msg.ActiveGameParty); i++ {
+				if clientConnections[msg.ActiveGameParty[i].User] != nil {
+					clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
+
+					if msg.FromId == msg.ActiveGameParty[i].User {
+						msg.GameTag = msg.ActiveGameParty[i].PlayerTag
+					}
+					err := clientConnections[msg.ActiveGameParty[i].User].connection.WriteJSON(msg)
+					if err != nil {
+						fmt.Println("Error writing gameLogic to client:", err)
+						clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
+						return
+					}
+					clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
+				}
+			}
+		case "deadPlayer":
 			for i := 0; i < len(msg.ActiveGameParty); i++ {
 				if clientConnections[msg.ActiveGameParty[i].User] != nil {
 					clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
