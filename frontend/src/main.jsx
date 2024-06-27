@@ -10,7 +10,9 @@ import Groups from './items/Groups/Groups';
 import Games from './items/Games/Games';
 import Notifications from './items/Notifications/Notifications.jsx';
 import InitTetris from './items/Games/GamePool/Tetris/InitTetris.jsx';
+import InitTetris2 from './items/Games/GamePool/Tetris2/InitTetris2.jsx';
 import BombermanLobby from './items/Games/GamePool/Bomberman/BombermanLobby.jsx';
+import InitArkanoid from './items/Games/GamePool/Arkanoid/InitArkanoid.jsx';
 
 import './index.css';
 
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
             path: '/games/bomberman',
             element: <BombermanLobby />,
           },
+          {
+            path: '/games/arkanoid',
+            element: <InitArkanoid />,
+          },
+          {
+            path: '/games/tetris2',
+            element: <InitTetris2 />,
+          },
         ],
       },
       {
@@ -63,5 +73,5 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <RouterProvider router={router} />
+  <RouterProvider router={router} />
 );

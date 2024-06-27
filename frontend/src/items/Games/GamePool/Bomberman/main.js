@@ -1,4 +1,3 @@
-console.log('Conneted!');
 import { NewElement, Point } from '../../../../../mini-framework/index.js';
 import {
   GenerateGrid,
