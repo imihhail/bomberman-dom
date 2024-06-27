@@ -57,6 +57,7 @@
 
 .frame {
   z-index: 2;
+  background-image: url("./db2.jpg");
 }
 
 .parent {

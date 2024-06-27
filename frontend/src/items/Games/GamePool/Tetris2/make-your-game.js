@@ -8,7 +8,6 @@ export const initTetris2 = () => {
   frame.style.width = '380px';
   frame.style.height = '760px';
   frame.style.border = '38px ridge rgb(9, 23, 174)';
-  frame.style.background = 'url(./db2.jpg)';
 
   let score = 0;
   let life = 1;

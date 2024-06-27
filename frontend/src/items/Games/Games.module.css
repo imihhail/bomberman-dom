@@ -50,7 +50,7 @@
   color: white;
   cursor: pointer;
   background-color: black;
-  margin: 0.1rem;
+  margin: 1rem;
   border-radius: 4px;
   width: 15rem;
   height: 3rem;
@@ -58,6 +58,9 @@
   font-size: inherit;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition: 1s;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
 }
 
 .back:hover{
