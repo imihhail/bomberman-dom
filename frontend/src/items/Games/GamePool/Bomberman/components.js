@@ -13,6 +13,7 @@ export const GenerateGrid = (grid) => {
     const row = NewElement('div', 'map-row');
     for (let x = 0; x < 15; x++) {
       const column = NewElement('div', 'imgContainer');
+      column.id = `${x}${y}`
       const columnImg = NewElement('img', 'square');
       if (grid[x][y].WallType == 9) {
         columnImg.src = indestructibleWall;
@@ -381,4 +382,22 @@ export const ExplosionStage5 = [
   stage5explosion5,
   stage5explosion6,
   stage5explosion7,
+];
+
+import death1 from './assets/characters/death/death1.png';
+import death2 from './assets/characters/death/death2.png';
+import death3 from './assets/characters/death/death3.png';
+import death4 from './assets/characters/death/death4.png';
+import death5 from './assets/characters/death/death5.png';
+import death6 from './assets/characters/death/death6.png';
+import death7 from './assets/characters/death/death7.png';
+
+export const deathStages = [
+  death1,
+  death2,
+  death3,
+  death4,
+  death5,
+  death6,
+  death7,
 ];

@@ -10,18 +10,60 @@
 
 .gamesMenu {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 70%;
 }
 
-.gameLink {
-  font-size: 2rem;
-  color: white;
-  margin: 1rem 2rem;
+.gameLink .gamesMenu {
+  /* color: white;
+  height: 17rem;
+  width: auto; */
+  /* overflow: hidden; */
+  /* padding: 0; */
 }
 
 .gameConsole {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   width: 90%;
   height: 90vh;
   margin-right: auto;
+}
+
+.gameIcon{
+  height: 15rem;
+  width: auto;
+  margin: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 4px;
+}
+
+.back{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 1rem;
+  color: white;
+  cursor: pointer;
+  background-color: black;
+  margin: 1rem;
+  border-radius: 4px;
+  width: 15rem;
+  height: 3rem;
+  border: 2px solid transparent;
+  font-size: inherit;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: 1s;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.back:hover{
+  transition: 0.2s;
+  border: 2px solid white;
 }

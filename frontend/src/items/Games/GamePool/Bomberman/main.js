@@ -1,4 +1,3 @@
-console.log('Conneted!');
 import { NewElement, Point } from '../../../../../mini-framework/index.js';
 import {
   GenerateGrid,
@@ -24,6 +23,7 @@ import {
   ExplosionStage3,
   ExplosionStage4,
   ExplosionStage5,
+  deathStages
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -52,6 +52,25 @@ let tolerance = 15; // bigger number makes the walkpath wider
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
 let moveDirection = null;
+let json
+let groupId
+let playerTag
+
+class Death {
+  constructor(lives, dead, spawnX, spawnY){
+    this.lives = lives
+    this.dead = dead
+    this.spawnX = spawnX
+    this.spawnY = spawnY
+  }
+}
+
+let playerLives = new Map([
+  ["player1", new Death(3, false, 50, 50)],
+  ["player2", new Death(3, false, 650, 50)],
+  ["player3", new Death(3, false, 50, 550)],
+  ["player4", new Death(3, false, 650, 550)]
+]);
 
 class Bomb {
   constructor(coordCalculation, bombLevel, animationNumber) {
@@ -181,7 +200,55 @@ export const updateBombArray = (socketBombs) => {
   });
 };
 
-const updateBombPosition = (bombs, grid) => {
+
+const collusion = (element1, element2) => {
+  let el1 = element1.getBoundingClientRect();
+  let el2 = element2.getBoundingClientRect();
+  if (
+    el1.left + 8 < el2.right &&
+    el1.right - 8 > el2.left &&
+    el1.top + 8 < el2.bottom &&
+    el1.bottom - 8 > el2.top
+  ) {
+    json({
+      type: 'deadPlayer',
+      deadPlayer: element1.className,
+      bloodStainXY: element2.id.toString(),
+      gameTag: playerTag,
+      gameGroup: groupId,
+    })
+  }
+}
+
+export const death = (playerDied, bloodStainXY) =>{
+  const player = document.querySelector(`.${playerDied}`)
+  const imgContainer = document.getElementById(bloodStainXY)
+
+  if (player) {
+    playerLives.get(playerDied).lives -= 1
+    player.remove()
+    playerLives.get(playerDied).dead = true
+    let bloodStain = NewElement('img', 'bloodStain');
+    bloodStain.src = deathStages[0];
+    imgContainer.appendChild(bloodStain);
+    let bloodIndex = 0
+
+    const bloodyAnimation = setInterval(() => {
+      bloodStain.src = deathStages[bloodIndex];
+      bloodIndex++
+      if (bloodIndex == 6) {
+        clearInterval(bloodyAnimation);
+        imgContainer.removeChild(bloodStain);
+        if (playerLives.get(playerDied).lives != 0) {
+          Point('gameContainer')[0].appendChild(player)
+          playerLives.get(playerDied).dead = false
+        }
+      }
+    }, 100);
+  }
+}
+
+export const updateBombPosition = (bombs, grid) => {
   const getAllTiles = Point('square');
 
   bombs?.forEach((bomb, index) => {
@@ -208,15 +275,19 @@ const updateBombPosition = (bombs, grid) => {
       // Remove the bomb from the bombs array
       bombs.splice(index, 1);
       // Remove the bomb from the DOM
-      if (bombElement) {
+      if (bombElement) {       
         if (bomb.animationNumber % 60 === 0) {
+          let player = document.querySelector(`.${playerTag}`)
+          let imgContainer = tile.parentElement;
           bombElement.classList.remove('bomb');
           bombElement.classList.add('explosion');
           bombElement.src = explosionArray[0][1];
+          player && collusion(player, imgContainer)
 
           // bomb animation
           let explosionIndex = 0;
           const explosionAnimation = setInterval(() => {
+            player && collusion(player, imgContainer)
             bombElement.src = explosionArray[explosionIndex][1];
             explosionIndex++;
             if (explosionIndex == 5) {
@@ -230,6 +301,7 @@ const updateBombPosition = (bombs, grid) => {
           for (let i = 2; i <= bomb.bombLevel; i++) {
             let tile = getAllTiles[bomb.coordCalculation - 15 * (i - 1)];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -243,8 +315,10 @@ const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -267,6 +341,7 @@ const updateBombPosition = (bombs, grid) => {
           if (topWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 15];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
@@ -274,8 +349,10 @@ const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[6];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][6];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -297,6 +374,7 @@ const updateBombPosition = (bombs, grid) => {
           for (let i = 1; i <= bomb.bombLevel - 1; i++) {
             let tile = getAllTiles[bomb.coordCalculation - i * 1];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -310,8 +388,10 @@ const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -335,16 +415,20 @@ const updateBombPosition = (bombs, grid) => {
           if (leftWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 1];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
+
               if (!tile.hasAttribute('indestructible')) {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[2];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  exp.src = explosionArray[explosionIndex][2];
+                  player && collusion(player, imgContainer)
+                  exp.src = explosionArray[explosionIndex][2];  
                   explosionIndex++;
                   if (explosionIndex == 5) {
                     clearInterval(explosionAnimation);
@@ -365,6 +449,7 @@ const updateBombPosition = (bombs, grid) => {
           for (let i = 1; i <= bomb.bombLevel - 1; i++) {
             let tile = getAllTiles[bomb.coordCalculation + i];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -378,8 +463,10 @@ const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -403,6 +490,7 @@ const updateBombPosition = (bombs, grid) => {
           if (rightWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 1];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
@@ -410,8 +498,10 @@ const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[5];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][5];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -433,6 +523,7 @@ const updateBombPosition = (bombs, grid) => {
           for (let i = 2; i <= bomb.bombLevel; i++) {
             let tile = getAllTiles[bomb.coordCalculation + 15 * (i - 1)];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -446,8 +537,10 @@ const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -471,18 +564,18 @@ const updateBombPosition = (bombs, grid) => {
           if (bottomWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 15];
             if (tile) {
+              let player = document.querySelector(`.${playerTag}`)
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
-              if (
-                !tile.hasAttribute('indestructible') &&
-                !tile.hasAttribute('explosion')
-              ) {
+              if (!tile.hasAttribute('indestructible')) {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[0];
                 imgContainer.appendChild(exp);
+                player && collusion(player, imgContainer)
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
+                  player && collusion(player, imgContainer)
                   exp.src = explosionArray[explosionIndex][0];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -528,6 +621,9 @@ export const initBomberman = (
   currentUser
 ) => {
   Point('bomberman-root').appendChild(GenerateGrid(grid));
+  json = sendJsonMessage
+  playerTag = gameTag
+  groupId = group
 
   // Current FPS
   const FPS = Point('gameContainer')[0].parentElement.appendChild(
@@ -539,6 +635,9 @@ export const initBomberman = (
     NewElement('p', 'maxFps')
   );
 
+  if (playerLives.get(gameTag) == 0) {
+      playersRef = null
+  }
   playersRef.current = {};
 
   const handleMovemement = (e) => {
@@ -586,7 +685,7 @@ export const initBomberman = (
   if (group.length > 0) {
     // player1
     const player1 = Point('gameContainer')[0].appendChild(
-      NewElement('img', 'player1')
+      NewElement('img', 'player1'),
     );
     let player1XCoord = 50;
     let player1YCoord = 50;
@@ -680,12 +779,13 @@ export const initBomberman = (
     }
 
     // character movements
+    if (!playerLives.get(gameTag).dead) {
     switch (moveDirection) {
       case 'up':
         {
           const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
           const checkFutureX = playersRef.current[gameTag].x;
-
+          console.log(playerLives);
           let wall =
             grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50) - 1]
               .WallType;
@@ -883,14 +983,32 @@ export const initBomberman = (
           }
         }
         break;
+      }
     }
 
-    updatePlayerPosition(
-      playersRef.current[gameTag].element,
-      playersRef.current[gameTag].x,
-      playersRef.current[gameTag].y
-    );
+    if (playerLives.get(gameTag).dead == false) {
+      updatePlayerPosition(
+        playersRef.current[gameTag].element,
+        playersRef.current[gameTag].x,
+        playersRef.current[gameTag].y
+      );
+    }
 
+      if (playerLives.get(gameTag).dead == true) {
+        updatePlayerPosition(
+          playersRef.current[gameTag].element,
+          playersRef.current[gameTag].x = playerLives.get(gameTag).spawnX,
+          playersRef.current[gameTag].y = playerLives.get(gameTag).spawnY
+        );
+      }
+
+    if (!playerLives.get(gameTag).dead) {
+      userPlacedBomb(
+        playersRef.current[gameTag].x,
+        playersRef.current[gameTag].y
+      );
+    }
+  
     updateBombPosition(bombs, grid);
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
@@ -901,6 +1019,7 @@ export const initBomberman = (
         gameGroup: group,
         coordX: playersRef.current[gameTag].x.toString(),
         coordY: playersRef.current[gameTag].y.toString(),
+        bombs: bombs,
       });
       tick = 0;
     }
