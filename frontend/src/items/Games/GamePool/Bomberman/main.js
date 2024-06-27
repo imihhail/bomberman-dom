@@ -53,24 +53,24 @@ let tolerance = 15; // bigger number makes the walkpath wider
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
 let moveDirection = null;
-let json
-let groupId
-let playerTag
+let json;
+let groupId;
+let playerTag;
 
 class Death {
-  constructor(lives, dead, spawnX, spawnY){
-    this.lives = lives
-    this.dead = dead
-    this.spawnX = spawnX
-    this.spawnY = spawnY
+  constructor(lives, dead, spawnX, spawnY) {
+    this.lives = lives;
+    this.dead = dead;
+    this.spawnX = spawnX;
+    this.spawnY = spawnY;
   }
 }
 
 let playerLives = new Map([
-  ["player1", new Death(3, false, 50, 50)],
-  ["player2", new Death(3, false, 650, 50)],
-  ["player3", new Death(3, false, 50, 550)],
-  ["player4", new Death(3, false, 650, 550)]
+  ['player1', new Death(3, false, 50, 50)],
+  ['player2', new Death(3, false, 650, 50)],
+  ['player3', new Death(3, false, 50, 550)],
+  ['player4', new Death(3, false, 650, 550)],
 ]);
 
 class Bomb {
@@ -208,9 +208,10 @@ const collusion = (element1, element2) => {
       bloodStainXY: element2.id.toString(),
       gameTag: playerTag,
       gameGroup: groupId,
-    })
+    });
   }
-}
+};
+
 
 export const death = (playerDied, bloodStainXY) =>{
   const player = document.querySelector(`.${playerDied}`)
@@ -238,7 +239,7 @@ export const death = (playerDied, bloodStainXY) =>{
       }
     }, 100);
   }
-}
+};
 
 export const updateBombPosition = (bombs, grid) => {
   const getAllTiles = Point('square');
@@ -267,19 +268,19 @@ export const updateBombPosition = (bombs, grid) => {
       // Remove the bomb from the bombs array
       bombs.splice(index, 1);
       // Remove the bomb from the DOM
-      if (bombElement) {       
+      if (bombElement) {
         if (bomb.animationNumber % 60 === 0) {
-          let player = document.querySelector(`.${playerTag}`)
+          let player = document.querySelector(`.${playerTag}`);
           let imgContainer = tile.parentElement;
           bombElement.classList.remove('bomb');
           bombElement.classList.add('explosion');
           bombElement.src = explosionArray[0][1];
-          player && collusion(player, imgContainer)
+          player && collusion(player, imgContainer);
 
           // bomb animation
           let explosionIndex = 0;
           const explosionAnimation = setInterval(() => {
-            player && collusion(player, imgContainer)
+            player && collusion(player, imgContainer);
             bombElement.src = explosionArray[explosionIndex][1];
             explosionIndex++;
             if (explosionIndex == 5) {
@@ -293,7 +294,7 @@ export const updateBombPosition = (bombs, grid) => {
           for (let i = 2; i <= bomb.bombLevel; i++) {
             let tile = getAllTiles[bomb.coordCalculation - 15 * (i - 1)];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -307,10 +308,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -333,7 +334,7 @@ export const updateBombPosition = (bombs, grid) => {
           if (topWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 15];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
@@ -341,10 +342,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[6];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][6];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -366,7 +367,7 @@ export const updateBombPosition = (bombs, grid) => {
           for (let i = 1; i <= bomb.bombLevel - 1; i++) {
             let tile = getAllTiles[bomb.coordCalculation - i * 1];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -380,10 +381,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -407,7 +408,7 @@ export const updateBombPosition = (bombs, grid) => {
           if (leftWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation - bomb.bombLevel * 1];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
@@ -416,11 +417,11 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[2];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
-                  exp.src = explosionArray[explosionIndex][2];  
+                  player && collusion(player, imgContainer);
+                  exp.src = explosionArray[explosionIndex][2];
                   explosionIndex++;
                   if (explosionIndex == 5) {
                     clearInterval(explosionAnimation);
@@ -441,7 +442,7 @@ export const updateBombPosition = (bombs, grid) => {
           for (let i = 1; i <= bomb.bombLevel - 1; i++) {
             let tile = getAllTiles[bomb.coordCalculation + i];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -455,10 +456,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -482,7 +483,7 @@ export const updateBombPosition = (bombs, grid) => {
           if (rightWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 1];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
@@ -490,10 +491,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[5];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][5];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -515,7 +516,7 @@ export const updateBombPosition = (bombs, grid) => {
           for (let i = 2; i <= bomb.bombLevel; i++) {
             let tile = getAllTiles[bomb.coordCalculation + 15 * (i - 1)];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let checkForWall = imgContainer.querySelector('.destroyableWall');
               let indestructibleWall = imgContainer.querySelector(
@@ -529,10 +530,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[expImg];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][expImg];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -556,7 +557,7 @@ export const updateBombPosition = (bombs, grid) => {
           if (bottomWallBlock == false) {
             let tile = getAllTiles[bomb.coordCalculation + bomb.bombLevel * 15];
             if (tile) {
-              let player = document.querySelector(`.${playerTag}`)
+              let player = document.querySelector(`.${playerTag}`);
               let imgContainer = tile.parentElement;
               let x = imgContainer.offsetLeft / 50;
               let y = imgContainer.offsetTop / 50;
@@ -564,10 +565,10 @@ export const updateBombPosition = (bombs, grid) => {
                 let exp = NewElement('img', 'explosion');
                 exp.src = ExplosionStage1[0];
                 imgContainer.appendChild(exp);
-                player && collusion(player, imgContainer)
+                player && collusion(player, imgContainer);
                 let explosionIndex = 0;
                 const explosionAnimation = setInterval(() => {
-                  player && collusion(player, imgContainer)
+                  player && collusion(player, imgContainer);
                   exp.src = explosionArray[explosionIndex][0];
                   explosionIndex++;
                   if (explosionIndex == 5) {
@@ -613,9 +614,9 @@ export const initBomberman = (
   currentUser
 ) => {
   Point('bomberman-root').appendChild(GenerateGrid(grid));
-  json = sendJsonMessage
-  playerTag = gameTag
-  groupId = group
+  json = sendJsonMessage;
+  playerTag = gameTag;
+  groupId = group;
 
   // Current FPS
   const FPS = Point('gameContainer')[0].parentElement.appendChild(
@@ -628,7 +629,7 @@ export const initBomberman = (
   );
 
   if (playerLives.get(gameTag) == 0) {
-      playersRef = null
+    playersRef = null;
   }
   playersRef.current = {};
 
@@ -672,8 +673,9 @@ export const initBomberman = (
   if (group.length > 0) {
     // player1
     const player1 = Point('gameContainer')[0].appendChild(
-      NewElement('img', 'player1'),
+      NewElement('img', 'player1')
     );
+    player1.setAttribute('player', 'player1');
     let player1XCoord = 50;
     let player1YCoord = 50;
     player1.src = player1FrontStyle;
@@ -691,6 +693,7 @@ export const initBomberman = (
     const player2 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player2')
     );
+    player2.setAttribute('player', 'player2');
     let player2XCoord = 650;
     let player2YCoord = 50;
     player2.src = player2FrontStyle;
@@ -708,6 +711,7 @@ export const initBomberman = (
     const player3 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player3')
     );
+    player3.setAttribute('player', 'player3');
     let player3XCoord = 50;
     let player3YCoord = 550;
     player3.src = player3FrontStyle;
@@ -725,6 +729,7 @@ export const initBomberman = (
     const player4 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player4')
     );
+    player4.setAttribute('player', 'player4');
     let player4XCoord = 650;
     let player4YCoord = 550;
     player4.src = player4FrontStyle;
@@ -736,8 +741,6 @@ export const initBomberman = (
       y: player4YCoord,
     };
   }
-
-  
 
   //animation
   const refresh = (timestamp) => {
@@ -767,209 +770,212 @@ export const initBomberman = (
 
     // character movements
     if (!playerLives.get(gameTag).dead) {
-    switch (moveDirection) {
-      case 'up':
-        {
-          const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
-          const checkFutureX = playersRef.current[gameTag].x;
-          console.log(playerLives);
-          let wall =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50) - 1]
-              .WallType;
-          let powerUpNr =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50) - 1]
-              .PowerUp;
+      switch (moveDirection) {
+        case 'up':
+          {
+            const checkFutureY = playersRef.current[gameTag].y - playerSpeed;
+            const checkFutureX = playersRef.current[gameTag].x;
+            let wall =
+              grid[Math.ceil(checkFutureX / 50)][
+                Math.ceil(checkFutureY / 50) - 1
+              ].WallType;
+            let powerUpNr =
+              grid[Math.ceil(checkFutureX / 50)][
+                Math.ceil(checkFutureY / 50) - 1
+              ].PowerUp;
 
-          if (
-            (checkFutureY > 50 &&
-              Math.round(checkFutureX / 50) % 2 == 1 &&
-              checkFutureX % 50 >= 0 &&
-              checkFutureX % 50 < tolerance) ||
-            (checkFutureY > 50 &&
-              Math.round(checkFutureX / 50) % 2 == 1 &&
-              checkFutureX % 50 >= 0 &&
-              checkFutureX % 50 > 50 - tolerance)
-          ) {
-            if (checkFutureX % 50 > 50 - tolerance) {
-              playersRef.current[gameTag].x += 1;
-            } else if (checkFutureX % 50 > 0) {
-              playersRef.current[gameTag].x -= 4;
-            }
-            if (wall != 1) {
-              playersRef.current[gameTag].y = checkFutureY;
-              if (powerUpNr > 0 && powerUpNr < 4) {
-                const powerUp = {
-                  nr: powerUpNr,
-                  coordX: Math.ceil(checkFutureX / 50),
-                  coordY: Math.ceil(checkFutureY / 50) - 1,
-                };
-                sendJsonMessage({
-                  type: 'removePwrUp',
-                  removePwrUp: powerUp,
-                  fromuserid: currentUser,
-                  gameTag: gameTag,
-                  gameGroup: group,
-                });
+            if (
+              (checkFutureY > 50 &&
+                Math.round(checkFutureX / 50) % 2 == 1 &&
+                checkFutureX % 50 >= 0 &&
+                checkFutureX % 50 < tolerance) ||
+              (checkFutureY > 50 &&
+                Math.round(checkFutureX / 50) % 2 == 1 &&
+                checkFutureX % 50 >= 0 &&
+                checkFutureX % 50 > 50 - tolerance)
+            ) {
+              if (checkFutureX % 50 > 50 - tolerance) {
+                playersRef.current[gameTag].x += 1;
+              } else if (checkFutureX % 50 > 0) {
+                playersRef.current[gameTag].x -= 4;
+              }
+              if (wall != 1) {
+                playersRef.current[gameTag].y = checkFutureY;
+                if (powerUpNr > 0 && powerUpNr < 4) {
+                  const powerUp = {
+                    nr: powerUpNr,
+                    coordX: Math.ceil(checkFutureX / 50),
+                    coordY: Math.ceil(checkFutureY / 50) - 1,
+                  };
+                  sendJsonMessage({
+                    type: 'removePwrUp',
+                    removePwrUp: powerUp,
+                    fromuserid: currentUser,
+                    gameTag: gameTag,
+                    gameGroup: group,
+                  });
 
-                powerUp.nr == 1 && (maxBombs += 1);
-                powerUp.nr == 2 && (bombActiveLevel += 1);
-                powerUp.nr == 3 && (playerSpeed = 3);
+                  powerUp.nr == 1 && (maxBombs += 1);
+                  powerUp.nr == 2 && (bombActiveLevel += 1);
+                  powerUp.nr == 3 && (playerSpeed = 3);
+                }
               }
             }
           }
-        }
-        break;
-      case 'down':
-        {
-          const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
-          const checkFutureX = playersRef.current[gameTag].x;
+          break;
+        case 'down':
+          {
+            const checkFutureY = playersRef.current[gameTag].y + playerSpeed;
+            const checkFutureX = playersRef.current[gameTag].x;
 
-          let wall =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
-              .WallType;
-          let powerUpNr =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
-              .PowerUp;
+            let wall =
+              grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
+                .WallType;
+            let powerUpNr =
+              grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
+                .PowerUp;
 
-          if (
-            (checkFutureY < 550 &&
-              Math.round(checkFutureX / 50) % 2 == 1 &&
-              checkFutureX % 50 >= 0 &&
-              checkFutureX % 50 < tolerance) ||
-            (checkFutureY < 550 &&
-              Math.round(checkFutureX / 50) % 2 == 1 &&
-              checkFutureX % 50 >= 0 &&
-              checkFutureX % 50 > 50 - tolerance)
-          ) {
-            if (checkFutureX % 50 > 50 - tolerance) {
-              playersRef.current[gameTag].x += 1;
-            } else if (checkFutureX % 50 > 0) {
-              playersRef.current[gameTag].x -= 4;
-            }
-            if (wall != 1) {
-              playersRef.current[gameTag].y = checkFutureY;
-              if (powerUpNr > 0 && powerUpNr < 4) {
-                const powerUp = {
-                  nr: powerUpNr,
-                  coordX: Math.ceil(checkFutureX / 50),
-                  coordY: Math.ceil(checkFutureY / 50),
-                };
-                sendJsonMessage({
-                  type: 'removePwrUp',
-                  removePwrUp: powerUp,
-                  fromuserid: currentUser,
-                  gameTag: gameTag,
-                  gameGroup: group,
-                });
-                powerUp.nr == 1 && (maxBombs += 1);
-                powerUp.nr == 2 && (bombActiveLevel += 1);
-                powerUp.nr == 3 && (playerSpeed = 3);
+            if (
+              (checkFutureY < 550 &&
+                Math.round(checkFutureX / 50) % 2 == 1 &&
+                checkFutureX % 50 >= 0 &&
+                checkFutureX % 50 < tolerance) ||
+              (checkFutureY < 550 &&
+                Math.round(checkFutureX / 50) % 2 == 1 &&
+                checkFutureX % 50 >= 0 &&
+                checkFutureX % 50 > 50 - tolerance)
+            ) {
+              if (checkFutureX % 50 > 50 - tolerance) {
+                playersRef.current[gameTag].x += 1;
+              } else if (checkFutureX % 50 > 0) {
+                playersRef.current[gameTag].x -= 4;
+              }
+              if (wall != 1) {
+                playersRef.current[gameTag].y = checkFutureY;
+                if (powerUpNr > 0 && powerUpNr < 4) {
+                  const powerUp = {
+                    nr: powerUpNr,
+                    coordX: Math.ceil(checkFutureX / 50),
+                    coordY: Math.ceil(checkFutureY / 50),
+                  };
+                  sendJsonMessage({
+                    type: 'removePwrUp',
+                    removePwrUp: powerUp,
+                    fromuserid: currentUser,
+                    gameTag: gameTag,
+                    gameGroup: group,
+                  });
+                  powerUp.nr == 1 && (maxBombs += 1);
+                  powerUp.nr == 2 && (bombActiveLevel += 1);
+                  powerUp.nr == 3 && (playerSpeed = 3);
+                }
               }
             }
           }
-        }
-        break;
-      case 'left':
-        {
-          const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
-          const checkFutureY = playersRef.current[gameTag].y;
+          break;
+        case 'left':
+          {
+            const checkFutureX = playersRef.current[gameTag].x - playerSpeed;
+            const checkFutureY = playersRef.current[gameTag].y;
 
-          let powerUpNr =
-            grid[Math.ceil(checkFutureX / 50) - 1][Math.ceil(checkFutureY / 50)]
-              .PowerUp;
-          let wall =
-            grid[Math.ceil(checkFutureX / 50) - 1][Math.ceil(checkFutureY / 50)]
-              .WallType;
+            let powerUpNr =
+              grid[Math.ceil(checkFutureX / 50) - 1][
+                Math.ceil(checkFutureY / 50)
+              ].PowerUp;
+            let wall =
+              grid[Math.ceil(checkFutureX / 50) - 1][
+                Math.ceil(checkFutureY / 50)
+              ].WallType;
 
-          if (
-            (checkFutureX > 50 &&
-              Math.round(checkFutureY / 50) % 2 == 1 &&
-              checkFutureY % 50 >= 0 &&
-              checkFutureY % 50 < tolerance) ||
-            (checkFutureX > 50 &&
-              Math.round(checkFutureY / 50) % 2 == 1 &&
-              checkFutureY % 50 >= 0 &&
-              checkFutureY % 50 > 50 - tolerance)
-          ) {
-            if (checkFutureY % 50 > 50 - tolerance) {
-              playersRef.current[gameTag].y += 1;
-            } else if (checkFutureY % 50 > 0) {
-              playersRef.current[gameTag].y -= 4;
-            }
-            if (wall != 1) {
-              playersRef.current[gameTag].x = checkFutureX;
-              if (powerUpNr > 0 && powerUpNr < 4) {
-                const powerUp = {
-                  nr: powerUpNr,
-                  coordX: Math.ceil(checkFutureX / 50) - 1,
-                  coordY: Math.ceil(checkFutureY / 50),
-                };
-                sendJsonMessage({
-                  type: 'removePwrUp',
-                  removePwrUp: powerUp,
-                  fromuserid: currentUser,
-                  gameTag: gameTag,
-                  gameGroup: group,
-                });
-                powerUp.nr == 1 && (maxBombs += 1);
-                powerUp.nr == 2 && (bombActiveLevel += 1);
-                powerUp.nr == 3 && (playerSpeed = 3);
+            if (
+              (checkFutureX > 50 &&
+                Math.round(checkFutureY / 50) % 2 == 1 &&
+                checkFutureY % 50 >= 0 &&
+                checkFutureY % 50 < tolerance) ||
+              (checkFutureX > 50 &&
+                Math.round(checkFutureY / 50) % 2 == 1 &&
+                checkFutureY % 50 >= 0 &&
+                checkFutureY % 50 > 50 - tolerance)
+            ) {
+              if (checkFutureY % 50 > 50 - tolerance) {
+                playersRef.current[gameTag].y += 1;
+              } else if (checkFutureY % 50 > 0) {
+                playersRef.current[gameTag].y -= 4;
+              }
+              if (wall != 1) {
+                playersRef.current[gameTag].x = checkFutureX;
+                if (powerUpNr > 0 && powerUpNr < 4) {
+                  const powerUp = {
+                    nr: powerUpNr,
+                    coordX: Math.ceil(checkFutureX / 50) - 1,
+                    coordY: Math.ceil(checkFutureY / 50),
+                  };
+                  sendJsonMessage({
+                    type: 'removePwrUp',
+                    removePwrUp: powerUp,
+                    fromuserid: currentUser,
+                    gameTag: gameTag,
+                    gameGroup: group,
+                  });
+                  powerUp.nr == 1 && (maxBombs += 1);
+                  powerUp.nr == 2 && (bombActiveLevel += 1);
+                  powerUp.nr == 3 && (playerSpeed = 3);
+                }
               }
             }
           }
-        }
-        break;
-      case 'right':
-        {
-          const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
-          var checkFutureY = playersRef.current[gameTag].y;
+          break;
+        case 'right':
+          {
+            const checkFutureX = playersRef.current[gameTag].x + playerSpeed;
+            var checkFutureY = playersRef.current[gameTag].y;
 
-          let wall =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
-              .WallType;
-          let powerUpNr =
-            grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
-              .PowerUp;
+            let wall =
+              grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
+                .WallType;
+            let powerUpNr =
+              grid[Math.ceil(checkFutureX / 50)][Math.ceil(checkFutureY / 50)]
+                .PowerUp;
 
-          if (
-            (checkFutureX < 650 &&
-              Math.round(checkFutureY / 50) % 2 == 1 &&
-              checkFutureY % 50 >= 0 &&
-              checkFutureY % 50 < tolerance) ||
-            (checkFutureX < 650 &&
-              Math.round(checkFutureY / 50) % 2 == 1 &&
-              checkFutureY % 50 >= 0 &&
-              checkFutureY % 50 > 50 - tolerance)
-          ) {
-            if (checkFutureY % 50 > 50 - tolerance) {
-              playersRef.current[gameTag].y += 1;
-            } else if (checkFutureY % 50 > 0) {
-              playersRef.current[gameTag].y -= 4;
-            }
-            if (wall != 1) {
-              playersRef.current[gameTag].x = checkFutureX;
+            if (
+              (checkFutureX < 650 &&
+                Math.round(checkFutureY / 50) % 2 == 1 &&
+                checkFutureY % 50 >= 0 &&
+                checkFutureY % 50 < tolerance) ||
+              (checkFutureX < 650 &&
+                Math.round(checkFutureY / 50) % 2 == 1 &&
+                checkFutureY % 50 >= 0 &&
+                checkFutureY % 50 > 50 - tolerance)
+            ) {
+              if (checkFutureY % 50 > 50 - tolerance) {
+                playersRef.current[gameTag].y += 1;
+              } else if (checkFutureY % 50 > 0) {
+                playersRef.current[gameTag].y -= 4;
+              }
+              if (wall != 1) {
+                playersRef.current[gameTag].x = checkFutureX;
 
-              if (powerUpNr > 0 && powerUpNr < 4) {
-                const powerUp = {
-                  nr: powerUpNr,
-                  coordX: Math.ceil(checkFutureX / 50),
-                  coordY: Math.ceil(checkFutureY / 50),
-                };
-                sendJsonMessage({
-                  type: 'removePwrUp',
-                  removePwrUp: powerUp,
-                  fromuserid: currentUser,
-                  gameTag: gameTag,
-                  gameGroup: group,
-                });
-                powerUp.nr == 1 && (maxBombs += 1);
-                powerUp.nr == 2 && (bombActiveLevel += 1);
-                powerUp.nr == 3 && (playerSpeed = 3);
+                if (powerUpNr > 0 && powerUpNr < 4) {
+                  const powerUp = {
+                    nr: powerUpNr,
+                    coordX: Math.ceil(checkFutureX / 50),
+                    coordY: Math.ceil(checkFutureY / 50),
+                  };
+                  sendJsonMessage({
+                    type: 'removePwrUp',
+                    removePwrUp: powerUp,
+                    fromuserid: currentUser,
+                    gameTag: gameTag,
+                    gameGroup: group,
+                  });
+                  powerUp.nr == 1 && (maxBombs += 1);
+                  powerUp.nr == 2 && (bombActiveLevel += 1);
+                  powerUp.nr == 3 && (playerSpeed = 3);
+                }
               }
             }
           }
-        }
-        break;
+          break;
       }
     }
 
@@ -981,13 +987,13 @@ export const initBomberman = (
       );
     }
 
-      if (playerLives.get(gameTag).dead == true) {
-        updatePlayerPosition(
-          playersRef.current[gameTag].element,
-          playersRef.current[gameTag].x = playerLives.get(gameTag).spawnX,
-          playersRef.current[gameTag].y = playerLives.get(gameTag).spawnY
-        );
-      }
+    if (playerLives.get(gameTag).dead == true) {
+      updatePlayerPosition(
+        playersRef.current[gameTag].element,
+        (playersRef.current[gameTag].x = playerLives.get(gameTag).spawnX),
+        (playersRef.current[gameTag].y = playerLives.get(gameTag).spawnY)
+      );
+    }
 
     if (bombPlaced && !playerLives.get(gameTag).dead) {
       userPlacedBomb(
@@ -995,7 +1001,7 @@ export const initBomberman = (
         playersRef.current[gameTag].y
       );
     }
-    
+
     updateBombPosition(bombs);
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {

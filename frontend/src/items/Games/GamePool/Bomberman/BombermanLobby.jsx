@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { GetGameQueue } from '../../../../connections/getGameQueue';
 import { JoinGameQueue } from '../../../../connections/joinGameQueue';
@@ -7,7 +7,8 @@ import InitBomberman from './InitBomberman';
 import styles from './BombermanLobby.module.css';
 
 const BombermanLobby = () => {
-  const [, logout, sendJsonMessage, lastMessage] = useOutletContext();
+  const [, logout, sendJsonMessage, lastMessage, readyState] =
+    useOutletContext();
   const [activeGame, setActiveGame] = useState(false);
   const [gameQueue, setGameQueue] = useState([]);
   const [userEmail, setUserEmail] = useState([]);
@@ -16,9 +17,16 @@ const BombermanLobby = () => {
   const [timer, setTimer] = useState('');
   const [grid, setGrid] = useState([]);
   const [group, setGroup] = useState([]);
+  const [gameParty, setGameParty] = useState([]);
   const [currentUser, setCurrentUser] = useState('');
+  const [gameInLobby, setGameInLobby] = useState(true);
+  const [lobbyChat, setLobbyChat] = useState([]);
+  const [wsConnectionOpen, setWsConnectionOpen] = useState(false);
+  const [lobbyChatInput, setLobbyChatInput] = useState('');
 
-  const handleGameQUeue = () => {
+  const chatContainerRef = useRef(null);
+
+  const handleGameQueue = () => {
     GetGameQueue().then((data) => {
       if (data?.login !== 'success') {
         logout();
@@ -30,8 +38,16 @@ const BombermanLobby = () => {
     });
   };
   useEffect(() => {
-    handleGameQUeue();
+    handleGameQueue();
   }, []);
+
+  useEffect(() => {
+    if (readyState === 1) {
+      setWsConnectionOpen(true);
+    } else {
+      setWsConnectionOpen(false);
+    }
+  }, [readyState]);
 
   const handleJoinLobby = () => {
     if (!gameQueue?.map((names) => names.LobbyUser).includes(userEmail)) {
@@ -61,7 +77,7 @@ const BombermanLobby = () => {
     if (lastMessage) {
       const messageData = JSON.parse(lastMessage.data);
       if (messageData.type == 'refreshQueue') {
-        handleGameQUeue();
+        handleGameQueue();
       } else if (messageData.type == 'gameLogic') {
         if (messageData.gamestatus == 'Start') {
           setLobbyInfo('Waiting for other players...');
@@ -91,9 +107,47 @@ const BombermanLobby = () => {
         }
       } else if (messageData.type == 'countDown') {
         setTimer(messageData.countDown);
+      } else if (messageData.type == 'lobbyMessage') {
+        if (messageData.gamestatus == 'lobby') {
+          setGameParty(messageData.gameParty);
+          setGameInLobby(true);
+        } else {
+          setGameParty(messageData.gameGroup);
+          setGameInLobby(false);
+        }
+        setLobbyChat((prev) => [
+          ...prev,
+          { user: messageData.fromuserid, text: messageData.gameLobbyMessage },
+        ]);
+        setTimeout(() => {
+          chatContainerRef.current.scrollTop =
+            chatContainerRef.current.scrollHeight;
+        }, 100);
       }
     }
   }, [lastMessage]);
+
+  const handleLobbyMessage = () => {
+    sendJsonMessage({
+      type: 'lobbyMessage',
+      fromuserid: currentUser,
+      gamestatus: gameInLobby ? 'lobby' : '',
+      gameParty: gameParty,
+      gameLobbyMessage: lobbyChatInput,
+    });
+    setLobbyChatInput('');
+  };
+
+  const handleLobbyChatInput = (e) => {
+    setLobbyChatInput(e.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleLobbyMessage();
+    }
+  };
 
   return activeGame ? (
     <InitBomberman
@@ -112,6 +166,31 @@ const BombermanLobby = () => {
           {eachUser.LobbyUser}
         </p>
       ))}
+      <div className={styles.lobbyChat}>
+        <div ref={chatContainerRef} className={styles.lobbyChatBox}>
+          {lobbyChat.map((row, index) => (
+            <div key={index} className={styles.lobbyChatRow}>
+              <p className={styles.lobbyChatUser}>{row.user}</p>
+              <p className={styles.lobbyChatText}>{row.text}</p>
+            </div>
+          ))}
+        </div>
+        {wsConnectionOpen ? (
+          <div className={styles.lobbyChatInput}>
+            <input
+              value={lobbyChatInput}
+              onChange={handleLobbyChatInput}
+              onKeyDown={handleKeyPress}
+              type='text'
+            />
+            <button type='submit' onClick={handleLobbyMessage}>
+              Send
+            </button>
+          </div>
+        ) : (
+          <p>Connecting to chat!</p>
+        )}
+      </div>
       <span className={styles.joinQueue} onClick={handleJoinLobby}>
         Join Queue
       </span>

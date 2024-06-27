@@ -80,14 +80,15 @@ const Container = () => {
         messageData.type != 'countDown' &&
         messageData.type != 'bombermanCoords' &&
         messageData.type != 'removePwrUp' &&
-        messageData.type != 'deadPlayer'
+        messageData.type != 'deadPlayer' &&
+        messageData.type != 'lobbyMessage'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {
-            handleNotification(`New ${messageData.type}`)
+            handleNotification(`New ${messageData.type}`);
           }
         } else {
-          handleNotification(`New ${messageData.type}`)
+          handleNotification(`New ${messageData.type}`);
         }
         if (messageData.type != 'message') {
           setGlow(true);

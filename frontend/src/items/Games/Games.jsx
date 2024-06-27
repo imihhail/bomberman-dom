@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Games.module.css';
 import { Link, Outlet, useOutletContext } from 'react-router-dom';
+import { GetStatus } from '../../connections/statusConnection';
 
 import tetris from './GamePool/Tetris/tetris.gif';
 import tetris2 from './GamePool/Tetris2/tetris2.jpg';
@@ -10,13 +11,24 @@ import Arkanoid from './GamePool/Arkanoid/Arkanoid.jpg';
 const Games = () => {
   const [gameSelected, setGameSelected] = useState(false);
   const [
-    setShowModal,
-    handleLogout,
+    modal,
+    logout,
     sendJsonMessage,
     lastMessage,
     readyState,
     activeSession,
   ] = useOutletContext();
+
+  useEffect(() => {
+    modal(true);
+    GetStatus().then((data) => {
+      if (data.login !== 'success') {
+        logout();
+      } else {
+        modal(false);
+      }
+    });
+  }, []);
 
   const handleGameSelect = () => {
     setGameSelected(!gameSelected);
@@ -64,8 +76,8 @@ const Games = () => {
         <div className={styles.gameConsole}>
           <Outlet
             context={[
-              setShowModal,
-              handleLogout,
+              modal,
+              logout,
               sendJsonMessage,
               lastMessage,
               readyState,
