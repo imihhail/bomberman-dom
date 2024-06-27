@@ -10,9 +10,10 @@
 
 .gamesMenu {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
 }
 
 .gameLink .gamesMenu {

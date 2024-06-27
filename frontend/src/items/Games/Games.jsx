@@ -4,6 +4,7 @@ import { Link, Outlet, useOutletContext } from 'react-router-dom';
 
 import tetris from './GamePool/Tetris/tetris.gif';
 import bomberman from './GamePool/Bomberman/bomberman.gif';
+import Arkanoid from './GamePool/Arkanoid/Arkanoid.jpg';
 
 const Games = () => {
   const [gameSelected, setGameSelected] = useState(false);
@@ -42,7 +43,7 @@ const Games = () => {
             to={'/games/arkanoid'}
             className={styles.gameLink}
           >
-            Arkanoid
+            <img className={styles.gameIcon} src={Arkanoid} />
           </Link>
         </div>
       )}

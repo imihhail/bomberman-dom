@@ -1,0 +1,122 @@
+@import url(https://fonts.googleapis.com/css?family=VT323);
+@mixin buttons {
+    border-bottom: 6px inset rgba(0,0,0,.5);
+    border-left: 6px inset rgba(0,0,0,.5);
+    border-right: 6px inset rgba(255,255,255,.5);
+    border-top: 6px inset rgba(255,255,255,.5);
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.2rem;
+    margin: 0, auto;
+    min-width: 5rem;
+    text-transform: uppercase;
+    width: auto;
+}
+
+* {
+	font-family: 'VT323', monospace;
+	font-size: 24px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    color: white;
+}
+
+
+.grid {
+    width: 670px;
+    height: 300px;
+    border: 5px ridge black;
+    position: relative; /* Change from absolute to relative */
+    margin: 0 auto; /* Center the grid horizontally */
+    background-color: rgba(82, 135, 168, 0.5);
+}
+
+.block, .bat {
+    width: 100px;
+    height: 20px;
+    background-color: #0303AA;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    border-radius: 4px;
+}
+
+.block {
+    box-shadow: inset 5px 5px 5px rgb(126, 179, 212),
+        inset -5px -5px 5px rgb(39, 39, 39);
+}
+
+.bat {
+    background-color: #AA0303;
+    box-shadow: inset 5px 5px 5px rgb(221, 190, 190),
+    inset -5px -5px 5px rgb(39, 39, 39);
+}
+
+.ball {
+    width: 10px;
+    height: 10px;
+    background-color: #03AA03;
+    position: absolute;
+    border-radius: 5px;
+    box-shadow: inset 2px 2px 1px rgb(19, 211, 12),
+    inset -2px -2px 1px rgb(19, 109, 19);
+}
+
+#gameover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content {
+    position: relative;
+    margin: 0 auto;
+    &_buttons {
+        display: flex;
+        flex-direction: row;
+        align-items:flex-start;
+        width:670px;
+        margin: 0.2rem auto;
+        &_start {
+            @include buttons;
+            background: #881400;
+            margin-right: 0.5rem;
+            &:focus,
+            &:hover {
+                background: #A81000;
+            } 
+        }
+        &_pause {
+            @include buttons;
+            background: #0000BC;
+            
+            &:focus,
+            &:hover {
+                background: #0000FC;
+            }            
+        }
+    }
+    &_info {
+        display: flex;
+        flex-direction: row;
+        align-items:flex-start;
+        width:670px;
+        margin: 0.2rem auto;
+        &_score {
+            margin-right: auto;
+        }
+        &_health {
+            margin-left: auto;
+            margin-top: auto;
+        }
+    }
+}
