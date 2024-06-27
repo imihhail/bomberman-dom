@@ -42,7 +42,6 @@ const explosionArray = [
 let tick = 0;
 let tickSpeed = 1;
 let playerSpeed = 2;
-let bombPlaced = false;
 let bombAnimationInterval = 100;
 let bombActiveLevel = 1;
 let frameCount = 0;
@@ -50,7 +49,6 @@ let maxFrameCount = 0;
 let lastSecondTimestamp = 0;
 let lastSecondTimestampForMax = 0;
 let tolerance = 15; // bigger number makes the walkpath wider
-// let bombPower = 1;
 let lastTimestamp = performance.now();
 const minFrameTime = 1000 / 60;
 let moveDirection = null;
@@ -62,7 +60,7 @@ class Bomb {
     this.animationNumber = animationNumber;
   }
 }
-let maxBombs = 1;
+let maxBombs = 10;
 let bombs = [];
 
 const stopMovement = (e) => {
@@ -154,15 +152,12 @@ const userPlacedBomb = (playerX, playerY) => {
   let coordCalculation = calculateBombPosition(playerX, playerY);
   // Check if a bomb with the same coordCalculation already exists
   if (bombs.some((bomb) => bomb.coordCalculation === coordCalculation)) {
-    bombPlaced = false;
     return;
   }
-
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
   if (bombs.length < maxBombs) {
     bombs.push(bomb);
-    bombPlaced = false;
   }
 };
 
@@ -175,7 +170,18 @@ const calculateBombPosition = (playerX, playerY) => {
   return coordCalculation;
 };
 
-export const updateBombPosition = (bombs, grid) => {
+export const updateBombArray = (socketBombs) => {
+  socketBombs.forEach(newBomb => {
+    // Check if this bomb already exists in the bombs array
+    const existingBomb = bombs.find(bomb => bomb.coordCalculation === newBomb.coordCalculation);
+    if (!existingBomb) {
+      // This is a new bomb, so add it to the bombs array
+      bombs.push(newBomb);
+    }
+  });
+};
+
+const updateBombPosition = (bombs, grid) => {
   const getAllTiles = Point('square');
 
   bombs?.forEach((bomb, index) => {
@@ -187,7 +193,7 @@ export const updateBombPosition = (bombs, grid) => {
       bombElement = NewElement('img', 'bomb');
       bombElement.src = BombInit[0]; // Set the initial bomb image
       tile.parentElement.appendChild(bombElement);
-      bombPlaced = false;
+      // bombPlaced = false;
     }
     // Update the bomb bulge animation
     bomb.animationNumber++;
@@ -562,10 +568,16 @@ export const initBomberman = (
         moveDirection = 'right';
         break;
       case 'Space':
+        userPlacedBomb(
+          playersRef.current[gameTag].x,
+          playersRef.current[gameTag].y
+        );
         sendJsonMessage({
-          type: 'bombermanCoords',
+          type: 'bombPlanted',
+          bombs: bombs,
           fromuserid: currentUser,
           gameTag: gameTag,
+          gameGroup: group,
         });
         break;
     }
@@ -879,13 +891,7 @@ export const initBomberman = (
       playersRef.current[gameTag].y
     );
 
-    if (bombPlaced) {
-      userPlacedBomb(
-        playersRef.current[gameTag].x,
-        playersRef.current[gameTag].y
-      );
-    }
-    updateBombPosition(bombs);
+    updateBombPosition(bombs, grid);
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
       sendJsonMessage({
