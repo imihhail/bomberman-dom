@@ -24,6 +24,7 @@ import {
   ExplosionStage3,
   ExplosionStage4,
   ExplosionStage5,
+  deathStages
 } from './components.js';
 import player1FrontStyle from './assets/characters/blue/frontS1.png';
 import player2FrontStyle from './assets/characters/green/frontS1.png';
@@ -44,7 +45,7 @@ let tickSpeed = 1;
 let playerSpeed = 2;
 let bombPlaced = false;
 let bombAnimationInterval = 100;
-let bombActiveLevel = 1;
+let bombActiveLevel = 2;
 let frameCount = 0;
 let maxFrameCount = 0;
 let lastSecondTimestamp = 0;
@@ -205,24 +206,38 @@ const collusion = (element1, element2) => {
     json({
       type: 'deadPlayer',
       deadPlayer: element1.className,
+      bloodStainXY: element2.id.toString(),
       gameTag: playerTag,
       gameGroup: groupId,
     })
   }
 }
 
-export const death = (playerDied) =>{
+export const death = (playerDied, bloodStainXY) =>{
   const player = document.querySelector(`.${playerDied}`)
+  const imgContainer = document.getElementById(bloodStainXY)
+
   if (player) {
     playerLives.get(playerDied).lives -= 1
     player.remove()
     playerLives.get(playerDied).dead = true
-    if (playerLives.get(playerDied).lives != 0) {
-      setTimeout(()=>{
-        Point('gameContainer')[0].appendChild(player)
-        playerLives.get(playerDied).dead = false
-      }, 1000)
-    }
+    let bloodStain = NewElement('img', 'bloodStain');
+    bloodStain.src = deathStages[0];
+    imgContainer.appendChild(bloodStain);
+    let bloodIndex = 0
+
+    const bloodyAnimation = setInterval(() => {
+      bloodStain.src = deathStages[bloodIndex];
+      bloodIndex++
+      if (bloodIndex == 6) {
+        clearInterval(bloodyAnimation);
+        imgContainer.removeChild(bloodStain);
+        if (playerLives.get(playerDied).lives != 0) {
+          Point('gameContainer')[0].appendChild(player)
+          playerLives.get(playerDied).dead = false
+        }
+      }
+    }, 100);
   }
 }
 
@@ -645,11 +660,12 @@ export const initBomberman = (
         moveDirection = 'right';
         break;
       case 'Space':
-        sendJsonMessage({
-          type: 'bombermanCoords',
-          fromuserid: currentUser,
-          gameTag: gameTag,
-        });
+        // sendJsonMessage({
+        //   type: 'bombermanCoords',
+        //   fromuserid: currentUser,
+        //   gameTag: gameTag,
+        // });
+        bombPlaced = true
         break;
     }
   };
@@ -659,7 +675,6 @@ export const initBomberman = (
     const player1 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player1'),
     );
-    player1.setAttribute("player", "player1")
     let player1XCoord = 50;
     let player1YCoord = 50;
     player1.src = player1FrontStyle;
@@ -677,7 +692,6 @@ export const initBomberman = (
     const player2 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player2')
     );
-    player2.setAttribute("player", "player2")
     let player2XCoord = 650;
     let player2YCoord = 50;
     player2.src = player2FrontStyle;
@@ -695,7 +709,6 @@ export const initBomberman = (
     const player3 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player3')
     );
-    player3.setAttribute("player", "player3")
     let player3XCoord = 50;
     let player3YCoord = 550;
     player3.src = player3FrontStyle;
@@ -713,7 +726,6 @@ export const initBomberman = (
     const player4 = Point('gameContainer')[0].appendChild(
       NewElement('img', 'player4')
     );
-    player4.setAttribute("player", "player4")
     let player4XCoord = 650;
     let player4YCoord = 550;
     player4.src = player4FrontStyle;
@@ -976,7 +988,6 @@ export const initBomberman = (
           playersRef.current[gameTag].x = playerLives.get(gameTag).spawnX,
           playersRef.current[gameTag].y = playerLives.get(gameTag).spawnY
         );
-        //playerdied = false
       }
 
     if (bombPlaced && !playerLives.get(gameTag).dead) {
@@ -996,6 +1007,7 @@ export const initBomberman = (
         gameGroup: group,
         coordX: playersRef.current[gameTag].x.toString(),
         coordY: playersRef.current[gameTag].y.toString(),
+        bombs: bombs,
       });
       tick = 0;
     }
