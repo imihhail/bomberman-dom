@@ -47,6 +47,15 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func updateGameParty() []string {
+	queue := validators.ValidateQueue()
+	var gameParty []string
+	for i := 0; i < len(queue); i++ {
+		gameParty = append(gameParty, queue[i].UserId)
+	}
+	return gameParty
+}
+
 func queueKey(gameParty []string) string {
 	key := ""
 	for _, id := range gameParty {
@@ -57,13 +66,14 @@ func queueKey(gameParty []string) string {
 
 func startInitialCountdown(gameParty []string) {
 	// change to 20 when ready
-	countdown := 2
+	countdown := 5
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
 	for countdown >= 0 {
 		select {
 		case <-ticker.C:
+			gameParty = updateGameParty()
 			if len(gameParty) >= 4 {
 				startFinalCountdown(gameParty)
 				return
@@ -81,7 +91,7 @@ func startInitialCountdown(gameParty []string) {
 
 func startFinalCountdown(gameParty []string) {
 	// change to 10 when ready
-	countdown := 2
+	countdown := 5
 
 	groupId := validators.ValidateCreateNewGame(gameParty)
 	validators.ValidateEmptyGameQueue(gameParty)
