@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { GetStatus } from '../../../../connections/statusConnection';
-
+import "./style.css"
 import { initArkanoid } from './app';
 
 import styles from './InitArkanoid.module.css';

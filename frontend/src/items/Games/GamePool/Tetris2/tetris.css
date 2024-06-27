@@ -1,0 +1,85 @@
+.lost {
+  border: 5px solid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background: rgb(49, 49, 49);
+  height: 250px;
+  width: 500px;
+  opacity: 0.9;
+  font-size: 28px;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+}
+
+.restartClass {
+  transition: 0.3s;
+}
+
+.restartClass:hover {
+  opacity: 0.5;
+  text-shadow: 6px 6px 10px #000000;
+  cursor: pointer;
+}
+
+.oneBlock {
+    width: 38px;
+    height: 38px;
+    box-sizing: border-box;
+    border: 1.5px solid rgba(0, 0, 0);
+    border-radius: 3px;
+    opacity: 0.8;
+    position: absolute;
+
+  }
+
+  .cubeBackground {
+    width: 152px;
+    height: 152px;
+    position: absolute;
+  }
+
+  .restBackground {
+    width: 114px;
+    height: 114px;
+    position: absolute;
+  }
+
+  .test {
+    transition: linear 1s;
+    z-index: 1;
+    position: absolute;
+    float: right;
+}
+
+.frame {
+  z-index: 2;
+}
+
+.parent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.welcomeClass {
+  border: 5px solid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background: rgb(49, 49, 49);
+  height: 250px;
+  width: 500px;
+  opacity: 0.9;
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  color: white;
+}
