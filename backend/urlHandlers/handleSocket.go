@@ -430,7 +430,23 @@ func handleMessages() {
 					clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
 				}
 			}
+		case "bombPlanted":
+			for i := 0; i < len(msg.ActiveGameParty); i++ {
+				if clientConnections[msg.ActiveGameParty[i].User] != nil {
+					clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
 
+					if msg.FromId == msg.ActiveGameParty[i].User {
+						msg.GameTag = msg.ActiveGameParty[i].PlayerTag
+					}
+					err := clientConnections[msg.ActiveGameParty[i].User].connection.WriteJSON(msg)
+					if err != nil {
+						fmt.Println("Error writing gameLogic to client:", err)
+						clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
+						return
+					}
+					clientConnections[msg.ActiveGameParty[i].User].mu.Unlock()
+				}
+			}
 		case "onlineStatus":
 			var allUsers SocketMessage
 			if msg.Message == "offline" {

@@ -42,7 +42,6 @@ const explosionArray = [
 let tick = 0;
 let tickSpeed = 1;
 let playerSpeed = 2;
-let bombPlaced = false;
 let bombAnimationInterval = 100;
 let bombActiveLevel = 1;
 let frameCount = 0;
@@ -80,7 +79,7 @@ class Bomb {
     this.animationNumber = animationNumber;
   }
 }
-let maxBombs = 1;
+let maxBombs = 10;
 let bombs = [];
 
 const stopMovement = (e) => {
@@ -172,15 +171,12 @@ const userPlacedBomb = (playerX, playerY) => {
   let coordCalculation = calculateBombPosition(playerX, playerY);
   // Check if a bomb with the same coordCalculation already exists
   if (bombs.some((bomb) => bomb.coordCalculation === coordCalculation)) {
-    bombPlaced = false;
     return;
   }
-
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
   if (bombs.length < maxBombs) {
     bombs.push(bomb);
-    bombPlaced = false;
   }
 };
 
@@ -192,6 +188,18 @@ const calculateBombPosition = (playerX, playerY) => {
   let coordCalculation = squareY * 15 + squareX;
   return coordCalculation;
 };
+
+export const updateBombArray = (socketBombs) => {
+  socketBombs.forEach(newBomb => {
+    // Check if this bomb already exists in the bombs array
+    const existingBomb = bombs.find(bomb => bomb.coordCalculation === newBomb.coordCalculation);
+    if (!existingBomb) {
+      // This is a new bomb, so add it to the bombs array
+      bombs.push(newBomb);
+    }
+  });
+};
+
 
 const collusion = (element1, element2) => {
   let el1 = element1.getBoundingClientRect();
@@ -253,7 +261,7 @@ export const updateBombPosition = (bombs, grid) => {
       bombElement = NewElement('img', 'bomb');
       bombElement.src = BombInit[0]; // Set the initial bomb image
       tile.parentElement.appendChild(bombElement);
-      bombPlaced = false;
+      // bombPlaced = false;
     }
     // Update the bomb bulge animation
     bomb.animationNumber++;
@@ -660,12 +668,17 @@ export const initBomberman = (
         moveDirection = 'right';
         break;
       case 'Space':
-        // sendJsonMessage({
-        //   type: 'bombermanCoords',
-        //   fromuserid: currentUser,
-        //   gameTag: gameTag,
-        // });
-        bombPlaced = true
+        userPlacedBomb(
+          playersRef.current[gameTag].x,
+          playersRef.current[gameTag].y
+        );
+        sendJsonMessage({
+          type: 'bombPlanted',
+          bombs: bombs,
+          fromuserid: currentUser,
+          gameTag: gameTag,
+          gameGroup: group,
+        });
         break;
     }
   };
@@ -995,14 +1008,14 @@ export const initBomberman = (
       );
     }
 
-    if (bombPlaced && !playerLives.get(gameTag).dead) {
+    if (!playerLives.get(gameTag).dead) {
       userPlacedBomb(
         playersRef.current[gameTag].x,
         playersRef.current[gameTag].y
       );
     }
-
-    updateBombPosition(bombs);
+  
+    updateBombPosition(bombs, grid);
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
       sendJsonMessage({
