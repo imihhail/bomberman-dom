@@ -63,6 +63,7 @@ type SocketMessage struct {
 	Bombs             []structs.Bomb       `json:"bombs"`
 	RemovePwrUp       structs.RemovePwrUp  `json:"removePwrUp"`
 	DeadPlayer        string               `json:"deadPlayer"`
+	BloodStain        string               `json:"bloodStainXY"`
 }
 
 type Client struct {
