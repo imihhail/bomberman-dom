@@ -21,6 +21,7 @@ Networking is a social network project that aims to connect people in a unique w
   - [Live Version](#live-version)
   - [Run Locally](#run-locally)
 - [Audit](#audit)
+- [Screenshots](#screenshots)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -80,9 +81,10 @@ To audit the program, follow the steps [here](https://github.com/01-edu/public/t
 
 ## Screenshots
 
-Here's a screenshot of the project:
+Here's screenshots of the project:
 
 ![Project Screenshot](socialNetwork.jpg)
+![Games Screenshot](games.jpg)
 
 ## Usage
 

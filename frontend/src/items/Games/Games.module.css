@@ -10,9 +10,10 @@
 
 .gamesMenu {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 70%;
 }
 
 .gameLink .gamesMenu {
@@ -49,7 +50,7 @@
   color: white;
   cursor: pointer;
   background-color: black;
-  margin: 0.1rem;
+  margin: 1rem;
   border-radius: 4px;
   width: 15rem;
   height: 3rem;
@@ -57,6 +58,9 @@
   font-size: inherit;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition: 1s;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
 }
 
 .back:hover{
