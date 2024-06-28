@@ -40,7 +40,7 @@ const explosionArray = [
   ExplosionStage5,
 ];
 let tick = 0;
-let tickSpeed = 1;
+let tickSpeed = 3;
 let playerSpeed = 2;
 let bombAnimationInterval = 100;
 let bombActiveLevel = 1;
@@ -178,11 +178,11 @@ const userPlacedBomb = (playerX, playerY) => {
   let bombAnimationNumber = 0;
   let bomb = new Bomb(coordCalculation, bombActiveLevel, bombAnimationNumber);
   if (bombCount < maxBombs) {
-    bombs.push(bomb);
     bombCount++;
     setTimeout(() => {
       bombCount--;
     }, 3000);
+    return bomb;
   }
 };
 
@@ -196,16 +196,18 @@ const calculateBombPosition = (playerX, playerY) => {
 };
 
 export const updateBombArray = (socketBombs) => {
-  socketBombs?.forEach((newBomb) => {
-    // Check if this bomb already exists in the bombs array
-    const existingBomb = bombs.find(
-      (bomb) => bomb.coordCalculation === newBomb.coordCalculation
-    );
-    if (!existingBomb) {
-      // This is a new bomb, so add it to the bombs array
-      bombs.push(newBomb);
-    }
-  });
+  // socketBombs.forEach((eachNewBomb) => {
+  //   console.log(eachNewBomb);
+  //   const existingBomb = bombs.find(
+  //     (bomb) => bomb.coordCalculation === eachNewBomb.coordCalculation
+  //   );
+  //   if (existingBomb) {
+  //     existingBomb.bombAnimationNumber = eachNewBomb.bombAnimationNumber;
+  //   } else {
+  //     bombs.push(eachNewBomb);
+  //   }
+  // });
+  bombs.push(socketBombs);
 };
 
 const collusion = (element1, element2) => {
@@ -272,17 +274,17 @@ export const updateBombPosition = (bombs, grid) => {
     bomb.animationNumber++;
     if (bombElement) {
       // Update the bomb image every 60 frames
-      if (bomb.animationNumber % 60 === 0) {
-        bombElement.src = BombInit[bomb.animationNumber / 60];
+      if (Math.floor(bomb.animationNumber / 10) < 3) {
+        bombElement.src = BombInit[Math.floor(bomb.animationNumber / 10)];
       }
     }
-    if (bomb.animationNumber / 60 >= 3) {
+    if (Math.floor(bomb.animationNumber / 10) >= 3) {
       // If it's the fourth frame or later, maybe third? must experiment
       // Remove the bomb from the bombs array
       bombs.splice(index, 1);
       // Remove the bomb from the DOM
       if (bombElement) {
-        if (bomb.animationNumber % 60 === 0) {
+        if (Math.floor(bomb.animationNumber / 10) >= 3) {
           let player = document.querySelector(`.${playerTag}`);
           let imgContainer = tile.parentElement;
           bombElement.classList.remove('bomb');
@@ -618,13 +620,17 @@ export const removePowerUp = (powerUp, grid) => {
   });
 };
 
+// init bomberman
+
 export const initBomberman = (
   grid,
   gameTag,
   group,
   sendJsonMessage,
   playersRef,
-  currentUser
+  currentUser,
+  gameTick,
+  currentGameTickRef
 ) => {
   Point('bomberman-root').appendChild(GenerateGrid(grid));
   json = sendJsonMessage;
@@ -673,13 +679,12 @@ export const initBomberman = (
         moveDirection = 'right';
         break;
       case 'Space':
-        userPlacedBomb(
-          playersRef.current[gameTag].x,
-          playersRef.current[gameTag].y
-        );
         sendJsonMessage({
           type: 'bombPlanted',
-          bombs: bombs,
+          bombs: userPlacedBomb(
+            playersRef.current[gameTag].x,
+            playersRef.current[gameTag].y
+          ),
           fromuserid: currentUser,
           gameTag: gameTag,
           gameGroup: group,
@@ -1013,14 +1018,10 @@ export const initBomberman = (
       );
     }
 
-    // if (!playerLives.get(gameTag).dead) {
-    //   userPlacedBomb(
-    //     playersRef.current[gameTag].x,
-    //     playersRef.current[gameTag].y
-    //   );
-    // }
-
-    updateBombPosition(bombs, grid);
+    if (currentGameTickRef.current !== gameTick) {
+      updateBombPosition(bombs, grid);
+      currentGameTickRef.current = gameTick;
+    }
     // limited tick speed 12 ticks / 5/s
     if (tick >= tickSpeed) {
       sendJsonMessage({
@@ -1030,7 +1031,6 @@ export const initBomberman = (
         gameGroup: group,
         coordX: playersRef.current[gameTag].x.toString(),
         coordY: playersRef.current[gameTag].y.toString(),
-        bombs: bombs,
       });
       tick = 0;
     }

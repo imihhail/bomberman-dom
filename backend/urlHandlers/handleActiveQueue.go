@@ -129,6 +129,26 @@ func startFinalCountdown(gameParty []string) {
 	mutex.Lock()
 	delete(countdowns, queueKey(gameParty))
 	mutex.Unlock()
+
+	// game tick?
+	currentGameTick := 0
+	ticker := time.NewTicker(1 * time.Second / 10)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			var msg SocketMessage
+			msg.Type = "gameUpdate"
+			msg.GameStatus = "InProgress"
+			msg.GameTick = currentGameTick
+			msg.ActiveGameParty = newGroup
+			msg.GameGroupId = groupId
+			broadcast <- msg
+			currentGameTick++
+		}
+	}
+
 }
 
 func rndNr(rng *rand.Rand) int {

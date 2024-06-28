@@ -82,7 +82,8 @@ const Container = () => {
         messageData.type != 'removePwrUp' &&
         messageData.type != 'deadPlayer' &&
         messageData.type != 'lobbyMessage' &&
-        messageData.type != 'bombPlanted'
+        messageData.type != 'bombPlanted' &&
+        messageData.type != 'gameUpdate'
       ) {
         if (messageData.type == 'message') {
           if (location.pathname != '/chat') {

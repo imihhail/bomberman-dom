@@ -1,11 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { GetStatus } from '../../../../connections/statusConnection';
 
-import { initBomberman, updatePlayerPosition, updateBombArray, removePowerUp, death } from './main';
+import {
+  initBomberman,
+  updatePlayerPosition,
+  updateBombArray,
+  removePowerUp,
+  death,
+} from './main';
 
 const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
   const [modal, logout, sendJsonMessage, lastMessage] = useOutletContext();
+  const [gameTick, setGameTick] = useState(0);
+  const currentGameTickRef = useRef(0);
   const playersRef = useRef({});
 
   useEffect(() => {
@@ -21,17 +29,24 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
         }
       }
       if (messageData.type === 'removePwrUp') {
-        removePowerUp(messageData.removePwrUp, grid)
+        removePowerUp(messageData.removePwrUp, grid);
       }
       if (messageData.type === 'bombPlanted') {
         let socketBombs = messageData.bombs;
         updateBombArray(socketBombs);
       }
       if (messageData.type === 'deadPlayer') {
-        death(messageData.deadPlayer, messageData.bloodStainXY)
+        death(messageData.deadPlayer, messageData.bloodStainXY);
+      }
+      if (messageData.type === 'gameUpdate') {
+        setGameTick(messageData.gameTick);
       }
     }
-  });
+  }, [lastMessage]);
+
+  useEffect(() => {
+    currentGameTickRef.current = gameTick;
+  }, [gameTick]);
 
   useEffect(() => {
     modal(true);
@@ -45,7 +60,9 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
           group,
           sendJsonMessage,
           playersRef,
-          currentUser
+          currentUser,
+          gameTick,
+          currentGameTickRef
         );
         modal(false);
       }
