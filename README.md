@@ -1,4 +1,4 @@
-# Networking
+# Gaming Networking
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/The-Estonian/networking/docker-image.yml?branch=master)](https://github.com/The-Estonian/networking/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/license/mit)
@@ -7,11 +7,11 @@
 
 ## Project Description
 
-Networking is a social network project that aims to connect people in a unique way. Built with a modern tech stack, it offers a seamless and engaging user experience.
+Gaming Networking is a social network project that aims to collect previous projects into one centralized package and it includes past work of all the project participants.
 
 ### Tech Stack:
 
-- **Frontend**: React
+- **Frontend**: React, Mini-Framework
 - **Backend**: Golang
 - **Database**: SQLite
 
@@ -38,6 +38,7 @@ Check out the live project: [LIVE](https://www.devpipe.ee)
 - `user@email.com` / password: Password
 - `user1@email.com` / password: Password
 - `user2@email.com` / password: Password
+- `user3@email.com` / password: Password
 
 ### Run Locally
 
@@ -77,18 +78,18 @@ To run the project locally, follow these steps:
 
 ## Audit
 
-To audit the program, follow the steps [here](https://github.com/01-edu/public/tree/master/subjects/social-network/audit).
+To audit the program, follow the steps [here](https://github.com/01-edu/public/tree/master/subjects/bomberman-dom/audit).
 
 ## Screenshots
 
 Here's screenshots of the project:
 
 ![Project Screenshot](socialNetwork.jpg)
-![Games Screenshot](socialGaming.jpg)
+![Games Screenshot](socialGaming.gif)
 
 ## Usage
 
-After running the project locally, you can log in with the default users provided above. Explore the various features and see if you like it and stay forever.
+After running the project locally, you can log in with the default users provided above or register new ones. Explore the various features and see if you like it and stay forever.
 
 ## Contributing
 
