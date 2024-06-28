@@ -103,4 +103,8 @@ This project is licensed under the MIT License. See the [LICENSE](https://openso
 
 For any questions or suggestions, feel free to contact us directly at `Kood / Jõhvi Discord`.
 
+## Nota Bene
+
+The project is still a work in progress, has some bugs and could also hold more simple games in the future with some new minor bugs.
+
 _Authors: [Jaanus Saar](https://01.kood.tech/git/jsaar), [Ivar Mihhailov](https://01.kood.tech/git/imihhail), [Oliver Vilu](https://01.kood.tech/git/ovilu)_
