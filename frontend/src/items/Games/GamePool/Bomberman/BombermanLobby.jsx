@@ -23,7 +23,7 @@ const BombermanLobby = () => {
   const [lobbyChat, setLobbyChat] = useState([]);
   const [wsConnectionOpen, setWsConnectionOpen] = useState(false);
   const [lobbyChatInput, setLobbyChatInput] = useState('');
-
+  const colorMap = ['royalblue', 'forestgreen', 'deeppink', 'firebrick'];
   const chatContainerRef = useRef(null);
 
   const handleGameQueue = () => {
@@ -115,10 +115,14 @@ const BombermanLobby = () => {
           setGameParty(messageData.gameGroup);
           setGameInLobby(false);
         }
-        setLobbyChat((prev) => [
-          ...prev,
-          { user: messageData.fromuserid, text: messageData.gameLobbyMessage },
-        ]);
+        console.log(lobbyChat)
+        console.log(messageData.gameParty)
+        if (messageData.fromuserid && messageData.gameLobbyMessage) {
+          setLobbyChat((prev) => [
+            ...prev,
+            { user: messageData.fromuserid, text: messageData.gameLobbyMessage, email: messageData.SenderEmail},
+          ]);
+        }
         setTimeout(() => {
           chatContainerRef.current.scrollTop =
             chatContainerRef.current.scrollHeight;
@@ -134,6 +138,7 @@ const BombermanLobby = () => {
       gamestatus: gameInLobby ? 'lobby' : '',
       gameParty: gameParty,
       gameLobbyMessage: lobbyChatInput,
+      SenderEmail: userEmail,
     });
     setLobbyChatInput('');
   };
@@ -168,12 +173,21 @@ const BombermanLobby = () => {
       ))}
       <div className={styles.lobbyChat}>
         <div ref={chatContainerRef} className={styles.lobbyChatBox}>
-          {lobbyChat.map((row, index) => (
-            <div key={index} className={styles.lobbyChatRow}>
-              <p className={styles.lobbyChatUser}>{row.user}</p>
-              <p className={styles.lobbyChatText}>{row.text}</p>
-            </div>
-          ))}
+          {lobbyChat?.map((item, i) => {
+            const color = colorMap[gameParty.indexOf(item.user)];
+            return (
+              <div key={i} className={`${styles.lobbyChatRow}`}>
+                <div className={styles.lobbyChatEmail}>
+                  {item.email}
+                </div>
+                <div className={styles.lobbyChatProfileContent}>
+                  <div className={styles.textContentMirrored} style={{backgroundColor: color}}>
+                    {item.text}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
         {wsConnectionOpen ? (
           <div className={styles.lobbyChatInput}>
