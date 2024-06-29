@@ -605,14 +605,14 @@ export const initBomberman = (
   groupId = group;
 
   // Current FPS
-  const FPS = Point('gameContainer')[0].parentElement.appendChild(
-    NewElement('p', 'fps')
-  );
+  // const FPS = Point('gameContainer')[0].parentElement.appendChild(
+  //   NewElement('p', 'fps')
+  // );
 
-  // Max FPS
-  const MaxFPS = Point('gameContainer')[0].parentElement.appendChild(
-    NewElement('p', 'maxFps')
-  );
+  // // Max FPS
+  // const MaxFPS = Point('gameContainer')[0].parentElement.appendChild(
+  //   NewElement('p', 'maxFps')
+  // );
 
   if (stats.get(gameTag) == 0) {
     playersRef = null;
@@ -734,12 +734,12 @@ export const initBomberman = (
     const deltaTime = timestamp - lastTimestamp;
 
     // count max FPS
-    maxFrameCount++;
-    if (timestamp - lastSecondTimestamp >= 1000) {
-      MaxFPS.textContent = maxFrameCount + ': Max FPS';
-      maxFrameCount = 0;
-      lastSecondTimestamp = timestamp;
-    }
+    // maxFrameCount++;
+    // if (timestamp - lastSecondTimestamp >= 1000) {
+    //   MaxFPS.textContent = maxFrameCount + ': Max FPS';
+    //   maxFrameCount = 0;
+    //   lastSecondTimestamp = timestamp;
+    // }
 
     // limit framerate
     if (deltaTime < minFrameTime) {
@@ -747,12 +747,12 @@ export const initBomberman = (
       return;
     }
     // count actual FPS
-    frameCount++;
-    if (timestamp - lastSecondTimestampForMax >= 1000) {
-      FPS.textContent = frameCount + ': Current FPS';
-      frameCount = 0;
-      lastSecondTimestampForMax = timestamp;
-    }
+    // frameCount++;
+    // if (timestamp - lastSecondTimestampForMax >= 1000) {
+    //   FPS.textContent = frameCount + ': Current FPS';
+    //   frameCount = 0;
+    //   lastSecondTimestampForMax = timestamp;
+    // }
 
     // character movements
     if (!stats.get(gameTag).dead) {
