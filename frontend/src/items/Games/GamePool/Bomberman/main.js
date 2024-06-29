@@ -985,8 +985,8 @@ export const initBomberman = (
           fromuserid: currentUser,
           gameTag: gameTag,
           gameGroup: group,
-          coordX: playersRef.current[gameTag].x.toString(),
-          coordY: playersRef.current[gameTag].y.toString(),
+          coordX: playersRef.current[gameTag].x,
+          coordY: playersRef.current[gameTag].y,
         });
         tick = 0;
       }

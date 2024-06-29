@@ -51,8 +51,8 @@ type SocketMessage struct {
 	EventId           string               `json:"EventId"`
 	GroupId           string               `json:"GroupId"`
 	GroupTitle        string               `json:"GroupTitle"`
-	CoordX            string               `json:"coordX"`
-	CoordY            string               `json:"coordY"`
+	CoordX            int                  `json:"coordX"`
+	CoordY            int                  `json:"coordY"`
 	GameStatus        string               `json:"gamestatus"`
 	GameParty         []string             `json:"gameParty"`
 	ActiveGameParty   []structs.GamePlayer `json:"gameGroup"`
@@ -61,7 +61,7 @@ type SocketMessage struct {
 	CountDown         int                  `json:"countDown"`
 	Grid              [15][13]Cord         `json:"grid"`
 	Bombs             string               `json:"bombs"`
-	DivIndex          int               `json:"divIndex"`
+	DivIndex          int                  `json:"divIndex"`
 	RemovePwrUp       structs.RemovePwrUp  `json:"removePwrUp"`
 	DeadPlayer        string               `json:"deadPlayer"`
 	GameLobbyMessage  string               `json:"gameLobbyMessage"`
