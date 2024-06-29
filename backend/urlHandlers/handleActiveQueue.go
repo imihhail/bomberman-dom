@@ -97,7 +97,7 @@ func startInitialCountdown(gameParty []string) {
 
 func startFinalCountdown(gameParty []string) {
 	// change to 10 when ready
-	countdown := 1
+	countdown := 10
 
 	groupId := validators.ValidateCreateNewGame(gameParty)
 	validators.ValidateEmptyGameQueue(gameParty)
