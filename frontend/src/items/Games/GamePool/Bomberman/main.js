@@ -40,7 +40,7 @@ const explosionArray = [
   ExplosionStage5,
 ];
 let tick = 0;
-let tickSpeed = 1;
+let tickSpeed = 2;
 let playerSpeed = 2;
 let bombAnimationInterval = 75;
 let frameCount = 0;
@@ -269,7 +269,7 @@ const explosion = () => {
     player && collusion(player, imgContainer);
     exp.src = explosionArray[explosionIndex][1];
     explosionIndex++;
-    if (explosionIndex == 0) {
+    if (explosionIndex == 6) {
       clearInterval(explosionAnimation);
       imgContainer.removeChild(exp);
     }
