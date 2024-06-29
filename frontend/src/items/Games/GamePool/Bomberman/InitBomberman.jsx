@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { GetStatus } from '../../../../connections/statusConnection';
 
-import { initBomberman, updatePlayerPosition, updateBombArray, removePowerUp, death } from './main';
+import { initBomberman, updatePlayerPosition, updateBombPosition, removePowerUp, death } from './main';
 
 const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
   const [modal, logout, sendJsonMessage, lastMessage] = useOutletContext();
@@ -21,11 +21,10 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
         }
       }
       if (messageData.type === 'removePwrUp') {
-        removePowerUp(messageData.removePwrUp, grid)
+        removePowerUp(messageData.removePwrUp, grid, messageData.gameTag)
       }
       if (messageData.type === 'bombPlanted') {
-        let socketBombs = messageData.bombs;
-        updateBombArray(socketBombs);
+        updateBombPosition(messageData.bombs, messageData.divIndex, grid, messageData.gameTag);
       }
       if (messageData.type === 'deadPlayer') {
         death(messageData.deadPlayer, messageData.bloodStainXY)
