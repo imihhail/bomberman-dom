@@ -269,7 +269,7 @@ const explosion = () => {
     player && collusion(player, imgContainer);
     exp.src = explosionArray[explosionIndex][1];
     explosionIndex++;
-    if (explosionIndex == 6) {
+    if (explosionIndex == 5) {
       clearInterval(explosionAnimation);
       imgContainer.removeChild(exp);
     }
@@ -300,7 +300,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             if (checkForWall) {
@@ -334,7 +334,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][6];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             let checkForWall =
@@ -373,7 +373,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             if (checkForWall) {
@@ -409,7 +409,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][2];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             let checkForWall =
@@ -448,7 +448,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             if (checkForWall) {
@@ -483,7 +483,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][5];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             let checkForWall =
@@ -522,7 +522,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             if (checkForWall) {
@@ -557,7 +557,7 @@ const explosion = () => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][0];
           explosionIndex++;
-          if (explosionIndex == 6) {
+          if (explosionIndex == 5) {
             clearInterval(explosionAnimation);
             imgContainer.removeChild(exp);
             let checkForWall =
@@ -620,6 +620,7 @@ export const initBomberman = (
   playersRef.current = {};
 
   const handleMovemement = (e) => {
+  if (!stats.get(gameTag).dead) {
     switch (e.code) {
       case 'ArrowUp':
         moveDirection = 'up';
@@ -651,6 +652,7 @@ export const initBomberman = (
           playersRef.current[playerTag].y
         );
         break;
+      }
     }
   };
 
