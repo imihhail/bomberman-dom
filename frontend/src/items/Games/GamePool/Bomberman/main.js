@@ -269,7 +269,7 @@ const explosion = () => {
     player && collusion(player, imgContainer);
     exp.src = explosionArray[explosionIndex][1];
     explosionIndex++;
-    if (explosionIndex == 6) {
+    if (explosionIndex == 0) {
       clearInterval(explosionAnimation);
       imgContainer.removeChild(exp);
     }
