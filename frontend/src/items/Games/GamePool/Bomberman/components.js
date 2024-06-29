@@ -285,7 +285,7 @@ import bombInit1 from './assets/bomb/bomb1.png';
 import bombInit2 from './assets/bomb/bomb2.png';
 import bombInit3 from './assets/bomb/bomb3.png';
 
-export const BombInit = [bombInit1, bombInit2, bombInit3];
+export const BombInit = [bombInit1, bombInit2, bombInit3, bombInit1, bombInit2, bombInit3, bombInit1, bombInit2, bombInit3];
 
 // explosion import
 import stage1explosion1 from './assets/explosion/stage1/bottomEnd.png';
