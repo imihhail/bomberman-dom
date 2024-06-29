@@ -40,7 +40,7 @@ const explosionArray = [
   ExplosionStage5,
 ];
 let tick = 0;
-let tickSpeed = 2;
+let tickSpeed = 1;
 let playerSpeed = 2;
 let bombAnimationInterval = 75;
 let frameCount = 0;
@@ -54,6 +54,7 @@ let moveDirection = null;
 let json;
 let groupId;
 let playerTag;
+let walking = false
 
 class JsSQL {
   constructor(lives, dead, spawnX, spawnY, maxBombs, explosionPower) {
@@ -84,6 +85,7 @@ const stopMovement = (e) => {
     (moveDirection === 'right' && e.code === 'ArrowRight') ||
     (moveDirection === 'right' && e.code === 'KeyD')
   ) {
+    walking = false
     moveDirection = null;
   }
 };
@@ -213,6 +215,7 @@ export const death = (playerDied, bloodStainXY) => {
     stats.get(playerDied).lives -= 1;
     Point('gameContainer')[0].removeChild(player);
     stats.get(playerDied).dead = true;
+    walking = true
     let bloodStain = NewElement('img', 'bloodStain');
     bloodStain.src = deathStages[0];
     imgContainer.appendChild(bloodStain);
@@ -227,6 +230,7 @@ export const death = (playerDied, bloodStainXY) => {
         if (stats.get(playerDied).lives != 0) {
           Point('gameContainer')[0].appendChild(player);
           stats.get(playerDied).dead = false;
+          walking = false
         }
       }
     }, 100);
@@ -603,6 +607,7 @@ export const initBomberman = (
   playersRef,
   currentUser
 ) => {
+  console.log("initBomberman");
   Point('bomberman-root').appendChild(GenerateGrid(grid));
   json = sendJsonMessage;
   playerTag = gameTag;
@@ -618,9 +623,6 @@ export const initBomberman = (
     NewElement('p', 'maxFps')
   );
 
-  if (stats.get(gameTag) == 0) {
-    playersRef = null;
-  }
   playersRef.current = {};
 
   const handleMovemement = (e) => {
@@ -738,23 +740,23 @@ export const initBomberman = (
     const deltaTime = timestamp - lastTimestamp;
 
     // count max FPS
-    maxFrameCount++;
-    if (timestamp - lastSecondTimestamp >= 1000) {
-      MaxFPS.textContent = maxFrameCount + ': Max FPS';
-      maxFrameCount = 0;
-      lastSecondTimestamp = timestamp;
-    }
+    // maxFrameCount++;
+    // if (timestamp - lastSecondTimestamp >= 1000) {
+    //   MaxFPS.textContent = maxFrameCount + ': Max FPS';
+    //   maxFrameCount = 0;
+    //   lastSecondTimestamp = timestamp;
+    // }
 
     // limit framerate
     if (deltaTime >= minFrameTime) {
       lastTimestamp = timestamp;
-      // count actual FPS
-      frameCount++;
-      if (timestamp - lastSecondTimestampForMax >= 1000) {
-        FPS.textContent = frameCount + ': Current FPS';
-        frameCount = 0;
-        lastSecondTimestampForMax = timestamp;
-      }
+      //count actual FPS
+      //frameCount++;
+      // if (timestamp - lastSecondTimestampForMax >= 1000) {
+      //   FPS.textContent = frameCount + ': Current FPS';
+      //   frameCount = 0;
+      //   lastSecondTimestampForMax = timestamp;
+      // }
 
       // character movements
       if (!stats.get(gameTag).dead) {
@@ -788,6 +790,7 @@ export const initBomberman = (
                   playersRef.current[gameTag].x -= 4;
                 }
                 if (wall != 1) {
+                  walking = true
                   playersRef.current[gameTag].y = checkFutureY;
                   if (powerUpNr > 0 && powerUpNr < 4) {
                     const powerUp = {
@@ -838,6 +841,7 @@ export const initBomberman = (
                   playersRef.current[gameTag].x -= 4;
                 }
                 if (wall != 1) {
+                  walking = true
                   playersRef.current[gameTag].y = checkFutureY;
                   if (powerUpNr > 0 && powerUpNr < 4) {
                     const powerUp = {
@@ -889,6 +893,7 @@ export const initBomberman = (
                   playersRef.current[gameTag].y -= 4;
                 }
                 if (wall != 1) {
+                  walking = true
                   playersRef.current[gameTag].x = checkFutureX;
                   if (powerUpNr > 0 && powerUpNr < 4) {
                     const powerUp = {
@@ -938,6 +943,7 @@ export const initBomberman = (
                   playersRef.current[gameTag].y -= 4;
                 }
                 if (wall != 1) {
+                  walking = true
                   playersRef.current[gameTag].x = checkFutureX;
 
                   if (powerUpNr > 0 && powerUpNr < 4) {
@@ -962,16 +968,17 @@ export const initBomberman = (
             break;
         }
       }
-
-      if (stats.get(gameTag).dead == false) {
-        updatePlayerPosition(
-          playersRef.current[gameTag].element,
-          playersRef.current[gameTag].x,
-          playersRef.current[gameTag].y
-        );
-      }
+      
+        if (stats.get(gameTag).dead == false && walking) {
+          updatePlayerPosition(
+            playersRef.current[gameTag].element,
+            playersRef.current[gameTag].x,
+            playersRef.current[gameTag].y
+          );
+        }
 
       if (stats.get(gameTag).dead == true) {
+        //console.log("Deadass");
         updatePlayerPosition(
           playersRef.current[gameTag].element,
           (playersRef.current[gameTag].x = stats.get(gameTag).spawnX),
@@ -979,7 +986,8 @@ export const initBomberman = (
         );
       }
       // limited tick speed 12 ticks / 5/s
-      if (tick >= tickSpeed) {
+      if (walking){
+        if (tick >= tickSpeed) {
         sendJsonMessage({
           type: 'bombermanCoords',
           fromuserid: currentUser,
@@ -989,8 +997,8 @@ export const initBomberman = (
           coordY: playersRef.current[gameTag].y,
         });
         tick = 0;
+        }
       }
-
       tick++;
       lastTimestamp = timestamp;
     }

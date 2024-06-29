@@ -120,6 +120,7 @@ func periodicUserPresenceCheck() {
 func handleMessages() {
 	for {
 		msg := <-broadcast
+		fmt.Println("Sendin websoecket!")
 		switch msg.Type {
 		case "message":
 			// set new message into db
@@ -332,6 +333,7 @@ func handleMessages() {
 
 			}
 		case "bombermanCoords":
+			fmt.Println("Walking...")
 			for i := 0; i < len(msg.ActiveGameParty); i++ {
 				if clientConnections[msg.ActiveGameParty[i].User] != nil {
 					clientConnections[msg.ActiveGameParty[i].User].mu.Lock()
