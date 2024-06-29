@@ -23,22 +23,22 @@ func HandleActiveQueue(w http.ResponseWriter, r *http.Request) {
 		var callback = make(map[string]interface{})
 		cookie, _ := r.Cookie("socialNetworkSession")
 		userId := validators.ValidateUserSession(cookie.Value)
+		email := validators.ValidateUserEmailFromId(userId)
 		callback["login"] = "success"
 		callback["userid"] = userId
-		callback["useremail"] = validators.ValidateUserEmailFromId(userId)
+		callback["useremail"] = email
 		queue := validators.ValidateQueue()
 		callback["gameQueue"] = queue
 		var gameParty []string
 		for i := 0; i < len(queue); i++ {
 			gameParty = append(gameParty, queue[i].UserId)
 		}
-
 		var msg SocketMessage
 		msg.Type = "lobbyMessage"
 		msg.GameStatus = "lobby"
 		msg.GameParty = updateGameParty()
+		msg.SenderEmail = email
 		broadcast <- msg
-
 		if len(queue) >= 2 {
 			mutex.Lock()
 			if !countdowns[queueKey(gameParty)] {
@@ -72,7 +72,7 @@ func queueKey(gameParty []string) string {
 
 func startInitialCountdown(gameParty []string) {
 	// change to 20 when ready
-	countdown := 2
+	countdown := 20
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
