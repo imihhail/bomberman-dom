@@ -264,7 +264,7 @@ const explosion = () => {
   exp.src = explosionArray[0][1];
   imgContainer.appendChild(exp);
   player && collusion(player, imgContainer);
-  let explosionIndex = 0;
+  let explosionIndex = 1;
   const explosionAnimation = setInterval(() => {
     player && collusion(player, imgContainer);
     exp.src = explosionArray[explosionIndex][1];
@@ -295,7 +295,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[expImg];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
@@ -329,7 +329,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[6];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][6];
@@ -368,7 +368,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[expImg];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
@@ -404,7 +404,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[2];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][2];
@@ -443,7 +443,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[expImg];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
@@ -478,7 +478,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[5];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][5];
@@ -517,7 +517,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[expImg];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][expImg];
@@ -552,7 +552,7 @@ const explosion = () => {
         exp.src = ExplosionStage1[0];
         imgContainer.appendChild(exp);
         player && collusion(player, imgContainer);
-        let explosionIndex = 0;
+        let explosionIndex = 1;
         const explosionAnimation = setInterval(() => {
           player && collusion(player, imgContainer);
           exp.src = explosionArray[explosionIndex][0];
