@@ -103,3 +103,11 @@
   font-family: 'Press Start 2P', cursive;
   text-align: center;
 }
+
+.showFPS{
+  position: absolute;
+  color: white;
+  z-index: 3;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 15px;
+}

@@ -6,6 +6,10 @@ export const initTetris2 = () => {
   let frame = document.createElement('div');
   frame.className = 'frame';
 
+  const Fps = document.createElement("p")
+  Fps.className = "showFPS"
+  frame.appendChild(Fps)
+
   let score = 0;
   let life = 1;
   let countdown = 60;
@@ -65,8 +69,11 @@ export const initTetris2 = () => {
   let rotation = 0;
   let changeMirror
 
-  var then = Date.now()
-  var now
+  let then = Date.now();
+  let now;
+  let countFPS = 0;
+  let fps = 0;
+  let lastFPSUpdateTime = Date.now();
 
   function line() {
     let backroundChoice = '';
@@ -277,10 +284,18 @@ export const initTetris2 = () => {
     if (gamePaused || gameOver) {
       return
     }
-    now = Date.now()
-    var difference = now - then
-    
-    if (difference > 1000/60) {
+    now = Date.now();
+    let difference = now - then;
+      
+    if (difference > 1000/65) {
+      countFPS++;
+      if (now - lastFPSUpdateTime >= 1000) {
+        fps = countFPS;
+        countFPS = 0;
+        lastFPSUpdateTime = now;
+        Fps.textContent = `FPS: ${fps}`;
+      }
+
       let fallingBlocks = Array.from(
         document.querySelectorAll(`.oneBlock[id="${blockCounter}"]`)
       );
@@ -645,6 +660,7 @@ export const initTetris2 = () => {
     restardText.addEventListener('click', () => {
       blockCounter = blockCounter + 1;
       frame.innerHTML = '';
+      frame.appendChild(Fps)
       gameOver = false;
       loseWindow.style.display = 'none';
       life = 1;
@@ -679,7 +695,6 @@ export const initTetris2 = () => {
         drop()
       }
     });
-
     root.appendChild(welcomeWindow);
   }
   welcomeMenu();
