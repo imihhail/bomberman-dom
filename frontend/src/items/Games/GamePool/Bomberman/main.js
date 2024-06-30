@@ -49,7 +49,7 @@ let lastSecondTimestamp = 0;
 let lastSecondTimestampForMax = 0;
 let tolerance = 15; // bigger number makes the walkpath wider
 let lastTimestamp = performance.now();
-const minFrameTime = 1000 / 60;
+const minFrameTime = 1000 / 80;
 let moveDirection = null;
 let json;
 let groupId;
@@ -751,12 +751,12 @@ export const initBomberman = (
     if (deltaTime >= minFrameTime) {
       lastTimestamp = timestamp;
       //count actual FPS
-      //frameCount++;
-      // if (timestamp - lastSecondTimestampForMax >= 1000) {
-      //   FPS.textContent = frameCount + ': Current FPS';
-      //   frameCount = 0;
-      //   lastSecondTimestampForMax = timestamp;
-      // }
+      frameCount++;
+      if (timestamp - lastSecondTimestampForMax >= 1000) {
+        FPS.textContent = frameCount + ': Current FPS';
+        frameCount = 0;
+        lastSecondTimestampForMax = timestamp;
+      }
 
       // character movements
       if (!stats.get(gameTag).dead) {

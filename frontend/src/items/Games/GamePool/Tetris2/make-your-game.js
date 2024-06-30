@@ -1,13 +1,10 @@
 export const initTetris2 = () => {
-  window.onresize = function () {
-    location.reload();
-  };
+  // window.onresize = function () {
+  //   location.reload();
+  // };
 
   let frame = document.createElement('div');
   frame.className = 'frame';
-  frame.style.width = '380px';
-  frame.style.height = '760px';
-  frame.style.border = '38px ridge rgb(9, 23, 174)';
 
   let score = 0;
   let life = 1;
@@ -30,6 +27,7 @@ export const initTetris2 = () => {
   statsFrame.style.padding = '14.4px';
   statsFrame.style.color = 'white';
   statsFrame.style.fontSize = '20px';
+  
 
   let centerDiv = document.createElement('div');
   centerDiv.style.display = 'flex';
@@ -63,28 +61,12 @@ export const initTetris2 = () => {
   let animationId = null;
   let gamePaused = false;
 
-  document.addEventListener(
-    'keydown',
-    function (event) {
-      if (
-        event.ctrlKey &&
-        (event.key === '+' || event.key === '-' || event.key === '=')
-      ) {
-        event.preventDefault();
-      }
-    },
-    false
-  );
+  let yPos = 0;
+  let rotation = 0;
+  let changeMirror
 
-  document.addEventListener(
-    'wheel',
-    function (event) {
-      if (event.ctrlKey) {
-        event.preventDefault();
-      }
-    },
-    { passive: false }
-  );
+  var then = Date.now()
+  var now
 
   function line() {
     let backroundChoice = '';
@@ -98,6 +80,7 @@ export const initTetris2 = () => {
 
     let randomNumber = Math.floor(Math.random() * 5);
     let randomMirror = Math.floor(Math.random() * 2);
+    changeMirror = randomMirror
 
     if (randomNumber == 0) {
       tetra0(quadraBackground), (backroundChoice = quadraBackground);
@@ -165,8 +148,6 @@ export const initTetris2 = () => {
       }
     });
 
-    let yPos = 0;
-
     document.addEventListener('keydown', (e) => {
       let fallingBlocks = Array.from(
         document.querySelectorAll(`.oneBlock[id="${blockCounter}"]`)
@@ -188,7 +169,7 @@ export const initTetris2 = () => {
       }
     });
 
-    let rotation = 0;
+
     document.addEventListener('keydown', (e) => {
       if (
         e.key === 'ArrowUp' &&
@@ -274,54 +255,64 @@ export const initTetris2 = () => {
           scoreTag.innerHTML = `SCORE<br><br>${score}<br><br>`;
           countdown = 61;
           line();
+          drop()
         });
 
         continueText.addEventListener('click', () => {
-          animationId = window.requestAnimationFrame(drop);
           gamePaused = false;
+          drop()
           pauseDiv.remove();
+
         });
 
         pauseDiv.appendChild(continueText);
         pauseDiv.appendChild(restartText);
         root.appendChild(pauseDiv);
-        cancelAnimationFrame(animationId);
       }
     });
+  }
 
-    function drop() {
+ 
+  function drop() {
+    if (gamePaused || gameOver) {
+      return
+    }
+    now = Date.now()
+    var difference = now - then
+    
+    if (difference > 1000/60) {
       let fallingBlocks = Array.from(
         document.querySelectorAll(`.oneBlock[id="${blockCounter}"]`)
       );
-
+  
       var frameCollusion = fallingBlocks.some(
         (block) => block.getBoundingClientRect().bottom >= frameDivBottom
       );
-
-      if (gameOver) {
-        GameOverWindow();
-        cancelAnimationFrame(animationId);
-        return;
-      }
-
+  
       if (!frameCollusion && !collusionCheck()) {
         yPos += speed;
+        let backroundChoice =document.getElementById(blockCounter)
         backroundChoice.style.marginTop = `${yPos}px`;
-        animationId = requestAnimationFrame(drop);
+        animationId = window.requestAnimationFrame(drop);
+  
       } else {
         speed = 2;
         fallingBlocks.forEach((block) => {
           block.setAttribute('rotation', rotation);
-          block.setAttribute('mirror', randomMirror);
+          block.setAttribute('mirror', changeMirror);
         });
         blockCounter++;
+        yPos = 0
+        rotation = 0
         deleteRows();
+        cancelAnimationFrame(animationId);
         line();
       }
+      then = now
     }
     animationId = window.requestAnimationFrame(drop);
   }
-
+ 
   function collusionCheck() {
     let allBlocks = document.querySelectorAll(
       `.oneBlock:not([id="${blockCounter}"])`
@@ -580,6 +571,7 @@ export const initTetris2 = () => {
       life -= 1;
       lifeTag.innerHTML = `LIFE LEFT<br><br>${life}<br><br>`;
       gameOver = true;
+      GameOverWindow()
     }
   }
 
@@ -634,6 +626,9 @@ export const initTetris2 = () => {
         life -= 1;
         lifeTag.innerHTML = `LIFE LEFT<br><br>${life}<br><br>`;
         gameOver = true;
+        GameOverWindow()
+        yPos = 0
+        rotation = 0
       }
     }, 1000);
   }
@@ -657,8 +652,10 @@ export const initTetris2 = () => {
       lifeTag.innerHTML = `LIFE LEFT<br><br>${life}<br><br>`;
       scoreTag.innerHTML = `SCORE<br><br>${score}<br><br>`;
       countdown = 60;
+      loseWindow.remove()
       startCountdown();
       line();
+      drop()
     });
 
     loseWindow.appendChild(restardText);
@@ -670,7 +667,7 @@ export const initTetris2 = () => {
     let welcomeWindow = document.createElement('div');
     welcomeWindow.className = 'welcomeClass';
     welcomeWindow.innerHTML =
-      'Welcome to TETRIS!<br><br><br>Press ENTER to play<br><br>Press P to pause<br><br>Use arrowkeys to navigate';
+      'Welcome to TETRIS!<br><br><br>Press ENTER to play<br><br>Press P to pause<br><br>Use arrowkeys to navigate<br><br>Set browser zoom to 100%';
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !welcomeFlag) {
@@ -679,6 +676,7 @@ export const initTetris2 = () => {
         line();
         welcomeFlag = true;
         welcomeWindow.remove();
+        drop()
       }
     });
 
