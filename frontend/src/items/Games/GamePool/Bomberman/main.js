@@ -978,7 +978,6 @@ export const initBomberman = (
         }
 
       if (stats.get(gameTag).dead == true) {
-        //console.log("Deadass");
         updatePlayerPosition(
           playersRef.current[gameTag].element,
           (playersRef.current[gameTag].x = stats.get(gameTag).spawnX),
