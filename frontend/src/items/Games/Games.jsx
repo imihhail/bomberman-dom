@@ -11,6 +11,7 @@ import TicTacToePic from './GamePool/Tic-Tac-Toe/ticpic.jpg';
 
 const Games = () => {
   const [gameSelected, setGameSelected] = useState(false);
+  const [background, setBackground] = useState(false);
   const [
     modal,
     logout,
@@ -26,6 +27,7 @@ const Games = () => {
       if (data.login !== 'success') {
         logout();
       } else {
+        setBackground('test')
         modal(false);
       }
     });
