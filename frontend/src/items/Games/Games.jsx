@@ -7,6 +7,7 @@ import tetris from './GamePool/Tetris/tetris.gif';
 import tetris2 from './GamePool/Tetris2/tetris2.gif';
 import bomberman from './GamePool/Bomberman/bomberman.gif';
 import Arkanoid from './GamePool/Arkanoid/arkanoid.gif';
+import TicTacToePic from './GamePool/Tic-Tac-Toe/ticpic.jpg';
 
 const Games = () => {
   const [gameSelected, setGameSelected] = useState(false);
@@ -64,6 +65,13 @@ const Games = () => {
             className={styles.gameLink}
           >
             <img className={styles.gameIcon} src={Arkanoid} />
+          </Link>
+          <Link
+            onClick={handleGameSelect}
+            to={'/games/tictactoe'}
+            className={styles.gameLink}
+          >
+            <img className={styles.gameIcon} src={TicTacToePic} />
           </Link>
         </div>
       )}
