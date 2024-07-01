@@ -13,6 +13,7 @@ import InitTetris from './items/Games/GamePool/Tetris/InitTetris.jsx';
 import InitTetris2 from './items/Games/GamePool/Tetris2/InitTetris2.jsx';
 import BombermanLobby from './items/Games/GamePool/Bomberman/BombermanLobby.jsx';
 import InitArkanoid from './items/Games/GamePool/Arkanoid/InitArkanoid.jsx';
+import TicTacToe from './items/Games/GamePool/Tic-Tac-Toe/TicTacToe.jsx';
 
 import './index.css';
 
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
           {
             path: '/games/tetris2',
             element: <InitTetris2 />,
+          },
+          {
+            path: '/games/tictactoe',
+            element: <TicTacToe />,
           },
         ],
       },
