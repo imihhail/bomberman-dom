@@ -5,6 +5,7 @@ import { SetLogout } from '../../connections/logoutConnection.js';
 import useWebSocket from 'react-use-websocket';
 import Authenticate from '../../authentication/Authenticate.jsx';
 import NewNotification from '../Notifications/NewNotification.jsx';
+import  { DeathScreen } from '../Games/GamePool/Bomberman/main.js';
 import Modal from './Modal.jsx';
 import Menu from '../Menu/Menu';
 
@@ -60,7 +61,6 @@ const Container = () => {
   const handleGlowTrigger = () => {
     setGlow(false);
   };
-
   const handleNotification = (input) => {
     setShowNotification(true);
     setNotificationText(input);
@@ -128,7 +128,10 @@ const Container = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={DeathScreen ? styles.containerBlack : styles.container}>
+            {DeathScreen && (
+        <div className={styles.youdied}>YOU DIED</div>
+      )}
       {showNotification ? (
         <NewNotification>{notificationText}</NewNotification>
       ) : (

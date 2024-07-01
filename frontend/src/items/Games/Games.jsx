@@ -10,6 +10,7 @@ import Arkanoid from './GamePool/Arkanoid/arkanoid.gif';
 
 const Games = () => {
   const [gameSelected, setGameSelected] = useState(false);
+  const [background, setBackground] = useState(false);
   const [
     modal,
     logout,
@@ -25,6 +26,7 @@ const Games = () => {
       if (data.login !== 'success') {
         logout();
       } else {
+        setBackground('test')
         modal(false);
       }
     });
