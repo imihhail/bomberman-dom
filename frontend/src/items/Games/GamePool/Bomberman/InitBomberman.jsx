@@ -44,7 +44,7 @@ const InitBomberman = ({ currentUser, grid, gameTag, group }) => {
           group,
           sendJsonMessage,
           playersRef,
-          currentUser
+          currentUser,
         );
         modal(false);
       }

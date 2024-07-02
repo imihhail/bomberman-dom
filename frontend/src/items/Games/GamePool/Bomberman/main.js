@@ -55,6 +55,7 @@ let json;
 let groupId;
 let playerTag;
 let walking = false
+export let DeathScreen = false
 
 class JsSQL {
   constructor(lives, dead, spawnX, spawnY, maxBombs, explosionPower) {
@@ -189,7 +190,8 @@ const calculateBombPosition = (playerX, playerY) => {
   });
 };
 
-const collusion = (element1, element2) => {
+
+export const collusion = (element1, element2) => {
   let el1 = element1.getBoundingClientRect();
   let el2 = element2.getBoundingClientRect();
   if (
@@ -198,6 +200,18 @@ const collusion = (element1, element2) => {
     el1.top + 8 < el2.bottom &&
     el1.bottom - 8 > el2.top
   ) {
+    if (stats.get(playerTag).lives == 1){
+      DeathScreen = true      
+      const bmroot = document.getElementById('bomberman-root')
+      bmroot.style.transition = '4s'
+      bmroot.style.opacity = "0"
+    
+      setTimeout(()=>{
+        DeathScreen = false
+        bmroot.style.opacity = "1"
+      }, 7000)
+    }
+
     json({
       type: 'deadPlayer',
       deadPlayer: element1.className,
@@ -205,14 +219,20 @@ const collusion = (element1, element2) => {
       gameTag: playerTag,
       gameGroup: groupId,
     });
+    
   }
 };
+
+
 
 export const death = (playerDied, bloodStainXY) => {
   const player = document.querySelector(`.${playerDied}`);
   const imgContainer = document.getElementById(bloodStainXY);
   if (player) {
+    let lifeLeft1 = document.querySelector('.lifeLeft1')
     stats.get(playerDied).lives -= 1;
+    lifeLeft1.textContent = `Life left: ${stats.get(playerTag).lives}`
+
     Point('gameContainer')[0].removeChild(player);
     stats.get(playerDied).dead = true;
     walking = true
@@ -231,6 +251,8 @@ export const death = (playerDied, bloodStainXY) => {
           Point('gameContainer')[0].appendChild(player);
           stats.get(playerDied).dead = false;
           walking = false
+        } else {
+
         }
       }
     }, 100);
@@ -605,9 +627,8 @@ export const initBomberman = (
   group,
   sendJsonMessage,
   playersRef,
-  currentUser
+  currentUser,
 ) => {
-  console.log("initBomberman");
   Point('bomberman-root').appendChild(GenerateGrid(grid));
   json = sendJsonMessage;
   playerTag = gameTag;
@@ -622,6 +643,11 @@ export const initBomberman = (
   const MaxFPS = Point('gameContainer')[0].parentElement.appendChild(
     NewElement('p', 'maxFps')
   );
+
+  const lifeLeft1 = Point('gameContainer')[0].parentElement.appendChild(
+    NewElement('p', 'lifeLeft1')
+  );
+  lifeLeft1.textContent = "Life left: 3"
 
   playersRef.current = {};
 

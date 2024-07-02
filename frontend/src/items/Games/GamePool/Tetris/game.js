@@ -30,22 +30,22 @@ export const Game = (engine) => {
   };
 
   const handleMovemement = (e) => {
-    if (e.key == 'ArrowLeft') {
+    if (e.code == 'ArrowLeft' || e.code == 'KeyA') {
       curr.coordY--;
       if ((curr.randomIcon[curr.side][0] % 10) + curr.coordY < 0) {
         curr.coordY++;
       }
       // Arrow Right
-    } else if (e.key == 'ArrowRight') {
+    } else if (e.code == 'ArrowRight' || e.code == 'KeyD') {
       curr.coordY++;
       if ((curr.randomIcon[curr.side][3] % 10) + curr.coordY > 9) {
         curr.coordY--;
       }
       // Arrow Down
-    } else if (e.key == 'ArrowDown') {
-      curr.coordX += 10;
+    } else if (e.code == 'ArrowDown' || e.code == 'KeyS') {
+      tickSpeed = 3;
       // Arrow Up
-    } else if (e.key == 'ArrowUp') {
+    } else if (e.code == 'ArrowUp' || e.code == 'KeyW') {
       if (curr.side < 3) {
         curr.side++;
       } else {
@@ -87,15 +87,16 @@ export const Game = (engine) => {
       });
       grid.insertBefore(menuContinue, grid.firstChild);
     }
-    window.removeEventListener('keydown', handleMovemement);
   };
-
+  const resetMovement = () => {
+    tickSpeed = 60;
+  };
+  // keyboard
+  window.addEventListener('keydown', handleMovemement);
+  window.addEventListener('keyup', resetMovement);
   // animation start
+
   const refresh = (timestamp) => {
-
-    // keyboard
-    window.addEventListener('keydown', handleMovemement);
-
     // set max fps
     const deltaTime = timestamp - lastTimestamp;
     if (deltaTime < minFrameTime) {
