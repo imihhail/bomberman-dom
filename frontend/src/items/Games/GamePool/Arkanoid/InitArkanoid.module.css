@@ -20,6 +20,7 @@
   cursor: pointer;
   display: inline-block;
   font-size: 1.2rem;
+  font-family: 'VT323', monospace;
   margin: 0, auto;
   min-width: 5rem;
   text-transform: uppercase;
@@ -42,6 +43,7 @@
   cursor: pointer;
   display: inline-block;
   font-size: 1.2rem;
+  font-family: 'VT323', monospace;
   margin: 0, auto;
   min-width: 5rem;
   text-transform: uppercase;
@@ -53,15 +55,24 @@
   background: #0000fc;
 }
 
+.game {
+  margin: 0 auto;
+  padding: 0;
+  width: 680px;
+  box-sizing: border-box;
+  color: white;
+  background-image: url("./img/background.jpg");
+  background-size: cover;
+}
 .grid {
-  width: 670px;
-  height: 300px;
+  width: 680px;
+  height: 310px;
   border: 5px ridge black;
   position: relative; /* Change from absolute to relative */
   margin: 0 auto; /* Center the grid horizontally */
   background-color: rgba(82, 135, 168, 0.5);
-  background-image: url('./img/background.jpg');
-  background-size: cover;
+  font-family: 'VT323', monospace;
+  font-size: 24px;
 }
 
 .content {
@@ -79,6 +90,8 @@
 
 .content_info_score {
   margin-right: auto;
+  font-family: 'VT323', monospace;
+	font-size: 24px;
 }
 .content_info_health {
   margin-left: auto;

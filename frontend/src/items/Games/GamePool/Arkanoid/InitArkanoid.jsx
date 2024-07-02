@@ -32,10 +32,12 @@ const InitArkanoid = () => {
           <span id='health'></span>
         </div>
       </div>
-
-      <div className={styles.grid} id="gamegrid">
-        <span id='gameover'></span>
+      <div className={styles.game}>
+        <div className={styles.grid} id="gamegrid">
+          <span id='gameover'></span>
+        </div>        
       </div>
+
       <div className={styles.content_buttons}>
         <button className={styles.content_buttons_start} id='startButton'>
           Start

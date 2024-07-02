@@ -740,12 +740,12 @@ export const initBomberman = (
     const deltaTime = timestamp - lastTimestamp;
 
     // count max FPS
-    // maxFrameCount++;
-    // if (timestamp - lastSecondTimestamp >= 1000) {
-    //   MaxFPS.textContent = maxFrameCount + ': Max FPS';
-    //   maxFrameCount = 0;
-    //   lastSecondTimestamp = timestamp;
-    // }
+    maxFrameCount++;
+    if (timestamp - lastSecondTimestamp >= 1000) {
+      MaxFPS.textContent = maxFrameCount + ': Max FPS';
+      maxFrameCount = 0;
+      lastSecondTimestamp = timestamp;
+    }
 
     // limit framerate
     if (deltaTime >= minFrameTime) {

@@ -1,17 +1,12 @@
-/* @import url(https://fonts.googleapis.com/css?family=VT323);
-* {
-  font-family: "VT323", monospace;
-  font-size: 24px;
-} */
-
-/* body {
-  margin: 0;
+.game {
+  margin: 0 auto;
   padding: 0;
+  width: 680px;
   box-sizing: border-box;
+  color: white;
   background-image: url("./img/background.jpg");
   background-size: cover;
-  color: white;
-} */
+}
 
 .grid {
   width: 670px;
@@ -20,7 +15,6 @@
   position: relative; /* Change from absolute to relative */
   margin: 0 auto; /* Center the grid horizontally */
   background-color: rgba(82, 135, 168, 0.5);
-  
 }
 
 .block, .bat {
@@ -114,6 +108,8 @@
   align-items: flex-start;
   width: 670px;
   margin: 0.2rem auto;
+  font-family: "VT323", monospace;
+  font-size: 24px;
 }
 .content_info_score {
   margin-right: auto;

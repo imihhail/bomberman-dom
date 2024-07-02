@@ -1,4 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=VT323);
 @mixin buttons {
     border-bottom: 6px inset rgba(0,0,0,.5);
     border-left: 6px inset rgba(0,0,0,.5);
@@ -15,18 +14,14 @@
     width: auto;
 }
 
-* {
-	font-family: 'VT323', monospace;
-	font-size: 24px;
-}
-
-body {
-    margin: 0;
+.game {
+    margin: 0 auto;
     padding: 0;
+    width: 680px;
     box-sizing: border-box;
-    background-image: url("../img/background.jpg");
-    background-size: cover;
     color: white;
+    background-image: url("./img/background.jpg");
+    background-size: cover;
 }
 
 
@@ -111,6 +106,8 @@ body {
         align-items:flex-start;
         width:670px;
         margin: 0.2rem auto;
+        font-family: 'VT323', monospace;
+        font-size: 24px;
         &_score {
             margin-right: auto;
         }

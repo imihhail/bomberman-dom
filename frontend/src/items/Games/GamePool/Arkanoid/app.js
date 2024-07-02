@@ -8,7 +8,6 @@ export const initArkanoid = () => {
 
   const ballWidth = 10;
   const ballHeight = 10;
-  const ballSpeed = 5;
 
   // Helper to control the animationframe looping
   let isGameLoopRunning = false;
@@ -44,7 +43,6 @@ export const initArkanoid = () => {
   const healthSpan = document.getElementById('health');
   const scoreSpan = document.getElementById('score');
   const gameover = document.getElementById('gameover');
-  const pausedGame = document.getElementById('pauseGame');
   let score = 0;
 
   // Timer
@@ -313,7 +311,6 @@ export const initArkanoid = () => {
     } else if (!isGameRunning && isGameOver) {
       // Game is over
       return;
-    } else if (!isGameRunning && !isGameOver) {
     }
   }
 
