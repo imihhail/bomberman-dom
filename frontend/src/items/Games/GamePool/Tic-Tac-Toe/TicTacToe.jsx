@@ -19,82 +19,14 @@ const TicTacToe = () => {
     <div className={styles.GameContainer}>
       <div className={styles.columnFlex}>
         <div className={styles.rowFlex}>
-          <div>
+          {gameValues.map((item) => (
             <ButtonOption
-              player={gameValues[0].player}
+              key={item.id}
+              coordValue={item}
               counter={counter}
               setCounter={setCounter}
-              playerId={gameValues[0].id}
             ></ButtonOption>
-          </div>
-          <div>
-            <ButtonOption
-              player={gameValues[1].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[1].id}
-            ></ButtonOption>
-          </div>
-          <div>
-            <ButtonOption
-              player={gameValues[2].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[2].id}
-            ></ButtonOption>
-          </div>
-        </div>
-        <div className={styles.rowFlex}>
-          <div>
-            <ButtonOption
-              player={gameValues[3].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[3].id}
-            ></ButtonOption>
-          </div>
-          <div>
-            <ButtonOption
-              player={gameValues[4].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[4].id}
-            ></ButtonOption>
-          </div>
-          <div>
-            <ButtonOption
-              player={gameValues[5].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[5].id}
-            ></ButtonOption>
-          </div>
-        </div>
-        <div className={styles.rowFlex}>
-          <div>
-            <ButtonOption
-              player={gameValues[6].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[6].id}
-            ></ButtonOption>
-          </div>
-          <div>
-            <ButtonOption
-              player={gameValues[7].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[7].id}
-            ></ButtonOption>
-          </div>
-          <div>
-            <ButtonOption
-              player={gameValues[8].player}
-              counter={counter}
-              setCounter={setCounter}
-              playerId={gameValues[8].id}
-            ></ButtonOption>
-          </div>
+          ))}
         </div>
       </div>
     </div>
